@@ -13,7 +13,7 @@ use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
- * @method \Spryker\Zed\Payolution\Business\PayolutionBusinessFactory getFactory()
+ * @method \Spryker\Zed\Ratepay\Business\RatepayBusinessFactory getFactory()
  */
 class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 {

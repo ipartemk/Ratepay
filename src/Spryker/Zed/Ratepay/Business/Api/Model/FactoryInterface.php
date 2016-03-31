@@ -13,7 +13,7 @@ interface FactoryInterface
      * @param string $modelType
      * @param callable $builder
      *
-     * @return void
+     * @return $this
      */
     public function registerBuilder($modelType, callable $builder);
 

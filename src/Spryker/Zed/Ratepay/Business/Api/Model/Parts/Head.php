@@ -45,6 +45,18 @@ class Head extends RequestAbstract
     protected $operationSubstring;
 
     /**
+     * @param string $systemId
+     * @param string $profileId
+     * @param string $securityCode
+     */
+    public function __construct($systemId, $profileId, $securityCode)
+    {
+        $this->systemId = $systemId;
+        $this->profileId = $profileId;
+        $this->securityCode = $securityCode;
+    }
+
+    /**
      * @return array
      */
     protected function buildData()

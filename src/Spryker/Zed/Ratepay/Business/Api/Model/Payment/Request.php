@@ -7,6 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Payment;
 
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 
@@ -29,6 +30,20 @@ class Request extends Base
      * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment
      */
     protected $payment;
+
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head $head
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer $customer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket $basket
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment $payment
+     */
+    public function __construct(Head $head, Customer $customer, ShoppingBasket $basket, Payment $payment)
+    {
+        parent::__construct($head);
+        $this->customer = $customer;
+        $this->basket = $basket;
+        $this->payment = $payment;
+    }
 
     /**
      * @return array

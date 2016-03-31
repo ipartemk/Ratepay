@@ -43,6 +43,14 @@ class RatepayConfig extends AbstractBundleConfig
     /**
      * @return string
      */
+    public function getSystemId()
+    {
+        return $this->get(RatepayConstants::SYSTEM_ID);
+    }
+
+    /**
+     * @return string
+     */
     public function getSnippedId()
     {
         return $this->get(RatepayConstants::SNIPPET_ID);
@@ -54,14 +62,6 @@ class RatepayConfig extends AbstractBundleConfig
     public function getShopId()
     {
         return $this->get(RatepayConstants::SHOP_ID);
-    }
-
-    /**
-     * @return string
-     */
-    public function getSystemId()
-    {
-        return $this->get(RatepayConstants::SYSTEM_ID);
     }
 
 }

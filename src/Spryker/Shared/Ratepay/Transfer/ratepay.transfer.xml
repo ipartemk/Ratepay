@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<transfer
+    xmlns="http://xsd.spryker.com"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xsd.spryker.com ../../src/Spryker/TransferObjectDefinitionSchema.xsd"
+>
+    <transfer name="RatepayPayment">
+        <property name="paymentType" type="string" />
+        <property name="transactionId" type="string" />
+        <property name="transactionShortId" type="string" />
+
+        <property name="debitPayType" type="int"/>
+
+        <property name="installmentTotalAmount" type="int"/> <!-- Installment total payment amount -->
+        <property name="installmentLastAmount" type="int"/> <!-- Installment last payment amount -->
+        <property name="installmentAmount" type="int"/> <!-- Installment rate amount -->
+        <property name="installmentNumber" type="int"/> <!-- Installment number of months -->
+        <property name="installmentInterestRate" type="int"/> <!-- Installment interest rate -->
+        <property name="installmentPaymentFirstDay" type="int"/> <!-- Installment first day of payment -->
+
+        <property name="bankAccountHolder" type="string"/>
+        <property name="bankAccountBic" type="string"/>
+        <property name="bankAccountIban" type="string"/>
+    </transfer>
+
+    <transfer name="Payment">
+        <property name="ratepayPayment" type="RatepayPayment"/>
+    </transfer>
+
+    <transfer name="Order">
+        <property name="ratepayPayment" type="RatepayPayment"/>
+    </transfer>
+</transfer>

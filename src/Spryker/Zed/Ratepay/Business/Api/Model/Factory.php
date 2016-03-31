@@ -20,11 +20,12 @@ class Factory implements FactoryInterface
      * @param string $modelType
      * @param callable $builder
      *
-     * @return void
+     * @return $this
      */
     public function registerBuilder($modelType, callable $builder)
     {
         $this->builders[$modelType] = $builder;
+        return $this;
     }
 
     /**

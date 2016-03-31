@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<database
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    name="zed"
+    defaultIdMethod="native"
+    defaultPhpNamingMethod="underscore"
+    xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd"
+    namespace="Orm\Zed\Ratepay\Persistence"
+    package="src.Orm.Zed.Ratepay.Persistence"
+>
+    <table name="spy_payment_ratepay" phpName="SpyPaymentRatepay">
+        <column name="id_payment_ratepay" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_sales_order" required="true" type="INTEGER"/>
+        <column name="payment_type" required="true" type="ENUM" valueSet="INVOICE, INSTALLMENT, ELV, PREPAYMENT" />
+        <column name="transaction_id" required="true" type="VARCHAR" size="50"/>
+        <column name="transaction_short_id" required="true" type="VARCHAR" size="50"/>
+
+        <column name="debit_pay_type" required="true" type="VARCHAR"/>
+
+        <column name="installment_total_amount" required="true" type="INTEGER"/> <!-- Installment total payment amount -->
+        <column name="installment_last_amount" required="true" type="INTEGER"/> <!-- Installment last payment amount -->
+        <column name="installment_amount" required="true" type="INTEGER"/> <!-- Installment rate amount -->
+        <column name="installment_number" required="true" type="INTEGER"/> <!-- Number of months -->
+        <column name="installment_interest_rate" required="true" type="INTEGER"/> <!-- Installment interest rate -->
+        <column name="installment_payment_first_day" required="true" type="INTEGER"/> <!-- Installment first day of payment -->
+
+        <column name="bank_account_holder" type="VARCHAR" />
+        <column name="bank_account_bic" type="VARCHAR" size="100"/>
+        <column name="bank_account_iban" type="VARCHAR" size="50"/>
+
+        <foreign-key name="spy_payment_ratepay-fk_sales_order" foreignTable="spy_sales_order" phpName="SpySalesOrder">
+            <reference foreign="id_sales_order" local="fk_sales_order"/>
+        </foreign-key>
+
+        <behavior name="timestampable"/>
+        <id-method-parameter value="spy_payment_ratepay_pk_seq"/>
+    </table>
+</database>

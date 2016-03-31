@@ -20,6 +20,14 @@ abstract class Base extends RequestAbstract
     protected $head;
 
     /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head $head
+     */
+    public function __construct(Head $head)
+    {
+        $this->head = $head;
+    }
+
+    /**
      * @return array
      */
     protected function buildData()
