@@ -37,6 +37,28 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\TransactionInterface
+     */
+    public function createPaymentTransactionHandler()
+    {
+        $paymentTransactionHandler = new Transaction(
+            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
+            $this->createConverter(),
+            $this->getQueryContainer(),
+            $this->getConfig()
+        );
+
+        $paymentTransactionHandler->registerMethodMapper(
+            $this->createInvoice()
+        );
+        $paymentTransactionHandler->registerMethodMapper(
+            $this->createInstallment()
+        );
+
+        return $paymentTransactionHandler;
+    }
+
+    /**
      *
      * @return \Spryker\Zed\Ratepay\Business\Api\Model\FactoryInterface
      */

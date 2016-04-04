@@ -4,10 +4,28 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://xsd.spryker.com ../../src/Spryker/TransferObjectDefinitionSchema.xsd"
 >
-    <transfer name="RatepayPayment">
+    <transfer name="RatepayPaymentInvoice">
         <property name="paymentType" type="string" />
         <property name="transactionId" type="string" />
         <property name="transactionShortId" type="string" />
+
+        <property name="ipAddress" type="string" />
+
+        <property name="gender" type="string"/>
+        <property name="dateOfBirth" type="string"/>
+        <property name="customerAllowCreditInquiry" type="int" />
+    </transfer>
+
+    <transfer name="RatepayPaymentInstallment">
+        <property name="paymentType" type="string" />
+        <property name="transactionId" type="string" />
+        <property name="transactionShortId" type="string" />
+
+        <property name="ipAddress" type="string" />
+
+        <property name="gender" type="string"/>
+        <property name="dateOfBirth" type="string"/>
+        <property name="customerAllowCreditInquiry" type="int" />
 
         <property name="debitPayType" type="int"/>
 
@@ -24,10 +42,10 @@
     </transfer>
 
     <transfer name="Payment">
-        <property name="ratepayPayment" type="RatepayPayment"/>
+        <property name="ratepayInvoice" type="RatepayPaymentInvoice"/>
     </transfer>
 
     <transfer name="Order">
-        <property name="ratepayPayment" type="RatepayPayment"/>
+        <property name="ratepayInvoice" type="RatepayPaymentInvoice"/>
     </transfer>
 </transfer>

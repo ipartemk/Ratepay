@@ -10,6 +10,8 @@ namespace Spryker\Shared\Ratepay;
 interface RatepayConstants
 {
 
+    const RATEPAY = 'ratepay';
+
     const PROFILE_ID = 'PROFILE_ID';
 
     const SECURITY_CODE = 'SECURITY_CODE';
@@ -33,5 +35,10 @@ interface RatepayConstants
     const MODE = 'MODE';
     const MODE_LIVE = 'live';
     const MODE_TEST = 'test';
+
+    /**
+     * Payment submethods.
+     */
+    const METHOD_INVOICE = 'INVOICE';
 
 }
