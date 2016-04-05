@@ -19,6 +19,7 @@
         <column name="date_of_birth" required="true" type="DATE" />
         <column name="ip_address" required="true" type="VARCHAR" size="50"/>
         <column name="customer_allow_credit_inquiry" required="true" type="INTEGER"/>
+        <column name="currency_iso3" required="true" type="VARCHAR" size="3"/>
 
         <column name="debit_pay_type" type="ENUM" valueSet="DIRECT-DEBIT, BANK-TRANSFER"/>
 
