@@ -12,7 +12,12 @@ use Generated\Shared\Transfer\QuoteTransfer;
 interface MethodInterface
 {
 
-    public function paymentInit(QuoteTransfer $quoteTransfer);
+    /**
+     * @return string
+     */
+    public function getMethodName();
+
+    public function paymentInit();
 
     public function paymentRequest(QuoteTransfer $quoteTransfer);
 

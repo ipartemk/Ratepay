@@ -7,6 +7,17 @@
 
 namespace Spryker\Client\Ratepay;
 
+use Generated\Shared\Transfer\QuoteTransfer;
+
 interface RatepayClientInterface
 {
+    /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
+    public function preauthorizePayment(QuoteTransfer $quoteTransfer);
+
 }

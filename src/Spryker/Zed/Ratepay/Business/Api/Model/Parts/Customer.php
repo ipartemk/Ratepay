@@ -6,9 +6,9 @@
  */
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Parts;
 
-use Spryker\Zed\Ratepay\Business\Api\Model\RequestAbstract;
+use Spryker\Zed\Ratepay\Business\Api\Model\AbstractRequest;
 
-class Customer extends RequestAbstract
+class Customer extends AbstractRequest
 {
 
     const ROOT_TAG = 'customer';

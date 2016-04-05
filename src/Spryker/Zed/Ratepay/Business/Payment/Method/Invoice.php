@@ -8,12 +8,25 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Spryker\Shared\Ratepay\RatepayConstants;
 
-class Invoice extends MethodAbstract
+class Invoice extends AbstractMethod
 {
+
+    const METHOD = RatepayConstants::METHOD_INVOICE;
+
+    public function getMethodName()
+    {
+        return static::METHOD;
+    }
 
     public function paymentRequest(QuoteTransfer $quoteTransfer)
     {
+        $paymentData = $quoteTransfer->getPayment()->getRatepayInvoice();
+
+        if ($paymentData->getTransactionId() == '') {
+            $quoteTransfer = $this->paymentInit();
+        }
 
     }
 

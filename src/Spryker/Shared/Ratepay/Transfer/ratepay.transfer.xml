@@ -9,12 +9,13 @@
         <property name="transactionId" type="string" />
         <property name="transactionShortId" type="string" />
 
-        <property name="ipAddress" type="string" />
         <property name="currencyIso3" type="string"/>
-
         <property name="gender" type="string"/>
+        <property name="ipAddress" type="string"/>
+
+        <!-- These should be here, because then they are easilly mapped to Symfony forms data source -->
         <property name="dateOfBirth" type="string"/>
-        <property name="customerAllowCreditInquiry" type="int" />
+        <property name="customerAllowCreditInquiry" type="bool" />
     </transfer>
 
     <transfer name="RatepayPaymentInstallment">
@@ -22,10 +23,11 @@
         <property name="transactionId" type="string" />
         <property name="transactionShortId" type="string" />
 
-        <property name="ipAddress" type="string" />
         <property name="currencyIso3" type="string"/>
 
-        <property name="gender" type="string"/>
+        <property name="customer" type="RatepayPaymentCustomer"/>
+
+        <!-- These should be here, because then they are easilly mapped to Symfony forms data source -->
         <property name="dateOfBirth" type="string"/>
         <property name="customerAllowCreditInquiry" type="int" />
 
@@ -43,6 +45,15 @@
         <property name="bankAccountIban" type="string"/>
     </transfer>
 
+    <transfer name="RatepayResponse">
+        <property name="transactionId" type="string" />
+        <property name="transactionShortId" type="string" />
+
+        <property name="status" type="string" />
+        <property name="reason" type="string" />
+        <property name="result" type="string" />
+    </transfer>
+
     <transfer name="Payment">
         <property name="ratepayInvoice" type="RatepayPaymentInvoice"/>
     </transfer>
@@ -50,4 +61,39 @@
     <transfer name="Order">
         <property name="ratepayInvoice" type="RatepayPaymentInvoice"/>
     </transfer>
+
+    <!-- Data dependency on the Quote transfer object -->
+    <transfer name="Quote">
+        <property name="items" type="Item[]" singular="item"/>
+        <property name="billingAddress" type="Address"/>
+        <property name="shippingAddress" type="Address"/>
+        <property name="customer" type="Customer"/>
+    </transfer>
+
+    <!-- Data dependency on the Item transfer object -->
+    <transfer name="Item">
+        <property name="sumTotalDiscountAmountWithProductOption" type="int" />
+    </transfer>
+
+    <!-- Data dependency on the Customer transfer object -->
+    <transfer name="Customer">
+        <property name="firstName" type="string" />
+        <property name="lastName" type="string" />
+        <property name="company" type="string" />
+    </transfer>
+
+    <!-- Data dependency on the Address transfer object -->
+    <transfer name="Address">
+        <property name="firstName" type="string" />
+        <property name="lastNeame" type="string" />
+        <property name="address1" type="string" />
+        <property name="address2" type="string" />
+        <property name="address3" type="string" />
+        <property name="company" type="string" />
+        <property name="city" type="string" />
+        <property name="zipCode" type="string" />
+        <property name="iso2Code" type="string" />
+        <property name="salutation" type="string" />
+    </transfer>
+
 </transfer>

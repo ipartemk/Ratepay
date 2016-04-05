@@ -21,7 +21,7 @@ class GatewayController extends AbstractGatewayController
      *
      * @return \Generated\Shared\Transfer\PayolutionCalculationResponseTransfer
      */
-    public function requestPayment(QuoteTransfer $quoteTransfer)
+    public function preauthorizePaymentAction(QuoteTransfer $quoteTransfer)
     {
         return $this->getFacade()->preCheckPayment($quoteTransfer);
     }

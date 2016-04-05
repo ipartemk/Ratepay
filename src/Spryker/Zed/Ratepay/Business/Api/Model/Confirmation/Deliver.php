@@ -8,9 +8,9 @@ namespace Spryker\Zed\Ratepay\Business\Api\Model\Confirmation;
 
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
-use Spryker\Zed\Ratepay\Business\Api\Model\RequestAbstract;
+use Spryker\Zed\Ratepay\Business\Api\Model\AbstractRequest;
 
-class Deliver extends RequestAbstract
+class Deliver extends AbstractRequest
 {
 
     const ROOT_TAG = 'request';

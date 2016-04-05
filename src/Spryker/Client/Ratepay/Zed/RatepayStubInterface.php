@@ -5,18 +5,18 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
+namespace Spryker\Client\Ratepay\Zed;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 
-interface TransactionInterface
+interface RatepayStubInterface
 {
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function preCheckPayment(QuoteTransfer $quoteTransfer);
+    public function preauthorizePayment(QuoteTransfer $quoteTransfer);
 
 }

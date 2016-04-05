@@ -7,9 +7,9 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Parts;
 
 use Spryker\Shared\Ratepay\RatepayConstants;
-use Spryker\Zed\Ratepay\Business\Api\Model\RequestAbstract;
+use Spryker\Zed\Ratepay\Business\Api\Model\AbstractRequest;
 
-class Head extends RequestAbstract
+class Head extends AbstractRequest
 {
 
     const ROOT_TAG = 'head';

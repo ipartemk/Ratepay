@@ -8,7 +8,7 @@ namespace Spryker\Zed\Ratepay\Business\Api\Model;
 
 use Spryker\Zed\Ratepay\Business\Api\SimpleXMLElement;
 
-abstract class RequestAbstract implements RequestInterface
+abstract class AbstractRequest implements RequestInterface
 {
 
     /**
@@ -44,8 +44,8 @@ abstract class RequestAbstract implements RequestInterface
     protected function keyValueToXml($key, $value, &$xml)
     {
         if ($value !== null) {
-            if ($value instanceof RequestAbstract) {
-                /** @var \Spryker\Zed\Ratepay\Business\Api\Model\RequestAbstract $value */
+            if ($value instanceof AbstractRequest) {
+                /** @var \Spryker\Zed\Ratepay\Business\Api\Model\AbstractRequest $value */
                 $value = $value->buildData();
             }
 

@@ -12,27 +12,24 @@ interface RatepayConstants
 
     const RATEPAY = 'ratepay';
 
-    const PROFILE_ID = 'PROFILE_ID';
+    const PROFILE_ID = 'RATEPAY_PROFILE_ID';
 
-    const SECURITY_CODE = 'SECURITY_CODE';
+    const SECURITY_CODE = 'RATEPAY_SECURITY_CODE';
 
-    const SNIPPET_ID = 'SNIPPET_ID';
+    const SNIPPET_ID = 'RATEPAY_SNIPPET_ID';
 
-    const SHOP_ID = 'SHOP_ID';
+    const SHOP_ID = 'RATEPAY_SHOP_ID';
 
-    const API_TEST_URL = 'API_TEST_URL';
+    const API_TEST_URL = 'RATEPAY_API_TEST_URL';
 
-    const API_LIVE_URL = 'API_LIVE_URL';
+    const API_LIVE_URL = 'RATEPAY_API_LIVE_URL';
 
-    const SYSTEM_ID = 'SYSTEM_ID';
-
-    const CLIENT_VERSION = '1.0';
-    const CLIENT_NAME = 'Spryker Connector';
+    const SYSTEM_ID = 'RATEPAY_SYSTEM_ID';
 
     /**
      * Integration mode: test/live.
      */
-    const MODE = 'MODE';
+    const MODE = 'RATEPAY_MODE';
     const MODE_LIVE = 'live';
     const MODE_TEST = 'test';
 
@@ -41,4 +38,15 @@ interface RatepayConstants
      */
     const METHOD_INVOICE = 'INVOICE';
 
+    /**
+     * Genders.
+     */
+    const GENDER_MALE = 'M';
+    const GENDER_FEMALE = 'F';
+
+    /**
+     * User Agent of Spryker client.
+     */
+    const CLIENT_VERSION = '1.0';
+    const CLIENT_NAME = 'Spryker Connector';
 }

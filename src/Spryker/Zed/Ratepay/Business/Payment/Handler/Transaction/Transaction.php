@@ -8,39 +8,18 @@
 namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-
-
-use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
-use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
+//use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
+use Psr\Log\LoggerInterface;
+use Spryker\Zed\Ratepay\Business\Exception\NoMethodMapperException;
+use Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface;
 
 class Transaction implements TransactionInterface
 {
 
     /**
-     * @var \Spryker\Zed\Payolution\Persistence\PayolutionQueryContainerInterface
+     * @var array
      */
-    private $queryContainer;
-
-    /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface $executionAdapter
-     * @param \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface $converter
-     * @param \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface $queryContainer
-     * @param \Spryker\Zed\Ratepay\RatepayConfig $config
-     */
-    public function __construct(
-        AdapterInterface $executionAdapter,
-        ConverterInterface $converter,
-        PayolutionQueryContainerInterface $queryContainer,
-        PayolutionConfig $config
-    ) {
-        parent::__construct(
-            $executionAdapter,
-            $converter,
-            $config
-        );
-
-        $this->queryContainer = $queryContainer;
-    }
+    protected $methodMappers = [];
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
@@ -49,12 +28,37 @@ class Transaction implements TransactionInterface
      */
     public function preCheckPayment(QuoteTransfer $quoteTransfer)
     {
-        $paymentTransfer = $quoteTransfer->getPayment()->getPayolution();
+        $paymentMethod = $quoteTransfer->getPayment()->getPaymentMethod();
         $requestData = $this
-            ->getMethodMapper($paymentTransfer->getAccountBrand())
-            ->buildPreCheckRequest($quoteTransfer);
+            ->getMethodMapper($paymentMethod)
+            ->paymentRequest($quoteTransfer);
 
-        return $this->sendRequest($requestData);
+        //return $this->sendRequest($requestData);
     }
 
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface $mapper
+     *
+     * @return void
+     */
+    public function registerMethodMapper(MethodInterface $mapper)
+    {
+        $this->methodMappers[$mapper->getMethodName()] = $mapper;
+    }
+
+    /**
+     * @param string $accountBrand
+     *
+     * @throws \Spryker\Zed\Ratepay\Business\Exception\NoMethodMapperException
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface
+     */
+    protected function getMethodMapper($accountBrand)
+    {
+        if (isset($this->methodMappers[$accountBrand]) === false) {
+            throw new NoMethodMapperException('The method mapper is not registered.');
+        }
+
+        return $this->methodMappers[$accountBrand];
+    }
 }

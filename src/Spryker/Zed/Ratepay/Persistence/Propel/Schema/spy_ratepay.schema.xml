@@ -1,22 +1,21 @@
 <?xml version="1.0"?>
-<database
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    name="zed"
-    defaultIdMethod="native"
-    defaultPhpNamingMethod="underscore"
-    xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd"
-    namespace="Orm\Zed\Ratepay\Persistence"
-    package="src.Orm.Zed.Ratepay.Persistence"
->
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          defaultIdMethod="native"
+          defaultPhpNamingMethod="underscore"
+          xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd"
+          namespace="Orm\Zed\Ratepay\Persistence"
+          package="src.Orm.Zed.Ratepay.Persistence">
+
     <table name="spy_payment_ratepay" phpName="SpyPaymentRatepay">
         <column name="id_payment_ratepay" type="INTEGER" autoIncrement="true" primaryKey="true"/>
         <column name="fk_sales_order" required="true" type="INTEGER"/>
-        <column name="payment_type" required="true" type="ENUM" valueSet="INVOICE, INSTALLMENT, ELV, PREPAYMENT" />
+        <column name="payment_type" required="true" type="ENUM" valueSet="INVOICE, INSTALLMENT, ELV, PREPAYMENT"/>
         <column name="transaction_id" required="true" type="VARCHAR" size="50"/>
         <column name="transaction_short_id" required="true" type="VARCHAR" size="50"/>
 
         <column name="gender" required="true" type="ENUM" valueSet="M, F, U"/>
-        <column name="date_of_birth" required="true" type="DATE" />
+        <column name="date_of_birth" required="true" type="DATE"/>
         <column name="ip_address" required="true" type="VARCHAR" size="50"/>
         <column name="customer_allow_credit_inquiry" required="true" type="INTEGER"/>
         <column name="currency_iso3" required="true" type="VARCHAR" size="3"/>
@@ -30,7 +29,7 @@
         <column name="installment_interest_rate" type="INTEGER"/> <!-- Installment interest rate -->
         <column name="installment_payment_first_day" type="INTEGER"/> <!-- Installment first day of payment -->
 
-        <column name="bank_account_holder" type="VARCHAR" />
+        <column name="bank_account_holder" type="VARCHAR"/>
         <column name="bank_account_bic" type="VARCHAR" size="100"/>
         <column name="bank_account_iban" type="VARCHAR" size="50"/>
 
@@ -40,5 +39,35 @@
 
         <behavior name="timestampable"/>
         <id-method-parameter value="spy_payment_ratepay_pk_seq"/>
+    </table>
+
+    <table name="spy_payment_ratepay_log" phpName="SpyPaymentRatepayLog">
+        <column name="id_payment_ratepay_log" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+
+        <column name="log_message" type="VARCHAR"/>
+        <column name="log_level" type="VARCHAR"/>
+
+        <column name="fk_sales_order" type="INTEGER"/>
+        <column name="request_payment_type" required="true" type="ENUM" valueSet="INVOICE, INSTALLMENT, ELV, PREPAYMENT"/>
+        <column name="request_type" required="true" type="ENUM" valueSet="INIT"/>
+        <column name="request_transaction_id" required="true" type="VARCHAR" size="50"/>
+        <column name="request_transaction_short_id" required="true" type="VARCHAR" size="50"/>
+
+        <column name="response_type" type="VARCHAR"/>
+        <column name="response_transaction_id" type="VARCHAR"/>
+        <column name="response_transaction_short_id" type="VARCHAR"/>
+        <column name="response_status_code" type="INTEGER"/>
+        <column name="response_status_text" type="VARCHAR"/>
+        <column name="response_reason_code" type="INTEGER"/>
+        <column name="response_reason_text" type="VARCHAR"/>
+        <column name="response_result_code" type="INTEGER"/>
+        <column name="response_result_text" type="VARCHAR"/>
+
+        <foreign-key name="spy_payment_ratepay_log-fk_sales_order" foreignTable="spy_sales_order" phpName="SpySalesOrder">
+            <reference foreign="id_sales_order" local="fk_sales_order"/>
+        </foreign-key>
+
+        <behavior name="timestampable"/>
+        <id-method-parameter value="spy_payment_ratepay_log_pk_seq"/>
     </table>
 </database>

@@ -6,8 +6,6 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Model;
 
-use Spryker\Zed\Ratepay\Business\Api\Model\FactoryInterface;
-
 class Factory implements FactoryInterface
 {
 
