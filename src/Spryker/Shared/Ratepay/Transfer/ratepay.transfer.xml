@@ -123,6 +123,11 @@
     <!-- Data dependency on the Item transfer object -->
     <transfer name="Item">
         <property name="sumTotalDiscountAmountWithProductOption" type="int" />
+        <property name="sku" type="string" />
+        <property name="groupKey" type="string" />
+        <property name="quantity" type="int" />
+        <property name="taxRate" type="float" />
+        <property name="unitGrossPrice" type="int" />
     </transfer>
 
     <!-- Data dependency on the Customer transfer object -->

@@ -9,6 +9,7 @@ namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Spryker\Shared\Library\Currency\CurrencyManager;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
@@ -17,6 +18,7 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
 
 class Converter implements ConverterInterface
@@ -60,11 +62,11 @@ class Converter implements ConverterInterface
             ->setZipCode($addressTransfer->requireZipCode()->getZipCode());
     }
 
-    public function mapBankAccount(QuoteTransfer $quoteTransfer, BankAccount $bankAccount)
+    public function mapBankAccount(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, BankAccount $bankAccount)
     {
-        $bankAccount->setOwner($quoteTransfer->getBankAccountHolder());
-        $bankAccount->setIban($quoteTransfer->getBankAccountIban());
-        $bankAccount->setBicSwift($quoteTransfer->getBankAccountBic());
+        $bankAccount->setOwner($ratepayPaymentTransfer->getBankAccountHolder());
+        $bankAccount->setIban($ratepayPaymentTransfer->getBankAccountIban());
+        $bankAccount->setBicSwift($ratepayPaymentTransfer->getBankAccountBic());
     }
 
     public function mapPayment(QuoteTransfer $quoteTransfer, Payment $payment)
@@ -72,8 +74,28 @@ class Converter implements ConverterInterface
 
     }
 
-    public function mapBasket(QuoteTransfer $quoteTransfer, ShoppingBasket $basket)
+    public function mapBasket(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, ShoppingBasket $basket)
     {
+        //todo: get correct transfer objects.
+        $payment = $quoteTransfer->requirePayment()->getPayment();
+        $items = $quoteTransfer->getItems();
+
+        foreach ($items as $item) {
+            $item = $item;
+        }
+        
+        $basket->setAmount($quoteTransfer->getInstallmentTotalAmount());
+        $basket->setCurrency($ratepayPaymentTransfer->getCurrencyIso3());
+        $basket->setItems(count($items));
+    }
+
+    public function mapBasketItem(ItemTransfer $itemTransfer, ShoppingBasketItem $basketItem)
+    {
+        $basketItem->setArticleNumber($itemTransfer->getSku());
+        $basketItem->setUniqueArticleNumber($itemTransfer->getGroupKey());
+        $basketItem->setQuantity($itemTransfer->getQuantity());
+        $basketItem->setTaxRate($itemTransfer->getTaxRate());
+        $basketItem->setUnitPriceGross($itemTransfer->getUnitGrossPrice());
     }
 
     public function responseToTransfer()

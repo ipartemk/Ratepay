@@ -19,6 +19,7 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init as PaymentInit;
 
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PaymentRequest;
@@ -111,6 +112,12 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
                     function () use ($factory) {
                         return $this->createPaymentRequestModel($factory);
                     }
+                )
+                ->registerBuilder(
+                    ApiConstants::REQUEST_MODEL_BANK_ACCOUNT,
+                    function () use ($factory) {
+                        return $this->createBankAccountRequestModel($factory);
+                    }
                 );
         }
 
@@ -163,6 +170,11 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
             $factory->build(ApiConstants::REQUEST_MODEL_BASKET),
             $factory->build(ApiConstants::REQUEST_MODEL_PAYMENT)
         );
+    }
+
+    protected function createBankAccountRequestModel()
+    {
+        return new BankAccount();
     }
 
     /**
