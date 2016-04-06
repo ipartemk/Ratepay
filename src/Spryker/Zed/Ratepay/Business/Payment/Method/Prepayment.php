@@ -22,10 +22,14 @@ class Prepayment extends AbstractMethod
 
     public function paymentRequest(QuoteTransfer $quoteTransfer)
     {
-        $paymentData = $quoteTransfer->getPayment()->getRatepayPrepayment();
+        $paymentData = $quoteTransfer->requirePayment()
+            ->getPayment()->requireRatepayPrepayment()->getRatepayPrepayment();
 
         if ($paymentData->getTransactionId() == '') {
-            $quoteTransfer = $this->paymentInit();
+            $initResponse = $this->paymentInit();
+            if (!$initResponse->getIsSuccessfull()) {
+                return $initResponse;
+            }
         }
     }
 

@@ -9,9 +9,12 @@ namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Spryker\Shared\Library\Currency\CurrencyManager;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
+use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
 
 class Converter implements ConverterInterface
 {

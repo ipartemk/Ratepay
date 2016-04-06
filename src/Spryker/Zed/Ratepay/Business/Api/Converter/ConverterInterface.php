@@ -11,6 +11,8 @@ use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
+use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
 
 interface ConverterInterface
 {

@@ -187,8 +187,8 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         return new Elv(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
             $this->createRequestModelFactory(),
-            $this->createMonolog()
-            /*$this->createConverter(),
+            $this->createMonolog(),
+            $this->createConverter()/*,
             $this->getQueryContainer(),*/
         );
     }
@@ -198,9 +198,9 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         return new Prepayment(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
             $this->createRequestModelFactory(),
-            $this->createMonolog()
-        /*$this->createConverter(),
-        $this->getQueryContainer(),*/
+            $this->createMonolog(),
+            $this->createConverter()/*,
+            $this->getQueryContainer(),*/
         );
     }
 
