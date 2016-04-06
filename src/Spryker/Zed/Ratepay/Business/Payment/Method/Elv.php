@@ -22,10 +22,13 @@ class Elv extends AbstractMethod
 
     public function paymentRequest(QuoteTransfer $quoteTransfer)
     {
-        $paymentData = $quoteTransfer->getPayment()->getRatepayElv();
+        $paymentData = $quoteTransfer->requirePayment()->getPayment()->requireRatepayElv()->getRatepayElv();
 
         if ($paymentData->getTransactionId() == '') {
-            $quoteTransfer = $this->paymentInit();
+            $initResponse = $this->paymentInit();
+            if (!$initResponse->getIsSuccessfull()) {
+                return $initResponse;
+            }
         }
 
     }
