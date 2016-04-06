@@ -10,6 +10,7 @@ namespace Spryker\Zed\Ratepay\Business\Api\Adapter\Http;
 use Guzzle\Http\Client as GuzzleClient;
 use Guzzle\Http\Exception\RequestException;
 use Spryker\Zed\Ratepay\Business\Exception\ApiHttpRequestException;
+use Spryker\Zed\Ratepay\Business\Api\Constants;
 
 class Guzzle extends AbstractHttpAdapter
 {
@@ -42,9 +43,8 @@ class Guzzle extends AbstractHttpAdapter
     {
         return $this->client->post(
             $this->gatewayUrl,
-            null,
-            $data
-        );
+            ['Content-Type' => Constants::REQUEST_HEADER_CONTENT_TYPE]
+        )->setBody($data);
     }
 
     /**

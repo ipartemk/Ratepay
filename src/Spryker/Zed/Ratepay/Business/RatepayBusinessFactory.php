@@ -10,7 +10,7 @@ namespace Spryker\Zed\Ratepay\Business;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
-use Spryker\Zed\Ratepay\Business\Api\Model\Factory as RequestModelFactory;
+use Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactory;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction;
 
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
@@ -21,6 +21,8 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init as PaymentInit;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PaymentRequest;
 
 use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice;
+
+use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -90,7 +92,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
                 ->registerBuilder(
                     ApiConstants::REQUEST_MODEL_PAYMENT_INIT,
                     function () use ($factory) {
-                        return $this->createInitModel($factory)->getHead()->setOperation(ApiConstants::REQUEST_MODEL_PAYMENT_INIT);
+                        return $this->createInitModel($factory);
                     }
                 )
                 ->registerBuilder(
@@ -145,19 +147,24 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return StreamHandler
+     * @return \Monolog\Handler\StreamHandler
      */
     protected function createMonologWriter()
     {
-        return new StreamHandler('/tmp/ratepay.log', Logger::WARNING);
+        return new StreamHandler('/tmp/ratepay.log');
     }
 
     protected function createMonolog()
     {
-        $log = new Logger('name');
+        $log = new Logger('ratepay');
         $log->pushHandler($this->createMonologWriter());
 
         return $log;
+    }
+
+    protected function createConverter()
+    {
+        return new Converter();
     }
 
     public function createInvoice()
@@ -165,8 +172,8 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         return new Invoice(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
             $this->createRequestModelFactory(),
-            $this->createMonolog()
-            /*$this->createConverter(),
+            $this->createMonolog(),
+            $this->createConverter()/*,
             $this->getQueryContainer(),*/
         );
     }

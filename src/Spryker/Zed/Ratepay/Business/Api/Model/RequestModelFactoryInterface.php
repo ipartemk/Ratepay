@@ -6,7 +6,7 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Model;
 
-interface FactoryInterface
+interface RequestModelFactoryInterface
 {
 
     /**

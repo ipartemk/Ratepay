@@ -28,12 +28,10 @@ class Transaction implements TransactionInterface
      */
     public function preCheckPayment(QuoteTransfer $quoteTransfer)
     {
-        $paymentMethod = $quoteTransfer->getPayment()->getPaymentMethod();
-        $requestData = $this
+        $paymentMethod = $quoteTransfer->requirePayment()->getPayment()->requirePaymentMethod()->getPaymentMethod();
+        return $this
             ->getMethodMapper($paymentMethod)
             ->paymentRequest($quoteTransfer);
-
-        //return $this->sendRequest($requestData);
     }
 
     /**

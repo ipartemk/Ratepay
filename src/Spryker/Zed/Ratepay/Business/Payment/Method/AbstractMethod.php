@@ -9,8 +9,10 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
-use Spryker\Zed\Ratepay\Business\Api\Model\FactoryInterface;
+use Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactoryInterface;
+use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;
 use Psr\Log\LoggerInterface;
+use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
 
 abstract class AbstractMethod implements MethodInterface
 {
@@ -31,44 +33,68 @@ abstract class AbstractMethod implements MethodInterface
     protected $logger;
 
     /**
+     * @var \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface
+     */
+    protected $converter;
+
+    /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface $adapter
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\FactoryInterface $modelFactory
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactoryInterface $modelFactory
      * @param \Psr\Log\LoggerInterface $logger
+     * @param \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface $converter
      *
      */
     public function __construct(
         AdapterInterface $adapter,
-        FactoryInterface $modelFactory,
-        LoggerInterface $logger
+        RequestModelFactoryInterface $modelFactory,
+        LoggerInterface $logger,
+        ConverterInterface $converter
     ) {
         $this->adapter = $adapter;
         $this->modelFactory = $modelFactory;
         $this->logger = $logger;
+        $this->converter = $converter;
     }
 
+    /**
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
     public function paymentInit()
     {
         /**
          * @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init $request
          */
         $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_PAYMENT_INIT);
-
-
-        $result = $this->adapter->sendRequest((string)$request);
+        $response = $this->sendRequest((string)$request);
 
         $this->logDebug(
             ApiConstants::REQUEST_MODEL_PAYMENT_INIT,
             [
                 'request_transaction_id' => $request->getHead()->getTransactionId(),
                 'request_type' => $request->getHead()->getOperation(),
+
+                'response_result_code' => $response->getResultCode(),
+                'response_result_text' => $response->getResultText(),
+                'response_transaction_id' => $response->getTransactionId(),
+                'response_transaction_short_id' => $response->getTransactionShortId(),
+                'response_reason_code' => $response->getReasonCode(),
+                'response_reason_text' => $response->getReasonText(),
+                'response_status_code' => $response->getStatusCode(),
+                'response_status_text' => $response->getStatusText(),
             ]
         );
 
-        return $result;
+        return $this->converter->responseToTransferObject($response);
+    }
+
+    protected function sendRequest($request)
+    {
+        return new BaseResponse($this->adapter->sendRequest($request));
     }
 
     protected function logDebug($message, $context)
     {
         $this->logger->debug($message, $context);
     }
+
 }
