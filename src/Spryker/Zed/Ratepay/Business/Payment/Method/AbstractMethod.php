@@ -67,22 +67,7 @@ abstract class AbstractMethod implements MethodInterface
         $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_PAYMENT_INIT);
         $response = $this->sendRequest((string)$request);
 
-        $this->logDebug(
-            ApiConstants::REQUEST_MODEL_PAYMENT_INIT,
-            [
-                'request_transaction_id' => $request->getHead()->getTransactionId(),
-                'request_type' => $request->getHead()->getOperation(),
-
-                'response_result_code' => $response->getResultCode(),
-                'response_result_text' => $response->getResultText(),
-                'response_transaction_id' => $response->getTransactionId(),
-                'response_transaction_short_id' => $response->getTransactionShortId(),
-                'response_reason_code' => $response->getReasonCode(),
-                'response_reason_text' => $response->getReasonText(),
-                'response_status_code' => $response->getStatusCode(),
-                'response_status_text' => $response->getStatusText(),
-            ]
-        );
+        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_INIT, $request, $response);
 
         return $this->converter->responseToTransferObject($response);
     }
@@ -102,9 +87,24 @@ abstract class AbstractMethod implements MethodInterface
         return new BaseResponse($this->adapter->sendRequest($request));
     }
 
-    protected function logDebug($message, $context)
+    protected function logDebug($message, $request, $response)
     {
-        $this->logger->debug($message, $context);
+        $this->logger->debug(
+            $message,
+            [
+                'request_transaction_id' => $request->getHead()->getTransactionId(),
+                'request_type' => $request->getHead()->getOperation(),
+
+                'response_result_code' => $response->getResultCode(),
+                'response_result_text' => $response->getResultText(),
+                'response_transaction_id' => $response->getTransactionId(),
+                'response_transaction_short_id' => $response->getTransactionShortId(),
+                'response_reason_code' => $response->getReasonCode(),
+                'response_reason_text' => $response->getReasonText(),
+                'response_status_code' => $response->getStatusCode(),
+                'response_status_text' => $response->getStatusText(),
+            ]
+        );
     }
 
 }

@@ -27,7 +27,7 @@ class Invoice extends AbstractMethod
 
         if ($paymentData->getTransactionId() == '') {
             $initResponse = $this->paymentInit();
-            if (!$initResponse->getIsSuccessfull()) {
+            if (!$initResponse->getSuccessful()) {
                 return $initResponse;
             }
             $paymentData->setTransactionId($initResponse->getTransactionId())->setTransactionShortId($initResponse->getTransactionShortId());
@@ -37,29 +37,14 @@ class Invoice extends AbstractMethod
          * @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
          */
         $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST);
+        $request->getHead()->setTransactionId($paymentData->getTransactionId());
 
-        $this->converter->mapCustomer($quoteTransfer, $request->getCustomer());
+        $this->converter->mapCustomer($quoteTransfer, $paymentData, $request->getCustomer());
         $this->converter->mapBasket($quoteTransfer, $request->getShoppingBasket());
 
         $response = $this->sendRequest((string)$request);
 
-        $this->logDebug(
-            ApiConstants::REQUEST_MODEL_PAYMENT_INIT,
-            [
-                'request_transaction_id' => $request->getHead()->getTransactionId(),
-                'request_type' => $request->getHead()->getOperation(),
-
-                'response_result_code' => $response->getResultCode(),
-                'response_result_text' => $response->getResultText(),
-                'response_transaction_id' => $response->getTransactionId(),
-                'response_transaction_short_id' => $response->getTransactionShortId(),
-                'response_reason_code' => $response->getReasonCode(),
-                'response_reason_text' => $response->getReasonText(),
-                'response_status_code' => $response->getStatusCode(),
-                'response_status_text' => $response->getStatusText(),
-            ]
-        );
-
+        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_INIT, $request, $response);
         return $this->converter->responseToTransferObject($response);
     }
 

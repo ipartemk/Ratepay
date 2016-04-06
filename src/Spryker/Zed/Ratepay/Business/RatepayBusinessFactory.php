@@ -14,6 +14,7 @@ use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 
 use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
@@ -83,8 +84,14 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
                 )
                 ->registerBuilder(
                     ApiConstants::REQUEST_MODEL_CUSTOMER,
+                    function () use ($factory) {
+                        return $this->createCustomerModel($factory);
+                    }
+                )
+                ->registerBuilder(
+                    ApiConstants::REQUEST_MODEL_ADDRESS,
                     function () {
-                        return $this->createCustomerModel();
+                        return $this->createAddressModel();
                     }
                 )
                 ->registerBuilder(
@@ -125,9 +132,17 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         return new ShoppingBasket();
     }
 
-    protected function createCustomerModel()
+    protected function createCustomerModel(RequestModelFactory $factory)
     {
-        return new Customer();
+        return new Customer(
+            $factory->build(ApiConstants::REQUEST_MODEL_ADDRESS),
+            $factory->build(ApiConstants::REQUEST_MODEL_ADDRESS)
+        );
+    }
+
+    protected function createAddressModel()
+    {
+        return new Address();
     }
 
     protected function createPaymentModel()

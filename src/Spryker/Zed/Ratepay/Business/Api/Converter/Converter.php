@@ -7,9 +7,12 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
+use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Spryker\Shared\Library\Currency\CurrencyManager;
+use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
@@ -38,8 +41,23 @@ class Converter implements ConverterInterface
             ->setFirstName($customerTransfer->requireFirstName()->getFirstName())
             ->setLastName($customerTransfer->requireLastName()->getLastName())
             ->setEmail($customerTransfer->requireEmail()->getEmail())
-            ->setPhone($customerTransfer->requirePhone()->getPhone());
+            ->setPhone($quoteTransfer->requireBillingAddress()->getBillingAddress()->requirePhone()->getPhone());
 
+        $this->mapAddress($quoteTransfer->requireBillingAddress()->getBillingAddress(), ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_BILLING, $customer->getBillingAddress());
+        $this->mapAddress($quoteTransfer->requireShippingAddress()->getShippingAddress(), ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_SHIPPING, $customer->getShippingAddress());
+    }
+
+    public function mapAddress(AddressTransfer $addressTransfer, $type, Address $address)
+    {
+        $address->setAddressType($type)
+            ->setFirstName($addressTransfer->requireFirstName()->getFirstName())
+            ->setLastName($addressTransfer->requireLastName()->getLastName())
+            ->setCity($addressTransfer->requireCity()->getCity())
+            ->setCountryCode($addressTransfer->requireIso2Code()->getIso2Code())
+            ->setStreet($addressTransfer->requireAddress1()->getAddress1())
+            ->setStreetAdditional($addressTransfer->getAddress3()) // This is not required.
+            ->setStreetNumber($addressTransfer->requireAddress2()->getAddress2())
+            ->setZipCode($addressTransfer->requireZipCode()->getZipCode());
     }
 
     public function mapBankAccount(QuoteTransfer $quoteTransfer, BankAccount $bankAccount)

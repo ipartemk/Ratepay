@@ -46,6 +46,9 @@ abstract class AbstractRequest implements RequestInterface
         if ($value !== null) {
             if ($value instanceof AbstractRequest) {
                 /** @var \Spryker\Zed\Ratepay\Business\Api\Model\AbstractRequest $value */
+                if (is_numeric($key)) {
+                    $key = $value->getRootTag();
+                }
                 $value = $value->buildData();
             }
 

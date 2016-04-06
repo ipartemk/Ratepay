@@ -7,6 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Parts;
 
 use Spryker\Zed\Ratepay\Business\Api\Model\AbstractRequest;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 
 class Customer extends AbstractRequest
 {
@@ -72,6 +73,16 @@ class Customer extends AbstractRequest
      * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount
      */
     protected $bankAccount;
+
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address $billingAddress
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address $shippingAddress
+     */
+    public function __construct(Address $billingAddress, Address $shippingAddress)
+    {
+        $this->billingAddress = $billingAddress;
+        $this->shippingAddress = $shippingAddress;
+    }
 
     /**
      * @return array

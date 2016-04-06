@@ -129,6 +129,8 @@
     <transfer name="Customer">
         <property name="firstName" type="string" />
         <property name="lastName" type="string" />
+        <property name="email" type="string" />
+        <property name="phone" type="string" />
         <property name="company" type="string" />
     </transfer>
 
