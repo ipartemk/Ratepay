@@ -9,7 +9,6 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 //use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
-use Psr\Log\LoggerInterface;
 use Spryker\Zed\Ratepay\Business\Exception\NoMethodMapperException;
 use Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface;
 
@@ -59,4 +58,5 @@ class Transaction implements TransactionInterface
 
         return $this->methodMappers[$accountBrand];
     }
+
 }

@@ -9,8 +9,8 @@ namespace Spryker\Zed\Ratepay\Business\Api\Adapter\Http;
 
 use Guzzle\Http\Client as GuzzleClient;
 use Guzzle\Http\Exception\RequestException;
-use Spryker\Zed\Ratepay\Business\Exception\ApiHttpRequestException;
 use Spryker\Zed\Ratepay\Business\Api\Constants;
+use Spryker\Zed\Ratepay\Business\Exception\ApiHttpRequestException;
 
 class Guzzle extends AbstractHttpAdapter
 {

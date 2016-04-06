@@ -6,8 +6,8 @@
  */
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Payment;
 
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\AbstractRequest;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 
 abstract class Base extends AbstractRequest
 {

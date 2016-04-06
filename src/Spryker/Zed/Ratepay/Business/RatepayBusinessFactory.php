@@ -7,27 +7,27 @@
 
 namespace Spryker\Zed\Ratepay\Business;
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
-use Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactory;
-use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction;
 
+use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init as PaymentInit;
+
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PaymentRequest;
+use Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactory;
+use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction;
+
+use Spryker\Zed\Ratepay\Business\Payment\Method\Elv;
 
 use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice;
-use Spryker\Zed\Ratepay\Business\Payment\Method\Elv;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment;
-
-use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
-
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
 
 /**
  * @method \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface getQueryContainer()
@@ -199,8 +199,8 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
             $this->createRequestModelFactory(),
             $this->createMonolog()
-        /*$this->createConverter(),
-        $this->getQueryContainer(),*/
+            /*$this->createConverter(),
+            $this->getQueryContainer(),*/
         );
     }
 

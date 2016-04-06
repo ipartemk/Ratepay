@@ -7,15 +7,15 @@
 
 namespace Spryker\Client\Ratepay;
 
-use Spryker\Client\Kernel\AbstractClient;
-use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Spryker\Client\Kernel\AbstractClient;
 
 /**
  * @method \Spryker\Client\Ratepay\RatepayFactory getFactory()
  */
 class RatepayClient extends AbstractClient implements RatepayClientInterface
 {
+
     /**
      * @api
      *

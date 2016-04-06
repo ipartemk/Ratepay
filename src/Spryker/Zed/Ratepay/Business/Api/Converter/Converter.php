@@ -7,8 +7,8 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
-use Spryker\Shared\Library\Currency\CurrencyManager;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Spryker\Shared\Library\Currency\CurrencyManager;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
@@ -16,22 +16,26 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 class Converter implements ConverterInterface
 {
 
-    public function mapCustomer(QuoteTransfer $quote, Customer $customer)
+    public function mapCustomer(QuoteTransfer $quoteTransfer, Customer $customer)
     {
+        $customer = $quoteTransfer->requireCustomer()->getCustomer();
+        $payment = $quoteTransfer->requirePayment()->getPayment();
+
     }
 
-    public function mapBankAccount(QuoteTransfer $quote, BankAccount $bankAccount)
+    public function mapBankAccount(QuoteTransfer $quoteTransfer, BankAccount $bankAccount)
     {
-        $bankAccount->setOwner($quote->getBankAccountHolder());
-        $bankAccount->setIban($quote->getBankAccountIban());
-        $bankAccount->setBicSwift($quote->getBankAccountBic());
+        $bankAccount->setOwner($quoteTransfer->getBankAccountHolder());
+        $bankAccount->setIban($quoteTransfer->getBankAccountIban());
+        $bankAccount->setBicSwift($quoteTransfer->getBankAccountBic());
     }
 
-    public function mapPayment(QuoteTransfer $quote, Payment $payment)
+    public function mapPayment(QuoteTransfer $quoteTransfer, Payment $payment)
     {
+
     }
 
-    public function mapBasket(QuoteTransfer $quote, ShoppingBasket $basket)
+    public function mapBasket(QuoteTransfer $quoteTransfer, ShoppingBasket $basket)
     {
     }
 
@@ -51,7 +55,7 @@ class Converter implements ConverterInterface
         $responseTransfer
             ->setTransactionId($response->getTransactionId())
             ->setTransactionShortId($response->getTransactionShortId())
-            ->setIsSuccessfull($response->isSuccessful())
+            ->setSuccessful($response->isSuccessful())
             ->setReasonCode($response->getReasonCode())
             ->setReasonText($response->getReasonText())
             ->setStatusCode($response->getStatusCode())

@@ -22,4 +22,5 @@ class Constants
     const REQUEST_MODEL_CONFIRM_DELIVER = 'CONFIRM_DELIVER';
 
     const REQUEST_HEADER_CONTENT_TYPE = 'text/xml; charset=UTF8';
+
 }

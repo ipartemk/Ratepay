@@ -6,9 +6,9 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Confirmation;
 
+use Spryker\Zed\Ratepay\Business\Api\Model\AbstractRequest;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
-use Spryker\Zed\Ratepay\Business\Api\Model\AbstractRequest;
 
 class Deliver extends AbstractRequest
 {

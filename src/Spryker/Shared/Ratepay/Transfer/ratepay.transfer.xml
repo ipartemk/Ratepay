@@ -89,7 +89,7 @@
         <property name="transactionId" type="string" />
         <property name="transactionShortId" type="string" />
 
-        <property name="isSuccessfull" type="bool" />
+        <property name="successful" type="bool" />
 
         <property name="statusCode" type="string" />
         <property name="statusText" type="string" />

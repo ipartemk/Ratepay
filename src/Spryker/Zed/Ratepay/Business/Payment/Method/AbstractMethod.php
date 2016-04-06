@@ -6,13 +6,12 @@
  */
 namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
-use Generated\Shared\Transfer\QuoteTransfer;
+use Psr\Log\LoggerInterface;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
+use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactoryInterface;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;
-use Psr\Log\LoggerInterface;
-use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
 
 abstract class AbstractMethod implements MethodInterface
 {
