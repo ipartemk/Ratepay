@@ -12,7 +12,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 
 class Converter implements ConverterInterface
 {
@@ -34,6 +33,33 @@ class Converter implements ConverterInterface
 
     public function mapBasket(QuoteTransfer $quote, ShoppingBasket $basket)
     {
+    }
+
+    public function responseToTransfer()
+    {
+
+    }
+
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
+    public function responseToTransferObject(ResponseInterface $response)
+    {
+        $responseTransfer = new RatepayResponseTransfer();
+        $responseTransfer
+            ->setTransactionId($response->getTransactionId())
+            ->setTransactionShortId($response->getTransactionShortId())
+            ->setIsSuccessfull($response->isSuccessful())
+            ->setReasonCode($response->getReasonCode())
+            ->setReasonText($response->getReasonText())
+            ->setStatusCode($response->getStatusCode())
+            ->setStatusText($response->getStatusText())
+            ->setResultCode($response->getResultCode())
+            ->setResultText($response->getResultText());
+
+        return $responseTransfer;
     }
 
     /**

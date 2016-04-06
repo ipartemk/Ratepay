@@ -89,9 +89,14 @@
         <property name="transactionId" type="string" />
         <property name="transactionShortId" type="string" />
 
-        <property name="status" type="string" />
-        <property name="reason" type="string" />
-        <property name="result" type="string" />
+        <property name="isSuccessfull" type="bool" />
+
+        <property name="statusCode" type="string" />
+        <property name="statusText" type="string" />
+        <property name="reasonCode" type="int" />
+        <property name="reasonText" type="string" />
+        <property name="resultCode" type="int" />
+        <property name="resultText" type="string" />
     </transfer>
 
     <transfer name="Payment">

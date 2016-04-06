@@ -22,12 +22,14 @@ class Invoice extends AbstractMethod
 
     public function paymentRequest(QuoteTransfer $quoteTransfer)
     {
-        $paymentData = $quoteTransfer->getPayment()->getRatepayInvoice();
+        $paymentData = $quoteTransfer->requirePayment()->getPayment()->requireRatepayInvoice()->getRatepayInvoice();
 
         if ($paymentData->getTransactionId() == '') {
-            $quoteTransfer = $this->paymentInit();
+            $initResponse = $this->paymentInit();
+            if (!$initResponse->getIsSuccessfull()) {
+                return $initResponse;
+            }
         }
-
     }
 
     public function paymentConfirm(OrderTransfer $orderTransfer)

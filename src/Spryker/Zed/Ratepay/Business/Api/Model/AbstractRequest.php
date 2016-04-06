@@ -27,7 +27,7 @@ abstract class AbstractRequest implements RequestInterface
      *
      * @return void
      */
-    protected function arrayToXml(array $array, &$xml)
+    protected function arrayToXml(array $array, SimpleXMLElement &$xml)
     {
         foreach ($array as $key => $value) {
             $this->keyValueToXml($key, $value, $xml);
@@ -41,7 +41,7 @@ abstract class AbstractRequest implements RequestInterface
      *
      * @return void
      */
-    protected function keyValueToXml($key, $value, &$xml)
+    protected function keyValueToXml($key, $value, SimpleXMLElement &$xml)
     {
         if ($value !== null) {
             if ($value instanceof AbstractRequest) {
