@@ -5,19 +5,20 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\Payolution\Business\Api\Converter;
+namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 
 interface ConverterInterface
 {
 
     public function mapCustomer(QuoteTransfer $quote, Customer $customer);
 
-    public function mapBankAccount();
+    public function mapBankAccount(QuoteTransfer $quote, BankAccount $bankAccount);
 
     public function mapPayment(QuoteTransfer $quote, Payment $payment);
 

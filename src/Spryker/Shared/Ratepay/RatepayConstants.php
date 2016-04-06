@@ -37,6 +37,8 @@ interface RatepayConstants
      * Payment submethods.
      */
     const METHOD_INVOICE = 'INVOICE';
+    const METHOD_ELV = 'ELV';
+    const METHOD_PREPAYMENT = 'PREPAYMENT';
 
     /**
      * Genders.

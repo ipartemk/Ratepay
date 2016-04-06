@@ -5,13 +5,14 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\Payolution\Business\Api\Converter;
+namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Spryker\Shared\Library\Currency\CurrencyManager;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 
 class Converter implements ConverterInterface
 {
@@ -20,8 +21,11 @@ class Converter implements ConverterInterface
     {
     }
 
-    public function mapBankAccount()
+    public function mapBankAccount(QuoteTransfer $quote, BankAccount $bankAccount)
     {
+        $bankAccount->setOwner($quote->getBankAccountHolder());
+        $bankAccount->setIban($quote->getBankAccountIban());
+        $bankAccount->setBicSwift($quote->getBankAccountBic());
     }
 
     public function mapPayment(QuoteTransfer $quote, Payment $payment)

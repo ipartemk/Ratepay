@@ -21,6 +21,8 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init as PaymentInit;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PaymentRequest;
 
 use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice;
+use Spryker\Zed\Ratepay\Business\Payment\Method\Elv;
+use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment;
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -49,6 +51,8 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         $paymentTransactionHandler = new Transaction();
         $paymentTransactionHandler->registerMethodMapper($this->createInvoice());
+        $paymentTransactionHandler->registerMethodMapper($this->createElv());
+        $paymentTransactionHandler->registerMethodMapper($this->createPrepayment());
         return $paymentTransactionHandler;
     }
 
@@ -168,6 +172,28 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
             $this->createMonolog()
             /*$this->createConverter(),
             $this->getQueryContainer(),*/
+        );
+    }
+
+    public function createElv()
+    {
+        return new Elv(
+            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
+            $this->createRequestModelFactory(),
+            $this->createMonolog()
+            /*$this->createConverter(),
+            $this->getQueryContainer(),*/
+        );
+    }
+
+    public function createPrepayment()
+    {
+        return new Prepayment(
+            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
+            $this->createRequestModelFactory(),
+            $this->createMonolog()
+        /*$this->createConverter(),
+        $this->getQueryContainer(),*/
         );
     }
 
