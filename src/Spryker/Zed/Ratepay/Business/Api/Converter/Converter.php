@@ -10,19 +10,35 @@ namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Spryker\Shared\Library\Currency\CurrencyManager;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
 
 class Converter implements ConverterInterface
 {
 
-    public function mapCustomer(QuoteTransfer $quoteTransfer, Customer $customer)
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer $customer
+     *
+     * @return void
+     */
+    public function mapCustomer(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, Customer $customer)
     {
-        $customer = $quoteTransfer->requireCustomer()->getCustomer();
-        $payment = $quoteTransfer->requirePayment()->getPayment();
+        /** @var \Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer $ratepayPayment */
+        $customerTransfer = $quoteTransfer->requireCustomer()->getCustomer();
+        $customer
+            ->setAllowCreditInquiry($ratepayPaymentTransfer->requireCustomerAllowCreditInquiry()->getCustomerAllowCreditInquiry())
+            ->setGender($ratepayPaymentTransfer->requireGender()->getGender())
+            ->setDob($ratepayPaymentTransfer->requireDateOfBirth()->getDateOfBirth())
+            ->setIpAddress($ratepayPaymentTransfer->requireIpAddress()->getIpAddress())
+            ->setFirstName($customerTransfer->requireFirstName()->getFirstName())
+            ->setLastName($customerTransfer->requireLastName()->getLastName())
+            ->setEmail($customerTransfer->requireEmail()->getEmail())
+            ->setPhone($customerTransfer->requirePhone()->getPhone());
 
     }
 

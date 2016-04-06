@@ -4,6 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://xsd.spryker.com ../../src/Spryker/TransferObjectDefinitionSchema.xsd"
 >
+    <!-- properties of the RatepayPaymentInvoice should exist in all other payment methods -->
     <transfer name="RatepayPaymentInvoice">
         <property name="paymentType" type="string" />
         <property name="transactionId" type="string" />
@@ -13,7 +14,7 @@
         <property name="gender" type="string"/>
         <property name="ipAddress" type="string"/>
 
-        <!-- These should be here, because then they are easilly mapped to Symfony forms data source -->
+        <!-- These should be here, because then they are easily mapped to Symfony forms data source -->
         <property name="dateOfBirth" type="string"/>
         <property name="customerAllowCreditInquiry" type="bool" />
     </transfer>
@@ -33,7 +34,7 @@
         <property name="bankAccountBic" type="string"/>
         <property name="bankAccountIban" type="string"/>
 
-        <!-- These should be here, because then they are easilly mapped to Symfony forms data source -->
+        <!-- These should be here, because then they are easily mapped to Symfony forms data source -->
         <property name="dateOfBirth" type="string"/>
         <property name="customerAllowCreditInquiry" type="bool" />
     </transfer>
@@ -47,7 +48,7 @@
         <property name="gender" type="string"/>
         <property name="ipAddress" type="string"/>
 
-        <!-- These should be here, because then they are easilly mapped to Symfony forms data source -->
+        <!-- These should be here, because then they are easily mapped to Symfony forms data source -->
         <property name="dateOfBirth" type="string"/>
         <property name="customerAllowCreditInquiry" type="bool" />
     </transfer>
@@ -67,7 +68,7 @@
 
         <property name="customer" type="RatepayPaymentCustomer"/>
 
-        <!-- These should be here, because then they are easilly mapped to Symfony forms data source -->
+        <!-- These should be here, because then they are easily mapped to Symfony forms data source -->
         <property name="dateOfBirth" type="string"/>
         <property name="customerAllowCreditInquiry" type="int" />
 
@@ -134,7 +135,7 @@
     <!-- Data dependency on the Address transfer object -->
     <transfer name="Address">
         <property name="firstName" type="string" />
-        <property name="lastNeame" type="string" />
+        <property name="lastName" type="string" />
         <property name="address1" type="string" />
         <property name="address2" type="string" />
         <property name="address3" type="string" />

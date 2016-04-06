@@ -242,4 +242,5 @@ class Customer extends AbstractRequest
         $this->bankAccount = $bankAccount;
         return $this;
     }
+
 }

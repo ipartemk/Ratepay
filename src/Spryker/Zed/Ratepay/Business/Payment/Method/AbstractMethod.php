@@ -6,6 +6,7 @@
  */
 namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
+use Generated\Shared\Transfer\OrderTransfer;
 use Psr\Log\LoggerInterface;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
@@ -84,6 +85,16 @@ abstract class AbstractMethod implements MethodInterface
         );
 
         return $this->converter->responseToTransferObject($response);
+    }
+
+    public function paymentConfirm(OrderTransfer $orderTransfer)
+    {
+
+    }
+
+    public function deliveryConfirm(OrderTransfer $orderTransfer)
+    {
+
     }
 
     protected function sendRequest($request)

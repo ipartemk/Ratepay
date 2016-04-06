@@ -33,16 +33,6 @@ class Prepayment extends AbstractMethod
         }
     }
 
-    public function paymentConfirm(OrderTransfer $orderTransfer)
-    {
-
-    }
-
-    public function deliveryConfirm(OrderTransfer $orderTransfer)
-    {
-
-    }
-
     public function paymentChange(OrderTransfer $orderTransfer)
     {
 
