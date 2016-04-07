@@ -34,7 +34,7 @@ class Converter implements ConverterInterface
         /** @var \Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer $ratepayPayment */
         $customerTransfer = $quoteTransfer->requireCustomer()->getCustomer();
         $customer
-            ->setAllowCreditInquiry($ratepayPaymentTransfer->requireCustomerAllowCreditInquiry()->getCustomerAllowCreditInquiry())
+            ->setAllowCreditInquiry($ratepayPaymentTransfer->requireCustomerAllowCreditInquiry()->getCustomerAllowCreditInquiry() ? 'yes' : 'no')
             ->setGender($ratepayPaymentTransfer->requireGender()->getGender())
             ->setDob($ratepayPaymentTransfer->requireDateOfBirth()->getDateOfBirth())
             ->setIpAddress($ratepayPaymentTransfer->requireIpAddress()->getIpAddress())
@@ -47,6 +47,12 @@ class Converter implements ConverterInterface
         $this->mapAddress($quoteTransfer->requireShippingAddress()->getShippingAddress(), ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_SHIPPING, $customer->getShippingAddress());
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
+     * @param string $type
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address $address
+     * @return void
+     */
     public function mapAddress(AddressTransfer $addressTransfer, $type, Address $address)
     {
         $address->setAddressType($type)
@@ -55,7 +61,7 @@ class Converter implements ConverterInterface
             ->setCity($addressTransfer->requireCity()->getCity())
             ->setCountryCode($addressTransfer->requireIso2Code()->getIso2Code())
             ->setStreet($addressTransfer->requireAddress1()->getAddress1())
-            ->setStreetAdditional($addressTransfer->getAddress3()) // This is not required.
+            ->setStreetAdditional($addressTransfer->getAddress3()) // This is optional.
             ->setStreetNumber($addressTransfer->requireAddress2()->getAddress2())
             ->setZipCode($addressTransfer->requireZipCode()->getZipCode());
     }

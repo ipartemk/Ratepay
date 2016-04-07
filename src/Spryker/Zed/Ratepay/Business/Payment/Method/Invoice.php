@@ -16,11 +16,18 @@ class Invoice extends AbstractMethod
 
     const METHOD = RatepayConstants::METHOD_INVOICE;
 
+    /**
+     * @return string
+     */
     public function getMethodName()
     {
         return static::METHOD;
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
     public function paymentRequest(QuoteTransfer $quoteTransfer)
     {
         $paymentData = $quoteTransfer->requirePayment()->getPayment()->requireRatepayInvoice()->getRatepayInvoice();
@@ -37,14 +44,15 @@ class Invoice extends AbstractMethod
          * @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
          */
         $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST);
-        $request->getHead()->setTransactionId($paymentData->getTransactionId());
+        $request->getHead()->setTransactionId($paymentData->getTransactionId())
+            ->setTransactionShortId($paymentData->getTransactionShortId());
 
         $this->converter->mapCustomer($quoteTransfer, $paymentData, $request->getCustomer());
         $this->converter->mapBasket($quoteTransfer, $request->getShoppingBasket());
 
         $response = $this->sendRequest((string)$request);
 
-        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_INIT, $request, $response);
+        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST, $request, $response);
         return $this->converter->responseToTransferObject($response);
     }
 

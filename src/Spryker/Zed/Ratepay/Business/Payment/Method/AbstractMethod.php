@@ -82,11 +82,22 @@ abstract class AbstractMethod implements MethodInterface
 
     }
 
+    /**
+     * @param string $request
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse
+     */
     protected function sendRequest($request)
     {
         return new BaseResponse($this->adapter->sendRequest($request));
     }
 
+    /**
+     * @param string $message
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Base $request
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response
+     *
+     * @return void
+     */
     protected function logDebug($message, $request, $response)
     {
         $this->logger->debug(
@@ -103,6 +114,8 @@ abstract class AbstractMethod implements MethodInterface
                 'response_reason_text' => $response->getReasonText(),
                 'response_status_code' => $response->getStatusCode(),
                 'response_status_text' => $response->getStatusText(),
+
+                'request_body' => (string)$request,
             ]
         );
     }
