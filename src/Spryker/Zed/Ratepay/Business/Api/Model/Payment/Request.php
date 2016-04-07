@@ -115,5 +115,4 @@ class Request extends Base
     {
         return $this->payment;
     }
-
 }

@@ -27,19 +27,7 @@ class BankAccount extends AbstractRequest
      * @var string
      */
     protected $bicSwift;
-
-    /**
-     * @param string $owner
-     * @param string $iban
-     * @param string $bicSwift
-     */
-    public function __construct($owner, $iban, $bicSwift)
-    {
-        $this->owner = $owner;
-        $this->iban = $iban;
-        $this->bicSwift = $bicSwift;
-    }
-
+    
     /**
      * @return array
      */

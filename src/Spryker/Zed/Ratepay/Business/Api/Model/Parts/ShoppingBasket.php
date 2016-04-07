@@ -14,11 +14,37 @@ class ShoppingBasket extends AbstractRequest
     const ROOT_TAG = 'shopping-basket';
 
     /**
+     * @var float
+     */
+    protected $amount;
+
+    /**
+     * @var string
+     */
+    protected $currency;
+
+    /**
+     * @var array
+     */
+    protected $items = array();
+
+    /**
      * @return array
      */
     protected function buildData()
     {
-        return [];
+        $return = [
+            '@amount' => $this->getAmount(),
+            '@currency' => $this->getCurrency(),
+            'items' => []
+        ];
+
+        $items = $this->getItems();
+        foreach ($items as $item) {
+            $return['items'][] = $item;
+        }
+
+        return $return;
     }
 
     /**
@@ -27,6 +53,78 @@ class ShoppingBasket extends AbstractRequest
     public function getRootTag()
     {
         return static::ROOT_TAG;
+    }
+    
+    /**
+     * @return float
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param float $amount
+     *
+     * @return $this
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+        
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     *
+     * @return $this
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    /**
+     * @param array $items
+     *
+     * @return $this
+     */
+    public function setItems($items)
+    {
+        $this->items = $items;
+
+        return $this;
+    }
+
+    /**
+     * @param ShoppingBasketItem $item
+     *
+     * @return $this
+     */
+    public function addItems($item)
+    {
+        $this->items[] = $item;
+
+        return $this;
     }
 
 }
