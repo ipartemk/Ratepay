@@ -7,6 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
 use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Psr\Log\LoggerInterface;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
@@ -89,6 +90,23 @@ abstract class AbstractMethod implements MethodInterface
     protected function sendRequest($request)
     {
         return new BaseResponse($this->adapter->sendRequest($request));
+    }
+
+    /**
+     * According to the documentation the transaction ID is always returned, if it was sent, but it is not the fact for
+     * error cases, therefore we have to set transaction ID, so it is not lost after each error.
+     *
+     * @param \Generated\Shared\Transfer\RatepayResponseTransfer $responseTransfer
+     * @param string $transId
+     * @param string $transShortId
+     *
+     * @return void
+     */
+    protected function fixResponseTransferTransactionId(RatepayResponseTransfer $responseTransfer, $transId, $transShortId)
+    {
+        if ($responseTransfer->getTransactionId() === '' && $transId !== '') {
+            $responseTransfer->setTransactionId($transId)->setTransactionShortId($transShortId);
+        }
     }
 
     /**

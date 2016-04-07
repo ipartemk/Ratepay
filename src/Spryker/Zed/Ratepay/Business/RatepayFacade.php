@@ -39,16 +39,16 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function preCheckPayment(QuoteTransfer $quoteTransfer)
     {
-        $payolutionResponseTransfer = $this
+        $ratepayResponseTransfer = $this
             ->getFactory()
             ->createPaymentTransactionHandler()
             ->preCheckPayment($quoteTransfer);
 
-        return $payolutionResponseTransfer;
+        return $ratepayResponseTransfer;
     }
 
     /**
@@ -57,7 +57,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      * @param int $idPayment
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function preAuthorizePayment(OrderTransfer $orderTransfer, $idPayment)
     {

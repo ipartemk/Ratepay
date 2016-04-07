@@ -161,4 +161,5 @@ class ShoppingBasketItem extends AbstractRequest
 
         return $this;
     }
+
 }

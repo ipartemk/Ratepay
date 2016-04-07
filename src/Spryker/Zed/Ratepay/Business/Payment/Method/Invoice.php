@@ -26,6 +26,7 @@ class Invoice extends AbstractMethod
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function paymentRequest(QuoteTransfer $quoteTransfer)
@@ -47,12 +48,14 @@ class Invoice extends AbstractMethod
         $request->getHead()->setTransactionId($paymentData->getTransactionId());
 
         $this->converter->mapCustomer($quoteTransfer, $paymentData, $request->getCustomer());
-        $this->converter->mapBasket($quoteTransfer, $request->getShoppingBasket());
+        $this->converter->mapBasket($quoteTransfer, $paymentData, $request->getShoppingBasket());
 
         $response = $this->sendRequest((string)$request);
 
         $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST, $request, $response);
-        return $this->converter->responseToTransferObject($response);
+        $responseTransfer = $this->converter->responseToTransferObject($response);
+        $this->fixResponseTransferTransactionId($responseTransfer, $paymentData->getTransactionId(), $paymentData->getTransactionShortId());
+        return $responseTransfer;
     }
 
     public function paymentChange(OrderTransfer $orderTransfer)

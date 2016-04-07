@@ -91,13 +91,13 @@
         <property name="transactionShortId" type="string" />
 
         <property name="successful" type="bool" />
-
         <property name="statusCode" type="string" />
         <property name="statusText" type="string" />
         <property name="reasonCode" type="int" />
         <property name="reasonText" type="string" />
         <property name="resultCode" type="int" />
         <property name="resultText" type="string" />
+        <property name="customerMessage" type="string" />
     </transfer>
 
     <transfer name="Payment">

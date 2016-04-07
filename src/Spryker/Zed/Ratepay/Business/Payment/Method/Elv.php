@@ -41,9 +41,9 @@ class Elv extends AbstractMethod
 
         $bankAccount = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_BANK_ACCOUNT);
         $request->getCustomer()->setBankAccount($bankAccount);
-        
+
         $this->converter->mapCustomer($quoteTransfer, $paymentData, $request->getCustomer());
-        $this->converter->mapBasket($quoteTransfer, $paymentData,$request->getShoppingBasket());
+        $this->converter->mapBasket($quoteTransfer, $paymentData, $request->getShoppingBasket());
         $this->converter->mapBankAccount($quoteTransfer, $paymentData, $request->getCustomer()->getBankAccount());
 
         $response = $this->sendRequest((string)$request);

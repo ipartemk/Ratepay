@@ -59,4 +59,9 @@ interface ResponseInterface
      */
     public function getResponseType();
 
+    /**
+     * @return string
+     */
+    public function getCustomerMessage();
+
 }

@@ -8,8 +8,8 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\AddressTransfer;
-use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Spryker\Shared\Library\Currency\CurrencyManager;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
@@ -46,7 +46,7 @@ class Converter implements ConverterInterface
             ->setPhone($quoteTransfer->requireBillingAddress()->getBillingAddress()->requirePhone()->getPhone());
 
         $this->mapAddress($quoteTransfer->requireBillingAddress()->getBillingAddress(), ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_BILLING, $customer->getBillingAddress());
-        $this->mapAddress($quoteTransfer->requireShippingAddress()->getShippingAddress(), ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_SHIPPING, $customer->getShippingAddress());
+        $this->mapAddress($quoteTransfer->requireShippingAddress()->getShippingAddress(), ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_DELIVERY, $customer->getShippingAddress());
     }
 
     /**
@@ -89,7 +89,7 @@ class Converter implements ConverterInterface
         foreach ($items as $item) {
             $item = $item;
         }
-        
+
         $basket->setAmount($quoteTransfer->getInstallmentTotalAmount());
         $basket->setCurrency($ratepayPaymentTransfer->getCurrencyIso3());
         $basket->setItems(count($items));
@@ -102,11 +102,6 @@ class Converter implements ConverterInterface
         $basketItem->setQuantity($itemTransfer->getQuantity());
         $basketItem->setTaxRate($itemTransfer->getTaxRate());
         $basketItem->setUnitPriceGross($itemTransfer->getUnitGrossPrice());
-    }
-
-    public function responseToTransfer()
-    {
-
     }
 
     /**
@@ -126,7 +121,8 @@ class Converter implements ConverterInterface
             ->setStatusCode($response->getStatusCode())
             ->setStatusText($response->getStatusText())
             ->setResultCode($response->getResultCode())
-            ->setResultText($response->getResultText());
+            ->setResultText($response->getResultText())
+            ->setCustomerMessage($response->getCustomerMessage());
 
         return $responseTransfer;
     }

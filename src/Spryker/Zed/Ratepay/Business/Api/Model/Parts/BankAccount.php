@@ -27,7 +27,7 @@ class BankAccount extends AbstractRequest
      * @var string
      */
     protected $bicSwift;
-    
+
     /**
      * @return array
      */

@@ -26,7 +26,7 @@ class ShoppingBasket extends AbstractRequest
     /**
      * @var array
      */
-    protected $items = array();
+    protected $items = [];
 
     /**
      * @return array
@@ -54,7 +54,7 @@ class ShoppingBasket extends AbstractRequest
     {
         return static::ROOT_TAG;
     }
-    
+
     /**
      * @return float
      */
@@ -71,7 +71,7 @@ class ShoppingBasket extends AbstractRequest
     public function setAmount($amount)
     {
         $this->amount = $amount;
-        
+
         return $this;
     }
 
@@ -116,7 +116,7 @@ class ShoppingBasket extends AbstractRequest
     }
 
     /**
-     * @param ShoppingBasketItem $item
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem $item
      *
      * @return $this
      */

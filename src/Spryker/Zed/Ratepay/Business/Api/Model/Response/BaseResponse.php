@@ -41,6 +41,15 @@ class BaseResponse implements ResponseInterface
     }
 
     /**
+     * @return string
+     */
+    public function getCustomerMessage()
+    {
+        return (string)$this->xmlObject->head->processing->{'customer-message'};
+    }
+
+
+    /**
      * @return bool
      */
     public function isSuccessful()
