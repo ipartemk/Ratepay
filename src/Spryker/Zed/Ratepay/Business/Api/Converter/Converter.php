@@ -20,7 +20,6 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
-use Spryker\Zed\Ratepay\Business\RatepayBusinessFactory;
 
 class Converter implements ConverterInterface
 {
@@ -89,15 +88,7 @@ class Converter implements ConverterInterface
 
     public function mapBasket(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, ShoppingBasket $basket)
     {
-        $ratepayFactory = new RatepayBusinessFactory();
         $totalsTransfer = $quoteTransfer->requireTotals()->getTotals();
-        $quoteItems = $quoteTransfer->getItems();
-
-        foreach ($quoteItems as $quoteItem) {
-            $basketItem = $ratepayFactory->createRequestModelFactory()->build(ApiConstants::REQUEST_MODEL_BASKET_ITEM);
-            $this->mapBasketItem($quoteItem, $basketItem);
-            $basket->addItem($basketItem);
-        }
 
         $grandTotal = $this->centsToDecimal($totalsTransfer->requireGrandTotal()->getGrandTotal());
         $basket->setAmount($grandTotal);

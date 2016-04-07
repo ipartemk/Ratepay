@@ -25,7 +25,7 @@ abstract class AbstractMethod implements MethodInterface
     protected $adapter;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\FactoryInterface
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactoryInterface
      */
     protected $modelFactory;
 
@@ -58,6 +58,11 @@ abstract class AbstractMethod implements MethodInterface
         $this->converter = $converter;
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\CheckoutResponseTransfer
+     */
     public function paymentRequest(QuoteTransfer $quoteTransfer)
     {
         $paymentData = $this->getPaymentData($quoteTransfer);
@@ -86,17 +91,43 @@ abstract class AbstractMethod implements MethodInterface
         return $responseTransfer;
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return void
+     */
     abstract protected function getPaymentData(QuoteTransfer $quoteTransfer);
-    
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentElvTransfer $paymentData
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
+     *
+     * @return void
+     */
     protected function mapPaymentData($quoteTransfer, $paymentData, $request)
     {
         $request->getHead()->setTransactionId($paymentData->getTransactionId());
+        $this->converter->mapPayment($quoteTransfer, $paymentData, $request->getPayment());
         $this->converter->mapCustomer($quoteTransfer, $paymentData, $request->getCustomer());
         $this->converter->mapBasket($quoteTransfer, $paymentData, $request->getShoppingBasket());
-        $this->converter->mapPayment($quoteTransfer, $paymentData, $request->getPayment());
+
+        $quoteItems = $quoteTransfer->requireItems()->getItems();
+        foreach ($quoteItems as $quoteItem) {
+            $shoppingBasketItem = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_BASKET_ITEM);
+            $this->converter->mapBasketItem($quoteItem, $shoppingBasketItem);
+            $request->getShoppingBasket()->addItem($shoppingBasketItem);
+        }
     }
 
-    protected function mapBanKAccountData($quoteTransfer, $paymentData, $request)
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentElvTransfer $paymentData
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
+     *
+     * @return void
+     */
+    protected function mapBankAccountData($quoteTransfer, $paymentData, $request)
     {
         $bankAccount = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_BANK_ACCOUNT);
         $request->getCustomer()->setBankAccount($bankAccount);

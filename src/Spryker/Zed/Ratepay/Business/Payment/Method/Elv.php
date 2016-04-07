@@ -28,7 +28,7 @@ class Elv extends AbstractMethod
     protected function mapPaymentData($quoteTransfer, $paymentData, $request)
     {
         parent::mapPaymentData($quoteTransfer, $paymentData, $request);
-        $this->mapBanKAccountData($quoteTransfer, $paymentData, $request);
+        $this->mapBankAccountData($quoteTransfer, $paymentData, $request);
     }
 
     public function paymentChange(OrderTransfer $orderTransfer)
