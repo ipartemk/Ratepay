@@ -23,7 +23,7 @@ interface ConverterInterface
 
     public function mapBankAccount(QuoteTransfer $quote, $ratepayPaymentTransfer, BankAccount $bankAccount);
 
-    public function mapPayment(QuoteTransfer $quote, Payment $payment);
+    public function mapPayment(QuoteTransfer $quote, $ratepayPaymentTransfer, Payment $payment);
 
     public function mapBasket(QuoteTransfer $quote, $ratepayPaymentTransfer, ShoppingBasket $basket);
 

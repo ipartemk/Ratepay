@@ -20,6 +20,7 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init as PaymentInit;
 
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PaymentRequest;
@@ -84,6 +85,12 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
                     }
                 )
                 ->registerBuilder(
+                    ApiConstants::REQUEST_MODEL_BASKET_ITEM,
+                    function () {
+                        return $this->createBasketItemModel();
+                    }
+                )
+                ->registerBuilder(
                     ApiConstants::REQUEST_MODEL_CUSTOMER,
                     function () use ($factory) {
                         return $this->createCustomerModel($factory);
@@ -137,6 +144,11 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     protected function createBasketModel()
     {
         return new ShoppingBasket();
+    }
+
+    protected function createBasketItemModel()
+    {
+        return new ShoppingBasketItem();
     }
 
     protected function createCustomerModel(RequestModelFactory $factory)

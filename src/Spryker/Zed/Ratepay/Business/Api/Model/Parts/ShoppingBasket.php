@@ -29,6 +29,36 @@ class ShoppingBasket extends AbstractRequest
     protected $items = [];
 
     /**
+     * @var float
+     */
+    protected $shippingUnitPrice;
+
+    /**
+     * @var float
+     */
+    protected $shippingTaxRate;
+
+    /**
+     * @var string
+     */
+    protected $shippingTitle = '';
+
+    /**
+     * @var float
+     */
+    protected $discountUnitPrice;
+
+    /**
+     * @var float
+     */
+    protected $discountTaxRate;
+
+    /**
+     * @var string
+     */
+    protected $discountTitle = '';
+
+    /**
      * @return array
      */
     protected function buildData()
@@ -36,7 +66,17 @@ class ShoppingBasket extends AbstractRequest
         $return = [
             '@amount' => $this->getAmount(),
             '@currency' => $this->getCurrency(),
-            'items' => []
+            'items' => [],
+            'shipping' => [
+                '@unit-price-gross' => $this->getShippingUnitPrice(),
+                '@tax-rate' => $this->getShippingTaxRate(),
+                '#' => $this->getShippingTitle(),
+            ],
+            'discount' => [
+                '@unit-price-gross' => $this->getDiscountUnitPrice(),
+                '@tax-rate' => $this->getDiscountTaxRate(),
+                '#' => $this->getDiscountTitle(),
+            ]
         ];
 
         $items = $this->getItems();
@@ -120,11 +160,132 @@ class ShoppingBasket extends AbstractRequest
      *
      * @return $this
      */
-    public function addItems($item)
+    public function addItem($item)
     {
         $this->items[] = $item;
 
         return $this;
     }
+
+    /**
+     * @return float
+     */
+    public function getShippingUnitPrice()
+    {
+        return $this->shippingUnitPrice;
+    }
+
+    /**
+     * @param float $shippingUnitPrice
+     *
+     * @return $this
+     */
+    public function setShippingUnitPrice($shippingUnitPrice)
+    {
+        $this->shippingUnitPrice = $shippingUnitPrice;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getShippingTaxRate()
+    {
+        return $this->shippingTaxRate;
+    }
+
+    /**
+     * @param float $shippingTaxRate
+     *
+     * @return $this
+     */
+    public function setShippingTaxRate($shippingTaxRate)
+    {
+        $this->shippingTaxRate = $shippingTaxRate;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingTitle()
+    {
+        return $this->shippingTitle;
+    }
+
+    /**
+     * @param string $shippingTitle
+     *
+     * @return $this
+     */
+    public function setShippingTitle($shippingTitle)
+    {
+        $this->shippingTitle = $shippingTitle;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDiscountUnitPrice()
+    {
+        return $this->discountUnitPrice;
+    }
+
+    /**
+     * @param float $discountUnitPrice
+     *
+     * @return $this
+     */
+    public function setDiscountUnitPrice($discountUnitPrice)
+    {
+        $this->discountUnitPrice = $discountUnitPrice;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDiscountTaxRate()
+    {
+        return $this->discountTaxRate;
+    }
+
+    /**
+     * @param float $discountTaxRate
+     *
+     * @return $this
+     */
+    public function setDiscountTaxRate($discountTaxRate)
+    {
+        $this->discountTaxRate = $discountTaxRate;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiscountTitle()
+    {
+        return $this->discountTitle;
+    }
+
+    /**
+     * @param string $discountTitle
+     *
+     * @return $this
+     */
+    public function setDiscountTitle($discountTitle)
+    {
+        $this->discountTitle = $discountTitle;
+
+        return $this;
+    }
+
 
 }

@@ -46,7 +46,7 @@ class Payment extends AbstractRequest
         $return = [
             '@method' => $this->getMethod(),
             '@currency' => $this->getCurrency(),
-            '@amount' => $this->getAmount(),
+            'amount' => $this->getAmount(),
             'installment-details' => $this->getInstallmentDetails(),
             'debit-pay-type' => $this->getDebitPayType(),
         ];

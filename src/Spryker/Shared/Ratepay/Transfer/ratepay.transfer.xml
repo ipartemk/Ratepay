@@ -53,12 +53,6 @@
         <property name="customerAllowCreditInquiry" type="bool" />
     </transfer>
 
-    <transfer name="RatepayBankAccount">
-        <property name="owner" type="string" />
-        <property name="iban" type="string" />
-        <property name="bicSwift" type="string" />
-    </transfer>
-
     <transfer name="RatepayPaymentInstallment">
         <property name="paymentType" type="string" />
         <property name="transactionId" type="string" />
@@ -127,7 +121,8 @@
         <property name="groupKey" type="string" />
         <property name="quantity" type="int" />
         <property name="taxRate" type="float" />
-        <property name="unitGrossPrice" type="int" />
+        <property name="unitGrossPriceWithProductOptionAndDiscountAmounts" type="int" />
+        <property name="unitTotalDiscountAmountWithProductOption" type="int" />
     </transfer>
 
     <!-- Data dependency on the Customer transfer object -->

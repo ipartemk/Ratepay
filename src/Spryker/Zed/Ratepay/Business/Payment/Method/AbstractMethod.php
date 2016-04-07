@@ -8,6 +8,7 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
 use Psr\Log\LoggerInterface;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
@@ -55,6 +56,51 @@ abstract class AbstractMethod implements MethodInterface
         $this->modelFactory = $modelFactory;
         $this->logger = $logger;
         $this->converter = $converter;
+    }
+
+    public function paymentRequest(QuoteTransfer $quoteTransfer)
+    {
+        $paymentData = $this->getPaymentData($quoteTransfer);
+
+        if ($paymentData->getTransactionId() == '') {
+            $initResponse = $this->paymentInit();
+            if (!$initResponse->getSuccessful()) {
+                return $initResponse;
+            }
+            $paymentData->setTransactionId($initResponse->getTransactionId())
+                ->setTransactionShortId($initResponse->getTransactionShortId());
+        }
+
+        /**
+         * @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
+         */
+        $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST);
+
+        $this->mapPaymentData($quoteTransfer, $paymentData, $request);
+
+        $response = $this->sendRequest((string)$request);
+
+        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST, $request, $response);
+        $responseTransfer = $this->converter->responseToTransferObject($response);
+        $this->fixResponseTransferTransactionId($responseTransfer, $paymentData->getTransactionId(), $paymentData->getTransactionShortId());
+        return $responseTransfer;
+    }
+
+    abstract protected function getPaymentData(QuoteTransfer $quoteTransfer);
+    
+    protected function mapPaymentData($quoteTransfer, $paymentData, $request)
+    {
+        $request->getHead()->setTransactionId($paymentData->getTransactionId());
+        $this->converter->mapCustomer($quoteTransfer, $paymentData, $request->getCustomer());
+        $this->converter->mapBasket($quoteTransfer, $paymentData, $request->getShoppingBasket());
+        $this->converter->mapPayment($quoteTransfer, $paymentData, $request->getPayment());
+    }
+
+    protected function mapBanKAccountData($quoteTransfer, $paymentData, $request)
+    {
+        $bankAccount = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_BANK_ACCOUNT);
+        $request->getCustomer()->setBankAccount($bankAccount);
+        $this->converter->mapBankAccount($quoteTransfer, $paymentData, $request->getCustomer()->getBankAccount());
     }
 
     /**

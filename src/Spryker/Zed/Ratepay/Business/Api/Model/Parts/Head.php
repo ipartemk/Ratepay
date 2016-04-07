@@ -63,6 +63,7 @@ class Head extends AbstractRequest
     {
         $return = [
             'system-id' => $this->getSystemId(),
+            'transaction-id' => $this->getTransactionId(),
             'credential' => [
                 'profile-id'   => $this->getProfileId(),
                 'securitycode' => $this->getSecurityCode()

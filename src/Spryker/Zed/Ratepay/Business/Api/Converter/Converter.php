@@ -20,6 +20,7 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
+use Spryker\Zed\Ratepay\Business\RatepayBusinessFactory;
 
 class Converter implements ConverterInterface
 {
@@ -75,33 +76,55 @@ class Converter implements ConverterInterface
         $bankAccount->setBicSwift($ratepayPaymentTransfer->getBankAccountBic());
     }
 
-    public function mapPayment(QuoteTransfer $quoteTransfer, Payment $payment)
+    public function mapPayment(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, Payment $payment)
     {
+        $totalsTransfer = $quoteTransfer->requireTotals()->getTotals();
 
+        $payment->setCurrency($ratepayPaymentTransfer->requireCurrencyIso3()->getCurrencyIso3());
+        $payment->setMethod($ratepayPaymentTransfer->requirePaymentType()->getPaymentType());
+
+        $grandTotal = $this->centsToDecimal($totalsTransfer->requireGrandTotal()->getGrandTotal());
+        $payment->setAmount($grandTotal);
     }
 
     public function mapBasket(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, ShoppingBasket $basket)
     {
-        //todo: get correct transfer objects.
-        $payment = $quoteTransfer->requirePayment()->getPayment();
-        $items = $quoteTransfer->getItems();
+        $ratepayFactory = new RatepayBusinessFactory();
+        $totalsTransfer = $quoteTransfer->requireTotals()->getTotals();
+        $quoteItems = $quoteTransfer->getItems();
 
-        foreach ($items as $item) {
-            $item = $item;
+        foreach ($quoteItems as $quoteItem) {
+            $basketItem = $ratepayFactory->createRequestModelFactory()->build(ApiConstants::REQUEST_MODEL_BASKET_ITEM);
+            $this->mapBasketItem($quoteItem, $basketItem);
+            $basket->addItem($basketItem);
         }
 
-        $basket->setAmount($quoteTransfer->getInstallmentTotalAmount());
-        $basket->setCurrency($ratepayPaymentTransfer->getCurrencyIso3());
-        $basket->setItems(count($items));
+        $grandTotal = $this->centsToDecimal($totalsTransfer->requireGrandTotal()->getGrandTotal());
+        $basket->setAmount($grandTotal);
+        $basket->setCurrency($ratepayPaymentTransfer->requireCurrencyIso3()->getCurrencyIso3());
+
+        $shippingTaxRate = $this->centsToDecimal(0);
+        $shippingUnitPrice = $this->centsToDecimal($totalsTransfer->requireExpenseTotal()->getExpenseTotal());
+        $basket->setShippingTaxRate($shippingTaxRate);
+        $basket->setShippingUnitPrice($shippingUnitPrice);
+
+        $discountTaxRate = $this->centsToDecimal(0);
+        $discountUnitPrice = $this->centsToDecimal($totalsTransfer->requireDiscountTotal()->getDiscountTotal());
+        $basket->setDiscountTaxRate($discountTaxRate);
+        $basket->setDiscountUnitPrice($discountUnitPrice);
     }
 
     public function mapBasketItem(ItemTransfer $itemTransfer, ShoppingBasketItem $basketItem)
     {
-        $basketItem->setArticleNumber($itemTransfer->getSku());
-        $basketItem->setUniqueArticleNumber($itemTransfer->getGroupKey());
-        $basketItem->setQuantity($itemTransfer->getQuantity());
-        $basketItem->setTaxRate($itemTransfer->getTaxRate());
-        $basketItem->setUnitPriceGross($itemTransfer->getUnitGrossPrice());
+        $basketItem->setArticleNumber($itemTransfer->requireSku()->getSku());
+        $basketItem->setUniqueArticleNumber($itemTransfer->requireGroupKey()->getGroupKey());
+        $basketItem->setQuantity($itemTransfer->requireQuantity()->getQuantity());
+        $basketItem->setTaxRate($itemTransfer->requireTaxRate()->getTaxRate());
+
+        $itemDiscount = $this->centsToDecimal($itemTransfer->requireUnitTotalDiscountAmountWithProductOption()->getUnitTotalDiscountAmountWithProductOption());
+        $itemPrice = $this->centsToDecimal($itemTransfer->requireUnitGrossPriceWithProductOptionAndDiscountAmounts()->getUnitGrossPriceWithProductOptionAndDiscountAmounts());
+        $basketItem->setDiscount($itemDiscount);
+        $basketItem->setUnitPriceGross($itemPrice);
     }
 
     /**
@@ -128,13 +151,13 @@ class Converter implements ConverterInterface
     }
 
     /**
-     * @param float $amount
+     * @param int $amount
      *
-     * @return int
+     * @return float
      */
     protected function centsToDecimal($amount)
     {
-        return CurrencyManager::getInstance()->convertDecimalToCent($amount);
+        return CurrencyManager::getInstance()->convertCentToDecimal($amount);
     }
 
 }

@@ -9,7 +9,6 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Shared\Ratepay\RatepayConstants;
-use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 
 class Invoice extends AbstractMethod
 {
@@ -24,38 +23,9 @@ class Invoice extends AbstractMethod
         return static::METHOD;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
-     */
-    public function paymentRequest(QuoteTransfer $quoteTransfer)
+    protected function getPaymentData(QuoteTransfer $quoteTransfer)
     {
-        $paymentData = $quoteTransfer->requirePayment()->getPayment()->requireRatepayInvoice()->getRatepayInvoice();
-
-        if ($paymentData->getTransactionId() == '') {
-            $initResponse = $this->paymentInit();
-            if (!$initResponse->getSuccessful()) {
-                return $initResponse;
-            }
-            $paymentData->setTransactionId($initResponse->getTransactionId())->setTransactionShortId($initResponse->getTransactionShortId());
-        }
-
-        /**
-         * @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
-         */
-        $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST);
-        $request->getHead()->setTransactionId($paymentData->getTransactionId());
-
-        $this->converter->mapCustomer($quoteTransfer, $paymentData, $request->getCustomer());
-        $this->converter->mapBasket($quoteTransfer, $paymentData, $request->getShoppingBasket());
-
-        $response = $this->sendRequest((string)$request);
-
-        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST, $request, $response);
-        $responseTransfer = $this->converter->responseToTransferObject($response);
-        $this->fixResponseTransferTransactionId($responseTransfer, $paymentData->getTransactionId(), $paymentData->getTransactionShortId());
-        return $responseTransfer;
+        return $quoteTransfer->requirePayment()->getPayment()->requireRatepayInvoice()->getRatepayInvoice();
     }
 
     public function paymentChange(OrderTransfer $orderTransfer)

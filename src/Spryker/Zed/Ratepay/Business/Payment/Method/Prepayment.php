@@ -20,19 +20,11 @@ class Prepayment extends AbstractMethod
         return static::METHOD;
     }
 
-    public function paymentRequest(QuoteTransfer $quoteTransfer)
+    protected function getPaymentData(QuoteTransfer $quoteTransfer)
     {
-        $paymentData = $quoteTransfer->requirePayment()
-            ->getPayment()->requireRatepayPrepayment()->getRatepayPrepayment();
-
-        if ($paymentData->getTransactionId() == '') {
-            $initResponse = $this->paymentInit();
-            if (!$initResponse->getSuccessful()) {
-                return $initResponse;
-            }
-        }
+        return $quoteTransfer->requirePayment()->getPayment()->requireRatepayPrepayment()->getRatepayPrepayment();
     }
-
+    
     public function paymentChange(OrderTransfer $orderTransfer)
     {
 

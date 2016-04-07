@@ -39,6 +39,11 @@ class ShoppingBasketItem extends AbstractRequest
     protected $taxRate;
 
     /**
+     * @var float
+     */
+    protected $discount;
+
+    /**
      * @return array
      */
     protected function buildData()
@@ -49,6 +54,7 @@ class ShoppingBasketItem extends AbstractRequest
             '@quantity' => $this->getQuantity(),
             '@unit-price-gross' => $this->getUnitPriceGross(),
             '@tax-rate' => $this->getTaxRate(),
+            '@discount' => $this->getDiscount()
         ];
 
         return $return;
@@ -158,6 +164,26 @@ class ShoppingBasketItem extends AbstractRequest
     public function setTaxRate($taxRate)
     {
         $this->taxRate = $taxRate;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
+    }
+
+    /**
+     * @param float $discount
+     *
+     * @return $this
+     */
+    public function setDiscount($discount)
+    {
+        $this->discount = $discount;
 
         return $this;
     }
