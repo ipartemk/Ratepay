@@ -26,7 +26,7 @@ class RatepaySaveOrderPlugin extends BaseAbstractPlugin implements CheckoutSaveO
      */
     public function saveOrder(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer)
     {
-        $this->getFacade()->saveOrderPayment($quoteTransfer, $checkoutResponseTransfer);
+        //$this->getFacade()->saveOrderPayment($quoteTransfer, $checkoutResponseTransfer);
     }
 
 }

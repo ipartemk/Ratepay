@@ -9,9 +9,12 @@ namespace Spryker\Zed\Ratepay;
 
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
+use Spryker\Zed\Ratepay\Dependency\Facade\RatepayToSalesAggregatorBridge;
 
 class RatepayDependencyProvider extends AbstractBundleDependencyProvider
 {
+
+    const FACADE_SALES_AGGREGATOR = 'facade sales aggregated';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -20,10 +23,10 @@ class RatepayDependencyProvider extends AbstractBundleDependencyProvider
      */
     public function provideCommunicationLayerDependencies(Container $container)
     {
-        /*
-        $container[self::FACADE_SALES_AGGREGATOR] = function (Container $container) {
-            return new PayolutionToSalesAggregatorBridge($container->getLocator()->salesAggregator()->facade());
-        };*/
+
+        $container[static::FACADE_SALES_AGGREGATOR] = function (Container $container) {
+            return new RatepayToSalesAggregatorBridge($container->getLocator()->salesAggregator()->facade());
+        };
 
         return $container;
     }
