@@ -55,16 +55,15 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     * @param int $idPayment
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function preAuthorizePayment(OrderTransfer $orderTransfer, $idPayment)
+    public function preAuthorizePayment(OrderTransfer $orderTransfer)
     {
         return $this
             ->getFactory()
             ->createPaymentTransactionHandler()
-            ->preAuthorizePayment($orderTransfer, $idPayment);
+            ->preAuthorizePayment($orderTransfer);
     }
 
     /**

@@ -8,9 +8,10 @@
 namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-//use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
+use Generated\Shared\Transfer\OrderTransfer;
 use Spryker\Zed\Ratepay\Business\Exception\NoMethodMapperException;
 use Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface;
+use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
 
 class Transaction implements TransactionInterface
 {
@@ -23,7 +24,7 @@ class Transaction implements TransactionInterface
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function preCheckPayment(QuoteTransfer $quoteTransfer)
     {
@@ -31,6 +32,22 @@ class Transaction implements TransactionInterface
         return $this
             ->getMethodMapper($paymentMethod)
             ->paymentRequest($quoteTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
+    public function preAuthorizePayment(OrderTransfer $orderTransfer)
+    {
+        $query = new SpyPaymentRatepayQuery();
+        $payment = $query->findByFkSalesOrder($orderTransfer->requireIdSalesOrder()->getIdSalesOrder())->getFirst();
+
+        $paymentMethod = $orderTransfer->requirePayment()->getPayment()->requirePaymentMethod()->getPaymentMethod();
+        return $this
+            ->getMethodMapper($paymentMethod)
+            ->paymentRequest($orderTransfer);
     }
 
     /**

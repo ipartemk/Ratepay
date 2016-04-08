@@ -29,14 +29,22 @@ class ConfirmPaymentPlugin extends AbstractPlugin implements CommandByOrderInter
     public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
         $orderTransfer = $this->getOrderTransfer($orderEntity);
-        $paymentEntity = $this->getPaymentEntity($orderEntity);
-
-        $this->getFacade()->capturePayment(
-            $orderTransfer,
-            $paymentEntity->getIdPaymentPayolution()
-        );
+        $this->getFacade()->preAuthorizePayment($orderTransfer);
 
         return [];
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     *
+     * @return \Generated\Shared\Transfer\OrderTransfer
+     */
+    protected function getOrderTransfer(SpySalesOrder $orderEntity)
+    {
+        return $this
+            ->getFactory()
+            ->getSalesAggregator()
+            ->getOrderTotalsByIdSalesOrder($orderEntity->getIdSalesOrder());
     }
 
 }

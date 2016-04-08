@@ -43,7 +43,7 @@ interface RatepayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
      */
-    public function preAuthorizePayment(OrderTransfer $orderTransfer, $idPayment);
+    public function preAuthorizePayment(OrderTransfer $orderTransfer);
 
     /**
      * @api
