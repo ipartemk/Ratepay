@@ -11,6 +11,7 @@ use Spryker\Zed\Kernel\Persistence\QueryContainer\QueryContainerInterface;
 
 interface RatepayQueryContainerInterface extends QueryContainerInterface
 {
+
     /**
      * @api
      *

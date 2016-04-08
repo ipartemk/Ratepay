@@ -9,6 +9,7 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
+use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
 use Psr\Log\LoggerInterface;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
@@ -108,7 +109,7 @@ abstract class AbstractMethod implements MethodInterface
      */
     protected function mapPaymentData($quoteTransfer, $paymentData, $request)
     {
-        $request->getHead()->setTransactionId($paymentData->getTransactionId());
+        $request->getHead()->setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId());
         $this->converter->mapPayment($quoteTransfer, $paymentData, $request->getPayment());
         $this->converter->mapCustomer($quoteTransfer, $paymentData, $request->getCustomer());
         $this->converter->mapBasket($quoteTransfer, $paymentData, $request->getShoppingBasket());
@@ -151,14 +152,95 @@ abstract class AbstractMethod implements MethodInterface
         return $this->converter->responseToTransferObject($response);
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
     public function paymentConfirm(OrderTransfer $orderTransfer)
     {
-
+        return $this->confirm($orderTransfer, ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM);
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
     public function deliveryConfirm(OrderTransfer $orderTransfer)
     {
+        return $this->confirm($orderTransfer, ApiConstants::REQUEST_MODEL_CONFIRM_DELIVER);
+    }
 
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isPreAuthorizationApproved(OrderTransfer $orderTransfer)
+    {
+        $payment = $this->loadOrderPayment($orderTransfer);
+        return in_array(
+            $payment->getResultCode(),
+            [
+                ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM],
+                ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[ApiConstants::REQUEST_MODEL_CONFIRM_DELIVER],
+            ]
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isCaptureApproved(OrderTransfer $orderTransfer)
+    {
+        $payment = $this->loadOrderPayment($orderTransfer);
+        return in_array(
+            $payment->getResultCode(),
+            [
+                ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[ApiConstants::REQUEST_MODEL_CONFIRM_DELIVER],
+            ]
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param string $confirmationModelType
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     */
+    protected function confirm(OrderTransfer $orderTransfer, $confirmationModelType)
+    {
+        $payment = $this->loadOrderPayment($orderTransfer);
+
+        /**
+         * @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Confirm $request
+         */
+        $request = $this->modelFactory->build($confirmationModelType);
+        $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
+
+        $response = $this->sendRequest((string)$request);
+        $this->logDebug($confirmationModelType, $request, $response);
+
+        if ($response->isSuccessful()) {
+            $payment->setResultCode($response->getResultCode())->save();
+        }
+        return $this->converter->responseToTransferObject($response);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay
+     */
+    protected function loadOrderPayment(OrderTransfer $orderTransfer)
+    {
+        $query = new SpyPaymentRatepayQuery();
+        return $query->findByFkSalesOrder($orderTransfer->requireIdSalesOrder()->getIdSalesOrder())->getFirst();
     }
 
     /**

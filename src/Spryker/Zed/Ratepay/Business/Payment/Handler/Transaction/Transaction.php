@@ -7,11 +7,11 @@
 
 namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 
-use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
+use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
 use Spryker\Zed\Ratepay\Business\Exception\NoMethodMapperException;
 use Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface;
-use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
 
 class Transaction implements TransactionInterface
 {
@@ -41,13 +41,48 @@ class Transaction implements TransactionInterface
      */
     public function preAuthorizePayment(OrderTransfer $orderTransfer)
     {
+        $paymentMethod = $this->getPaymentMethod($orderTransfer);
+        return $this
+            ->getMethodMapper($paymentMethod)
+            ->paymentConfirm($orderTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isPreAuthorizationApproved(OrderTransfer $orderTransfer)
+    {
+        $paymentMethod = $this->getPaymentMethod($orderTransfer);
+        return $this
+            ->getMethodMapper($paymentMethod)
+            ->isPreAuthorizationApproved($orderTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isCaptureApproved(OrderTransfer $orderTransfer)
+    {
+        $paymentMethod = $this->getPaymentMethod($orderTransfer);
+        return $this
+            ->getMethodMapper($paymentMethod)
+            ->isCaptureApproved($orderTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @return string
+     */
+    protected function getPaymentMethod(OrderTransfer $orderTransfer)
+    {
         $query = new SpyPaymentRatepayQuery();
         $payment = $query->findByFkSalesOrder($orderTransfer->requireIdSalesOrder()->getIdSalesOrder())->getFirst();
 
-        $paymentMethod = $orderTransfer->requirePayment()->getPayment()->requirePaymentMethod()->getPaymentMethod();
-        return $this
-            ->getMethodMapper($paymentMethod)
-            ->paymentRequest($orderTransfer);
+        return $payment->getPaymentType();
     }
 
     /**

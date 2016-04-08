@@ -132,4 +132,5 @@ class RatepayQueryContainer extends AbstractQueryContainer implements RatepayQue
             ->queryPaymentHistory()
             ->filterByFkPaymentRatepay($idPayment);
     }
+
 }

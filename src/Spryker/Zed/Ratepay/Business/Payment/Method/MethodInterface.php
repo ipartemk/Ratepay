@@ -17,14 +17,51 @@ interface MethodInterface
      */
     public function getMethodName();
 
+    /**
+     * @return mixed
+     */
     public function paymentInit();
 
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
     public function paymentRequest(QuoteTransfer $quoteTransfer);
 
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
     public function paymentConfirm(OrderTransfer $orderTransfer);
 
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
     public function deliveryConfirm(OrderTransfer $orderTransfer);
 
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
     public function paymentChange(OrderTransfer $orderTransfer);
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isPreAuthorizationApproved(OrderTransfer $orderTransfer);
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isCaptureApproved(OrderTransfer $orderTransfer);
 
 }

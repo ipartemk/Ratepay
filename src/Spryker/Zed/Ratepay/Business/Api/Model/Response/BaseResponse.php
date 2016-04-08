@@ -6,11 +6,7 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Response;
 
-use Spryker\Zed\Ratepay\Business\Api\Model\Confirmation\Deliver;
-use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Change;
-use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Confirm;
-use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init;
-use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request;
+use Spryker\Zed\Ratepay\Business\Api\Constants;
 use Spryker\Zed\Ratepay\Business\Api\SimpleXMLElement;
 
 class BaseResponse implements ResponseInterface
@@ -24,13 +20,7 @@ class BaseResponse implements ResponseInterface
     /**
      * @var array
      */
-    protected $successMatrix = [
-        Init::OPERATION => 350,
-        Confirm::OPERATION => 400,
-        Request::OPERATION => 402,
-        Change::OPERATION => 403,
-        Deliver::OPERATION => 404,
-    ];
+    protected $successMatrix = Constants::REQUEST_CODE_SUCCESS_MATRIX;
 
     /**
      * @param string $xmlString

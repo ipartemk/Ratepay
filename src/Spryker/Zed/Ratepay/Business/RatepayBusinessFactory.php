@@ -21,16 +21,17 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
+use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Confirm as PaymentConfirm;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init as PaymentInit;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PaymentRequest;
 use Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactory;
 
+use Spryker\Zed\Ratepay\Business\Order\Saver as Saver;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Elv;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice;
-use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment;
 
-use Spryker\Zed\Ratepay\Business\Order\Saver as Saver;
+use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment;
 
 /**
  * @method \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface getQueryContainer()
@@ -125,6 +126,12 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
                     function () use ($factory) {
                         return $this->createBankAccountRequestModel($factory);
                     }
+                )
+                ->registerBuilder(
+                    ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM,
+                    function () use ($factory) {
+                        return $this->createPaymentConfirmModel($factory);
+                    }
                 );
         }
 
@@ -182,6 +189,11 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
             $factory->build(ApiConstants::REQUEST_MODEL_BASKET),
             $factory->build(ApiConstants::REQUEST_MODEL_PAYMENT)
         );
+    }
+
+    protected function createPaymentConfirmModel(RequestModelFactory $factory)
+    {
+        return new PaymentConfirm($factory->build(ApiConstants::REQUEST_MODEL_HEAD));
     }
 
     protected function createBankAccountRequestModel()

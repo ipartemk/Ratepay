@@ -9,29 +9,26 @@ namespace Spryker\Zed\Ratepay\Communication\Plugin\Oms\Command;
 
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
-use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 use Spryker\Zed\Oms\Communication\Plugin\Oms\Command\CommandByOrderInterface;
 
 /**
  * @method \Spryker\Zed\Ratepay\Business\RatepayFacade getFacade()
  * @method \Spryker\Zed\Ratepay\Communication\RatepayCommunicationFactory getFactory()
  */
-class ConfirmPaymentPlugin extends BaseCommandPlugin implements CommandByOrderInterface
+abstract class BaseCommandPlugin extends AbstractPlugin implements CommandByOrderInterface
 {
 
     /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
-     * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
      *
-     * @return array
+     * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
+    protected function getOrderTransfer(SpySalesOrder $orderEntity)
     {
-        $orderTransfer = $this->getOrderTransfer($orderEntity);
-        $this->getFacade()->preAuthorizePayment($orderTransfer);
-
-        return [];
+        return $this
+            ->getFactory()
+            ->getSalesAggregator()
+            ->getOrderTotalsByIdSalesOrder($orderEntity->getIdSalesOrder());
     }
 
 }

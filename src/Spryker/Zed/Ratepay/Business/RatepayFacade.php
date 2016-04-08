@@ -158,7 +158,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createTransactionStatusLog()
+            ->createPaymentTransactionHandler()
             ->isPreAuthorizationApproved($orderTransfer);
     }
 
@@ -173,7 +173,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createTransactionStatusLog()
+            ->createPaymentTransactionHandler()
             ->isReAuthorizationApproved($orderTransfer);
     }
 

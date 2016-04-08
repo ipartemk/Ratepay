@@ -7,8 +7,8 @@
 
 namespace Spryker\Zed\Ratepay\Persistence;
 
-use Orm\Zed\Ratepay\Persistence\Base\SpyPaymentRatepayLogQuery;
 use Orm\Zed\Ratepay\Persistence\Base\SpyPaymentRatepayHistoryQuery;
+use Orm\Zed\Ratepay\Persistence\Base\SpyPaymentRatepayLogQuery;
 use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
 use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 

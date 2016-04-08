@@ -16,7 +16,7 @@ use Spryker\Zed\Oms\Communication\Plugin\Oms\Command\CommandByOrderInterface;
  * @method \Spryker\Zed\Ratepay\Business\RatepayFacade getFacade()
  * @method \Spryker\Zed\Ratepay\Communication\RatepayCommunicationFactory getFactory()
  */
-class ConfirmDeliveryPlugin extends AbstractPlugin implements CommandByOrderInterface
+class ConfirmDeliveryPlugin extends BaseCommandPlugin implements CommandByOrderInterface
 {
 
     /**
@@ -29,12 +29,7 @@ class ConfirmDeliveryPlugin extends AbstractPlugin implements CommandByOrderInte
     public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
         $orderTransfer = $this->getOrderTransfer($orderEntity);
-        $paymentEntity = $this->getPaymentEntity($orderEntity);
-
-        $this->getFacade()->capturePayment(
-            $orderTransfer,
-            $paymentEntity->getIdPaymentPayolution()
-        );
+        $this->getFacade()->capturePayment($orderTransfer);
 
         return [];
     }

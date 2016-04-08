@@ -7,8 +7,8 @@
 
 namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 
-use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
 
 interface TransactionInterface
 {
@@ -26,5 +26,19 @@ interface TransactionInterface
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function preAuthorizePayment(OrderTransfer $orderTransfer);
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isPreAuthorizationApproved(OrderTransfer $orderTransfer);
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isCaptureApproved(OrderTransfer $orderTransfer);
 
 }
