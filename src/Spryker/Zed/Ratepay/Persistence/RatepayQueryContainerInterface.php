@@ -11,4 +11,81 @@ use Spryker\Zed\Kernel\Persistence\QueryContainer\QueryContainerInterface;
 
 interface RatepayQueryContainerInterface extends QueryContainerInterface
 {
+    /**
+     * @api
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery
+     */
+    public function queryPayments();
+
+    /**
+     * @api
+     *
+     * @param int $idPayment
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery
+     */
+    public function queryPaymentById($idPayment);
+
+    /**
+     * @api
+     *
+     * @param int $idSalesOrder
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery
+     */
+    public function queryPaymentBySalesOrderId($idSalesOrder);
+
+    /**
+     * @api
+     *
+     * @param int $idPayment
+     * @param int $statusCode
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery
+     */
+    public function queryPaymentByIdAndStatusCode($idPayment, $statusCode);
+
+    /**
+     * @api
+     *
+     * @param int $idPayment
+     * @param string $paymentType
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery
+     */
+    public function queryPaymentByIdAndPaymentType($idPayment, $paymentType);
+
+    /**
+     * @api
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayLogQuery
+     */
+    public function queryPaymentLog();
+
+    /**
+     * @api
+     *
+     * @param int $idSalesOrder
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayLogQuery
+     */
+    public function queryPaymentLogQueryBySalesOrderId($idSalesOrder);
+
+    /**
+     * @api
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayLogQuery
+     */
+    public function queryPaymentHistory();
+
+    /**
+     * @api
+     *
+     * @param int $idPayment
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayLogQuery
+     */
+    public function queryPaymentHistoryByPaymentId($idPayment);
+
 }

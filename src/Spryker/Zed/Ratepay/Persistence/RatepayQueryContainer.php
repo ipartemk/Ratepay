@@ -14,4 +14,122 @@ use Spryker\Zed\Kernel\Persistence\AbstractQueryContainer;
  */
 class RatepayQueryContainer extends AbstractQueryContainer implements RatepayQueryContainerInterface
 {
+
+    /**
+     * @api
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery
+     */
+    public function queryPayments()
+    {
+        return $this->getFactory()->createPaymentRatepayQuery();
+    }
+
+    /**
+     * @api
+     *
+     * @param int $idPayment
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery
+     */
+    public function queryPaymentById($idPayment)
+    {
+        return $this
+            ->queryPayments()
+            ->filterByIdPaymentRatepay($idPayment);
+    }
+
+    /**
+     * @api
+     *
+     * @param int $idPayment
+     * @param int $statusCode
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery
+     */
+    public function queryPaymentByIdAndStatusCode($idPayment, $statusCode)
+    {
+        return $this
+            ->queryPayments()
+            ->filterByIdPaymentRatepay($idPayment)
+            ->filterByStatusCode($statusCode);
+    }
+
+    /**
+     * @api
+     *
+     * @param int $idPayment
+     * @param string $paymentType
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery
+     */
+    public function queryPaymentByIdAndPaymentType($idPayment, $paymentType)
+    {
+        return $this
+            ->queryPayments()
+            ->filterByIdPaymentRatepay($idPayment)
+            ->filterByPaymentType($paymentType);
+    }
+
+    /**
+     * @api
+     *
+     * @param int $idSalesOrder
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery
+     */
+    public function queryPaymentBySalesOrderId($idSalesOrder)
+    {
+        return $this
+            ->queryPayments()
+            ->filterByFkSalesOrder($idSalesOrder);
+    }
+
+    /**
+     * @api
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayLogQuery
+     */
+    public function queryPaymentLog()
+    {
+        return $this->getFactory()->createPaymentRatepayLogQuery();
+    }
+
+    /**
+     * @api
+     *
+     * @param int $idPayment
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayLogQuery
+     */
+    public function queryPaymentLogQueryBySalesOrderId($idPayment)
+    {
+        return $this
+            ->queryPaymentLog()
+            ->filterByFkSalesOrder($idPayment);
+    }
+
+    /**
+     * @api
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayHistoryQuery
+     */
+    public function queryPaymentHistory()
+    {
+        return $this->getFactory()->createPaymentRatepayHistory();
+    }
+
+    /**
+     * @api
+     *
+     * @param int $idPayment
+     *
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayHistoryQuery
+     */
+    public function queryPaymentHistoryByPaymentId($idPayment)
+    {
+        return $this
+            ->queryPaymentHistory()
+            ->filterByFkPaymentRatepay($idPayment);
+    }
 }
