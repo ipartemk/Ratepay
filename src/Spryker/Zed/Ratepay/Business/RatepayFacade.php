@@ -28,10 +28,15 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      */
     public function saveOrderPayment(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer)
     {
+        $paymentMapper = $this->getFactory()
+            ->getMethodMapperFactory()
+            ->createPaymentTransactionHandler()
+            ->prepareMethodMapper($quoteTransfer);
+        
         $this
              ->getFactory()
              ->createOrderSaver()
-             ->saveOrderPayment($quoteTransfer, $checkoutResponseTransfer);
+             ->saveOrderPayment($quoteTransfer, $checkoutResponseTransfer, $paymentMapper);
     }
 
     /**
