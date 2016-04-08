@@ -73,7 +73,8 @@ abstract class AbstractMethod implements MethodInterface
                 return $initResponse;
             }
             $paymentData->setTransactionId($initResponse->getTransactionId())
-                ->setTransactionShortId($initResponse->getTransactionShortId());
+                ->setTransactionShortId($initResponse->getTransactionShortId())
+                ->setResultCode($initResponse->getResultCode());
         }
 
         /**

@@ -22,15 +22,15 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init as PaymentInit;
-
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PaymentRequest;
 use Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactory;
+
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction;
-
 use Spryker\Zed\Ratepay\Business\Payment\Method\Elv;
-
 use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment;
+
+use Spryker\Zed\Ratepay\Business\Order\Saver as Saver;
 
 /**
  * @method \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface getQueryContainer()
@@ -203,6 +203,14 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         $log->pushHandler($this->createMonologWriter());
 
         return $log;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Order\SaverInterface
+     */
+    public function createOrderSaver()
+    {
+        return new Saver();
     }
 
     protected function createConverter()
