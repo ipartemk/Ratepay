@@ -33,6 +33,9 @@ use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice;
 
 use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment;
 
+use Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory;
+use Spryker\Zed\Ratepay\Business\Order\Saver as Saver;
+
 /**
  * @method \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface getQueryContainer()
  * @method \Spryker\Zed\Ratepay\RatepayConfig getConfig()
@@ -137,7 +140,6 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
 
         return $factory;
     }
-
 
     protected function createHeadModel($configuration)
     {
@@ -261,6 +263,14 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
             $this->createConverter()/*,
             $this->getQueryContainer(),*/
         );
+    }
+
+    /**
+     * @return MethodMapperFactory
+     */
+    public function getMethodMapperFactory()
+    {
+        return new MethodMapperFactory();
     }
 
 }
