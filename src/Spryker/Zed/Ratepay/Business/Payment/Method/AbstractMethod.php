@@ -7,8 +7,8 @@
 namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
 use Generated\Shared\Transfer\OrderTransfer;
-use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Psr\Log\LoggerInterface;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;

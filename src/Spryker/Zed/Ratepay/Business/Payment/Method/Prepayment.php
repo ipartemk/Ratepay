@@ -24,7 +24,7 @@ class Prepayment extends AbstractMethod
     {
         return $quoteTransfer->requirePayment()->getPayment()->requireRatepayPrepayment()->getRatepayPrepayment();
     }
-    
+
     public function paymentChange(OrderTransfer $orderTransfer)
     {
 

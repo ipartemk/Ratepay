@@ -27,6 +27,11 @@ class Head extends AbstractRequest
     /**
      * @var string
      */
+    protected $transactionShortId;
+
+    /**
+     * @var string
+     */
     protected $profileId;
 
     /**
@@ -64,6 +69,7 @@ class Head extends AbstractRequest
         $return = [
             'system-id' => $this->getSystemId(),
             'transaction-id' => $this->getTransactionId(),
+            'transaction-short-id' => $this->getTransactionShortId(),
             'credential' => [
                 'profile-id'   => $this->getProfileId(),
                 'securitycode' => $this->getSecurityCode()
@@ -135,45 +141,92 @@ class Head extends AbstractRequest
         return $this->transactionId;
     }
 
+    /**
+     * @param string $transactionShortId
+     *
+     * @return $this
+     */
+    public function setTransactionShortId($transactionShortId)
+    {
+        $this->transactionShortId = $transactionShortId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransactionShortId()
+    {
+        return $this->transactionShortId;
+    }
+
+    /**
+     * @param string $profileId
+     * @return $this
+     */
     public function setProfileId($profileId)
     {
         $this->profileId = $profileId;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getProfileId()
     {
         return $this->profileId;
     }
 
+    /**
+     * @param string $securityCode
+     * @return $this
+     */
     public function setSecurityCode($securityCode)
     {
         $this->securityCode = $securityCode;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getSecurityCode()
     {
         return $this->securityCode;
     }
 
+    /**
+     * @param string $operation
+     * @return $this
+     */
     public function setOperation($operation)
     {
         $this->operation = $operation;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getOperation()
     {
         return $this->operation;
     }
 
+    /**
+     * @param string $operationSubstring
+     * @return $this
+     */
     public function setOperationSubstring($operationSubstring)
     {
         $this->operationSubstring = $operationSubstring;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getOperationSubstring()
     {
         return $this->operationSubstring;
