@@ -32,7 +32,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
             ->getMethodMapperFactory()
             ->createPaymentTransactionHandler()
             ->prepareMethodMapper($quoteTransfer);
-        
+
         $this
              ->getFactory()
              ->createOrderSaver()
@@ -107,16 +107,15 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     * @param int $idPayment
      *
      * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
      */
-    public function capturePayment(OrderTransfer $orderTransfer, $idPayment)
+    public function capturePayment(OrderTransfer $orderTransfer)
     {
         return $this
             ->getFactory()
             ->createPaymentTransactionHandler()
-            ->capturePayment($orderTransfer, $idPayment);
+            ->capturePayment($orderTransfer);
     }
 
     /**
@@ -193,7 +192,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createTransactionStatusLog()
+            ->createPaymentTransactionHandler()
             ->isReversalApproved($orderTransfer);
     }
 
@@ -208,7 +207,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createTransactionStatusLog()
+            ->createPaymentTransactionHandler()
             ->isCaptureApproved($orderTransfer);
     }
 

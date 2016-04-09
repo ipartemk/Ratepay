@@ -9,8 +9,10 @@ namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
+use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay;
 use Spryker\Shared\Library\Currency\CurrencyManager;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
@@ -18,6 +20,7 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
+
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
 
@@ -93,6 +96,25 @@ class Converter implements ConverterInterface
         $grandTotal = $this->centsToDecimal($totalsTransfer->requireGrandTotal()->getGrandTotal());
         $basket->setAmount($grandTotal);
         $basket->setCurrency($ratepayPaymentTransfer->requireCurrencyIso3()->getCurrencyIso3());
+
+        $shippingTaxRate = $this->centsToDecimal(0);
+        $shippingUnitPrice = $this->centsToDecimal($totalsTransfer->requireExpenseTotal()->getExpenseTotal());
+        $basket->setShippingTaxRate($shippingTaxRate);
+        $basket->setShippingUnitPrice($shippingUnitPrice);
+
+        $discountTaxRate = $this->centsToDecimal(0);
+        $discountUnitPrice = $this->centsToDecimal($totalsTransfer->requireDiscountTotal()->getDiscountTotal());
+        $basket->setDiscountTaxRate($discountTaxRate);
+        $basket->setDiscountUnitPrice($discountUnitPrice);
+    }
+
+    public function mapBasketFromOrder(OrderTransfer $orderTransfer, SpyPaymentRatepay $ratepayPaymentTransfer, ShoppingBasket $basket)
+    {
+        $totalsTransfer = $orderTransfer->requireTotals()->getTotals();
+        $grandTotal = $this->centsToDecimal($totalsTransfer->requireGrandTotal()->getGrandTotal());
+        $basket->setAmount($grandTotal);
+
+        $basket->setCurrency($ratepayPaymentTransfer->getCurrencyIso3());
 
         $shippingTaxRate = $this->centsToDecimal(0);
         $shippingUnitPrice = $this->centsToDecimal($totalsTransfer->requireExpenseTotal()->getExpenseTotal());

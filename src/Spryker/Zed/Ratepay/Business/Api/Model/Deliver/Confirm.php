@@ -4,16 +4,14 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\Ratepay\Business\Api\Model\Confirmation;
+namespace Spryker\Zed\Ratepay\Business\Api\Model\Deliver;
 
-use Spryker\Zed\Ratepay\Business\Api\Model\AbstractRequest;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
+use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Base;
 
-class Deliver extends AbstractRequest
+class Confirm extends Base
 {
-
-    const ROOT_TAG = 'request';
 
     const OPERATION = 'CONFIRMATION_DELIVER';
 
@@ -23,9 +21,14 @@ class Deliver extends AbstractRequest
     protected $basket;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head $head
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket $shoppingBasket
      */
-    protected $head;
+    public function __construct(Head $head, ShoppingBasket $shoppingBasket)
+    {
+        $this->head = $head;
+        $this->basket = $shoppingBasket;
+    }
 
     /**
      * @return array
@@ -37,34 +40,10 @@ class Deliver extends AbstractRequest
             '@version' => '1.0',
             '@xmlns' => "urn://www.ratepay.com/payment/1_0",
             $this->getHead()->getRootTag() => $this->getHead(),
+            'content' => [
+                $this->getShoppingBasket()->getRootTag() => $this->getShoppingBasket(),
+            ],
         ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getRootTag()
-    {
-        return static::ROOT_TAG;
-    }
-
-    /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head $head
-     *
-     * @return $this
-     */
-    public function setHead(Head $head)
-    {
-        $this->head = $head;
-        return $this;
-    }
-
-    /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head
-     */
-    public function getHead()
-    {
-        return $this->head;
     }
 
     /**

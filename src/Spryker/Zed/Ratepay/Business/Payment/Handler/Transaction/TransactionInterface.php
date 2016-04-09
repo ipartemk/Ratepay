@@ -30,6 +30,13 @@ interface TransactionInterface
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
+    public function capturePayment(OrderTransfer $orderTransfer);
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
      * @return bool
      */
     public function isPreAuthorizationApproved(OrderTransfer $orderTransfer);

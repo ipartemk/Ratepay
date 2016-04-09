@@ -14,6 +14,7 @@ use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 
 use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
+use Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm as DeliverConfirn;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
@@ -26,15 +27,14 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init as PaymentInit;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PaymentRequest;
 use Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactory;
 
+use Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory;
 use Spryker\Zed\Ratepay\Business\Order\Saver as Saver;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Elv;
+
 use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice;
 
 use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment;
-
-use Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory;
-use Spryker\Zed\Ratepay\Business\Order\Saver as Saver;
 
 /**
  * @method \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface getQueryContainer()
@@ -135,6 +135,12 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
                     function () use ($factory) {
                         return $this->createPaymentConfirmModel($factory);
                     }
+                )
+                ->registerBuilder(
+                    ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM,
+                    function () use ($factory) {
+                        return $this->createDeliverConfirmModel($factory);
+                    }
                 );
         }
 
@@ -196,6 +202,14 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     protected function createPaymentConfirmModel(RequestModelFactory $factory)
     {
         return new PaymentConfirm($factory->build(ApiConstants::REQUEST_MODEL_HEAD));
+    }
+
+    protected function createDeliverConfirmModel(RequestModelFactory $factory)
+    {
+        return new DeliverConfirn(
+            $factory->build(ApiConstants::REQUEST_MODEL_HEAD),
+            $factory->build(ApiConstants::REQUEST_MODEL_BASKET)
+        );
     }
 
     protected function createBankAccountRequestModel()
@@ -266,7 +280,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return MethodMapperFactory
+     * @return \Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory
      */
     public function getMethodMapperFactory()
     {

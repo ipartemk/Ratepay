@@ -8,7 +8,9 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\ItemTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
@@ -28,6 +30,8 @@ interface ConverterInterface
     public function mapBasket(QuoteTransfer $quote, $ratepayPaymentTransfer, ShoppingBasket $basket);
 
     public function mapBasketItem(ItemTransfer $quoteTransfer, ShoppingBasketItem $basketItem);
+
+    public function mapBasketFromOrder(OrderTransfer $orderTransfer, SpyPaymentRatepay $ratepayPaymentTransfer, ShoppingBasket $basket);
 
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response

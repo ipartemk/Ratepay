@@ -159,62 +159,7 @@ abstract class AbstractMethod implements MethodInterface
      */
     public function paymentConfirm(OrderTransfer $orderTransfer)
     {
-        return $this->confirm($orderTransfer, ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM);
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
-     */
-    public function deliveryConfirm(OrderTransfer $orderTransfer)
-    {
-        return $this->confirm($orderTransfer, ApiConstants::REQUEST_MODEL_CONFIRM_DELIVER);
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    public function isPreAuthorizationApproved(OrderTransfer $orderTransfer)
-    {
-        $payment = $this->loadOrderPayment($orderTransfer);
-        return in_array(
-            $payment->getResultCode(),
-            [
-                ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM],
-                ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[ApiConstants::REQUEST_MODEL_CONFIRM_DELIVER],
-            ]
-        );
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    public function isCaptureApproved(OrderTransfer $orderTransfer)
-    {
-        $payment = $this->loadOrderPayment($orderTransfer);
-        return in_array(
-            $payment->getResultCode(),
-            [
-                ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[ApiConstants::REQUEST_MODEL_CONFIRM_DELIVER],
-            ]
-        );
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     * @param string $confirmationModelType
-     *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
-     *
-     * @throws \Propel\Runtime\Exception\PropelException
-     */
-    protected function confirm(OrderTransfer $orderTransfer, $confirmationModelType)
-    {
+        $confirmationModelType = ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM;
         $payment = $this->loadOrderPayment($orderTransfer);
 
         /**
@@ -230,6 +175,72 @@ abstract class AbstractMethod implements MethodInterface
             $payment->setResultCode($response->getResultCode())->save();
         }
         return $this->converter->responseToTransferObject($response);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
+    public function deliveryConfirm(OrderTransfer $orderTransfer)
+    {
+        $confirmationModelType = ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM;
+        $payment = $this->loadOrderPayment($orderTransfer);
+
+        /**
+         * @var \Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm $request
+         */
+        $request = $this->modelFactory->build($confirmationModelType);
+        $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
+
+        $this->converter->mapBasketFromOrder($orderTransfer, $payment, $request->getShoppingBasket());
+        $orderItems = $orderTransfer->requireItems()->getItems();
+        foreach ($orderItems as $orderItem) {
+            $shoppingBasketItem = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_BASKET_ITEM);
+            $this->converter->mapBasketItem($orderItem, $shoppingBasketItem);
+            $request->getShoppingBasket()->addItem($shoppingBasketItem);
+        }
+
+        $response = $this->sendRequest((string)$request);
+        $this->logDebug($confirmationModelType, $request, $response);
+
+        if ($response->isSuccessful()) {
+            $payment->setResultCode($response->getResultCode())->save();
+        }
+        return $this->converter->responseToTransferObject($response);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isPreAuthorizationApproved(OrderTransfer $orderTransfer)
+    {
+        $payment = $this->loadOrderPayment($orderTransfer);
+        return in_array(
+            $payment->getResultCode(),
+            [
+                ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM],
+                ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM],
+            ]
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isCaptureApproved(OrderTransfer $orderTransfer)
+    {
+        $payment = $this->loadOrderPayment($orderTransfer);
+        return in_array(
+            $payment->getResultCode(),
+            [
+                ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM],
+            ]
+        );
     }
 
     /**

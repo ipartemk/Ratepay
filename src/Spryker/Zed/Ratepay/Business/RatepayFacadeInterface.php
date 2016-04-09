@@ -73,7 +73,7 @@ interface RatepayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
      */
-    public function capturePayment(OrderTransfer $orderTransfer, $idPayment);
+    public function capturePayment(OrderTransfer $orderTransfer);
 
     /**
      * @api

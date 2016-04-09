@@ -50,6 +50,19 @@ class Transaction implements TransactionInterface
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
+    public function capturePayment(OrderTransfer $orderTransfer)
+    {
+        $paymentMethod = $this->getPaymentMethod($orderTransfer);
+        return $this
+            ->getMethodMapper($paymentMethod)
+            ->deliveryConfirm($orderTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
      * @return bool
      */
     public function isPreAuthorizationApproved(OrderTransfer $orderTransfer)
