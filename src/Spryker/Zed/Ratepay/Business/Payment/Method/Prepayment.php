@@ -34,7 +34,7 @@ class Prepayment extends AbstractMethod
      */
     protected function getPaymentTransferObject($payment)
     {
-        return RatepayPaymentPrepaymentTransfer();
+        return new RatepayPaymentPrepaymentTransfer();
     }
 
     public function paymentChange(OrderTransfer $orderTransfer)

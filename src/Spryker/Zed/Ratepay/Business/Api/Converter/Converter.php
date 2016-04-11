@@ -9,10 +9,8 @@ namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
-use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay;
 use Spryker\Shared\Library\Currency\CurrencyManager;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
