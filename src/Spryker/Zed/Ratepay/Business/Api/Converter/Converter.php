@@ -89,32 +89,13 @@ class Converter implements ConverterInterface
         $payment->setAmount($grandTotal);
     }
 
-    public function mapBasket(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, ShoppingBasket $basket)
+    public function mapBasket($quoteTransfer, $ratepayPaymentTransfer, ShoppingBasket $basket)
     {
         $totalsTransfer = $quoteTransfer->requireTotals()->getTotals();
 
         $grandTotal = $this->centsToDecimal($totalsTransfer->requireGrandTotal()->getGrandTotal());
         $basket->setAmount($grandTotal);
         $basket->setCurrency($ratepayPaymentTransfer->requireCurrencyIso3()->getCurrencyIso3());
-
-        $shippingTaxRate = $this->centsToDecimal(0);
-        $shippingUnitPrice = $this->centsToDecimal($totalsTransfer->requireExpenseTotal()->getExpenseTotal());
-        $basket->setShippingTaxRate($shippingTaxRate);
-        $basket->setShippingUnitPrice($shippingUnitPrice);
-
-        $discountTaxRate = $this->centsToDecimal(0);
-        $discountUnitPrice = $this->centsToDecimal($totalsTransfer->requireDiscountTotal()->getDiscountTotal());
-        $basket->setDiscountTaxRate($discountTaxRate);
-        $basket->setDiscountUnitPrice($discountUnitPrice);
-    }
-
-    public function mapBasketFromOrder(OrderTransfer $orderTransfer, SpyPaymentRatepay $ratepayPaymentTransfer, ShoppingBasket $basket)
-    {
-        $totalsTransfer = $orderTransfer->requireTotals()->getTotals();
-        $grandTotal = $this->centsToDecimal($totalsTransfer->requireGrandTotal()->getGrandTotal());
-        $basket->setAmount($grandTotal);
-
-        $basket->setCurrency($ratepayPaymentTransfer->getCurrencyIso3());
 
         $shippingTaxRate = $this->centsToDecimal(0);
         $shippingUnitPrice = $this->centsToDecimal($totalsTransfer->requireExpenseTotal()->getExpenseTotal());

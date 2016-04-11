@@ -27,11 +27,9 @@ interface ConverterInterface
 
     public function mapPayment(QuoteTransfer $quote, $ratepayPaymentTransfer, Payment $payment);
 
-    public function mapBasket(QuoteTransfer $quote, $ratepayPaymentTransfer, ShoppingBasket $basket);
+    public function mapBasket($quote, $ratepayPaymentTransfer, ShoppingBasket $basket);
 
     public function mapBasketItem(ItemTransfer $quoteTransfer, ShoppingBasketItem $basketItem);
-
-    public function mapBasketFromOrder(OrderTransfer $orderTransfer, SpyPaymentRatepay $ratepayPaymentTransfer, ShoppingBasket $basket);
 
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response

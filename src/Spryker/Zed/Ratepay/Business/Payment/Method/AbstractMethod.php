@@ -112,14 +112,7 @@ abstract class AbstractMethod implements MethodInterface
         $request->getHead()->setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId());
         $this->converter->mapPayment($quoteTransfer, $paymentData, $request->getPayment());
         $this->converter->mapCustomer($quoteTransfer, $paymentData, $request->getCustomer());
-        $this->converter->mapBasket($quoteTransfer, $paymentData, $request->getShoppingBasket());
-
-        $quoteItems = $quoteTransfer->requireItems()->getItems();
-        foreach ($quoteItems as $quoteItem) {
-            $shoppingBasketItem = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_BASKET_ITEM);
-            $this->converter->mapBasketItem($quoteItem, $shoppingBasketItem);
-            $request->getShoppingBasket()->addItem($shoppingBasketItem);
-        }
+        $this->mapShoppingBasketAndItems($quoteTransfer, $paymentData, $request);
     }
 
     /**
@@ -186,20 +179,14 @@ abstract class AbstractMethod implements MethodInterface
     {
         $confirmationModelType = ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM;
         $payment = $this->loadOrderPayment($orderTransfer);
+        $paymentData = $this->getTransferObjectFromPayment($payment);
 
         /**
          * @var \Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm $request
          */
         $request = $this->modelFactory->build($confirmationModelType);
         $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
-
-        $this->converter->mapBasketFromOrder($orderTransfer, $payment, $request->getShoppingBasket());
-        $orderItems = $orderTransfer->requireItems()->getItems();
-        foreach ($orderItems as $orderItem) {
-            $shoppingBasketItem = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_BASKET_ITEM);
-            $this->converter->mapBasketItem($orderItem, $shoppingBasketItem);
-            $request->getShoppingBasket()->addItem($shoppingBasketItem);
-        }
+        $this->mapShoppingBasketAndItems($orderTransfer, $paymentData, $request);
 
         $response = $this->sendRequest((string)$request);
         $this->logDebug($confirmationModelType, $request, $response);
@@ -208,6 +195,44 @@ abstract class AbstractMethod implements MethodInterface
             $payment->setResultCode($response->getResultCode())->save();
         }
         return $this->converter->responseToTransferObject($response);
+    }
+
+    /**
+     * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay $payment
+     *
+     * @return mixed
+     */
+    protected function getTransferObjectFromPayment($payment)
+    {
+        $paymentTransfer = $this->getPaymentTransferObject($payment);
+        $paymentTransfer->fromArray($payment->toArray(), true);
+
+        return $paymentTransfer;
+    }
+
+    /**
+     * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay $payment
+     *
+     * @return mixed
+     */
+    abstract protected function getPaymentTransferObject($payment);
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer|\Generated\Shared\Transfer\QuoteTransfer $dataTransfer
+     * @param $paymentData
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
+     *
+     * @return void
+     */
+    protected function mapShoppingBasketAndItems($dataTransfer, $paymentData, $request)
+    {
+        $this->converter->mapBasket($dataTransfer, $paymentData, $request->getShoppingBasket());
+        $basketItems = $dataTransfer->requireItems()->getItems();
+        foreach ($basketItems as $basketItem) {
+            $shoppingBasketItem = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_BASKET_ITEM);
+            $this->converter->mapBasketItem($basketItem, $shoppingBasketItem);
+            $request->getShoppingBasket()->addItem($shoppingBasketItem);
+        }
     }
 
     /**

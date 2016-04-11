@@ -7,6 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
 use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\RatepayPaymentElvTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Shared\Ratepay\RatepayConstants;
 
@@ -29,6 +30,17 @@ class Elv extends AbstractMethod
     {
         parent::mapPaymentData($quoteTransfer, $paymentData, $request);
         $this->mapBankAccountData($quoteTransfer, $paymentData, $request);
+    }
+
+    /**
+     *
+     * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay $payment
+     *
+     * @return RatepayPaymentElvTransfer
+     */
+    protected function getPaymentTransferObject($payment)
+    {
+        return new RatepayPaymentElvTransfer();
     }
 
     public function paymentChange(OrderTransfer $orderTransfer)

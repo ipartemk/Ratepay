@@ -7,6 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
 use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\RatepayPaymentPrepaymentTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Shared\Ratepay\RatepayConstants;
 
@@ -23,6 +24,17 @@ class Prepayment extends AbstractMethod
     protected function getPaymentData(QuoteTransfer $quoteTransfer)
     {
         return $quoteTransfer->requirePayment()->getPayment()->requireRatepayPrepayment()->getRatepayPrepayment();
+    }
+
+    /**
+     *
+     * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay $payment
+     *
+     * @return RatepayPaymentPrepaymentTransfer
+     */
+    protected function getPaymentTransferObject($payment)
+    {
+        return RatepayPaymentPrepaymentTransfer();
     }
 
     public function paymentChange(OrderTransfer $orderTransfer)
