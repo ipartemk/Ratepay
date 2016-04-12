@@ -4,7 +4,6 @@
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
-
 namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\AddressTransfer;
@@ -62,6 +61,7 @@ class Converter implements ConverterInterface
      * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
      * @param string $type
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address $address
+     *
      * @return void
      */
     public function mapAddress(AddressTransfer $addressTransfer, $type, Address $address)
@@ -79,8 +79,10 @@ class Converter implements ConverterInterface
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param $ratepayPaymentTransfer
+     * @param \Spryker\Shared\Transfer\TransferInterface $ratepayPaymentTransfer
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount $bankAccount
+     *
+     * @return void
      */
     public function mapBankAccount(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, BankAccount $bankAccount)
     {
@@ -91,8 +93,10 @@ class Converter implements ConverterInterface
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param $ratepayPaymentTransfer
+     * @param \Spryker\Shared\Transfer\TransferInterface $ratepayPaymentTransfer
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment $payment
+     *
+     * @return void
      */
     public function mapPayment(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, Payment $payment)
     {
@@ -106,9 +110,11 @@ class Converter implements ConverterInterface
     }
 
     /**
-     * @param $quoteTransfer
-     * @param $ratepayPaymentTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Spryker\Shared\Transfer\TransferInterface $ratepayPaymentTransfer
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket $basket
+     *
+     * @return void
      */
     public function mapBasket($quoteTransfer, $ratepayPaymentTransfer, ShoppingBasket $basket)
     {
@@ -132,6 +138,8 @@ class Converter implements ConverterInterface
     /**
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem $basketItem
+     *
+     * @return void
      */
     public function mapBasketItem(ItemTransfer $itemTransfer, ShoppingBasketItem $basketItem)
     {

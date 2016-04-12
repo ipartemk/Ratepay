@@ -122,16 +122,30 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     * @param int $idPayment
      *
      * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
      */
-    public function refundPayment(OrderTransfer $orderTransfer, $idPayment)
+    public function cancelPayment(OrderTransfer $orderTransfer)
     {
         return $this
             ->getFactory()
             ->createPaymentTransactionHandler()
-            ->refundPayment($orderTransfer, $idPayment);
+            ->cancelPayment($orderTransfer);
+    }
+
+    /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     */
+    public function refundPayment(OrderTransfer $orderTransfer)
+    {
+        return $this
+            ->getFactory()
+            ->createPaymentTransactionHandler()
+            ->refundPayment($orderTransfer);
     }
 
     /**
@@ -222,8 +236,23 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createTransactionStatusLog()
+            ->createPaymentTransactionHandler()
             ->isRefundApproved($orderTransfer);
+    }
+
+    /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isCancellationConfirmed(OrderTransfer $orderTransfer)
+    {
+        return $this
+            ->getFactory()
+            ->createPaymentTransactionHandler()
+            ->isCancellationConfirmed($orderTransfer);
     }
 
 }

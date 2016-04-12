@@ -61,6 +61,36 @@ class Transaction implements TransactionInterface
     }
 
     /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     */
+    public function cancelPayment(OrderTransfer $orderTransfer)
+    {
+        $paymentMethod = $this->getPaymentMethod($orderTransfer);
+        return $this
+            ->getMethodMapper($paymentMethod)
+            ->paymentCancel($orderTransfer);
+    }
+
+    /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     */
+    public function refundPayment(OrderTransfer $orderTransfer)
+    {
+        $paymentMethod = $this->getPaymentMethod($orderTransfer);
+        return $this
+            ->getMethodMapper($paymentMethod)
+            ->paymentRefund($orderTransfer);
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return bool
@@ -84,6 +114,34 @@ class Transaction implements TransactionInterface
         return $this
             ->getMethodMapper($paymentMethod)
             ->isCaptureApproved($orderTransfer);
+    }
+
+    /**
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isCancellationConfirmed(OrderTransfer $orderTransfer)
+    {
+        $paymentMethod = $this->getPaymentMethod($orderTransfer);
+        return $this
+            ->getMethodMapper($paymentMethod)
+            ->isCancellationConfirmed($orderTransfer);
+    }
+
+    /**
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isRefundApproved(OrderTransfer $orderTransfer)
+    {
+        $paymentMethod = $this->getPaymentMethod($orderTransfer);
+        return $this
+            ->getMethodMapper($paymentMethod)
+            ->isRefundApproved($orderTransfer);
     }
 
     /**

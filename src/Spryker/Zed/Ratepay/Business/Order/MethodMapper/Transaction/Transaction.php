@@ -8,8 +8,8 @@
 namespace Spryker\Zed\Ratepay\Business\Order\MethodMapper\Transaction;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Zed\Ratepay\Business\Order\MethodMapper\PaymentMethodMapperInterface;
 use Spryker\Zed\Ratepay\Business\Exception\NoPaymentMapperException;
+use Spryker\Zed\Ratepay\Business\Order\MethodMapper\PaymentMethodMapperInterface;
 
 class Transaction implements TransactionInterface
 {

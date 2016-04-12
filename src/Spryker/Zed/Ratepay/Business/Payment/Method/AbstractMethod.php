@@ -96,7 +96,7 @@ abstract class AbstractMethod implements MethodInterface
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Spryker\Shared\Transfer\AbstractTransfer
+     * @return \Spryker\Shared\Transfer\TransferInterface
      */
     abstract protected function getPaymentData(QuoteTransfer $quoteTransfer);
 
@@ -131,6 +131,7 @@ abstract class AbstractMethod implements MethodInterface
     }
 
     /**
+     *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function paymentInit()
@@ -147,6 +148,7 @@ abstract class AbstractMethod implements MethodInterface
     }
 
     /**
+     *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
@@ -199,6 +201,69 @@ abstract class AbstractMethod implements MethodInterface
     }
 
     /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
+    public function paymentCancel(OrderTransfer $orderTransfer)
+    {
+        $cancellationModelType = ApiConstants::REQUEST_MODEL_PAYMENT_CANCEL;
+        $payment = $this->loadOrderPayment($orderTransfer);
+        $paymentData = $this->getTransferObjectFromPayment($payment);
+
+        /**
+         * @var \Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm $request
+         */
+        $request = $this->modelFactory->build($cancellationModelType);
+        $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
+        $request->getHead()->setExternalOrderId($orderTransfer->requireOrderReference()->getOrderReference());
+        $this->mapShoppingBasketAndItems($orderTransfer, $paymentData, $request);
+
+        $response = $this->sendRequest((string)$request);
+        $this->logDebug($cancellationModelType, $request, $response);
+
+        if ($response->isSuccessful()) {
+            $payment->setResultCode($response->getResultCode())->save();
+        }
+
+        return $this->converter->responseToTransferObject($response);
+    }
+
+    public function paymentRefund(OrderTransfer $orderTransfer)
+    {
+        $orderRefundModelType = ApiConstants::REQUEST_MODEL_PAYMENT_REFUND;
+        $payment = $this->loadOrderPayment($orderTransfer);
+        $paymentData = $this->getTransferObjectFromPayment($payment);
+
+        /**
+         * @var \Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm $request
+         */
+        $request = $this->modelFactory->build($orderRefundModelType);
+        $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
+        $request->getHead()->setExternalOrderId($orderTransfer->requireOrderReference()->getOrderReference());
+        $this->mapShoppingBasketAndItems($orderTransfer, $paymentData, $request);
+
+        $response = $this->sendRequest((string)$request);
+        $this->logDebug($orderRefundModelType, $request, $response);
+
+        if ($response->isSuccessful()) {
+            $payment->setResultCode($response->getResultCode())->save();
+        }
+
+        return $this->converter->responseToTransferObject($response);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return void
+     */
+    public function paymentChange(OrderTransfer $orderTransfer)
+    {
+
+    }
+
+    /**
      * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay $payment
      *
      * @return mixed
@@ -220,7 +285,7 @@ abstract class AbstractMethod implements MethodInterface
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer|\Generated\Shared\Transfer\QuoteTransfer $dataTransfer
-     * @param $paymentData
+     * @param \Spryker\Shared\Transfer\TransferInterface $paymentData
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
      *
      * @return void
@@ -265,6 +330,38 @@ abstract class AbstractMethod implements MethodInterface
             $payment->getResultCode(),
             [
                 ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM],
+            ]
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isCancellationConfirmed(OrderTransfer $orderTransfer)
+    {
+        $payment = $this->loadOrderPayment($orderTransfer);
+        return in_array(
+            $payment->getResultCode(),
+            [
+                ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[ApiConstants::REQUEST_MODEL_PAYMENT_CHANGE],
+            ]
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isRefundApproved(OrderTransfer $orderTransfer)
+    {
+        $payment = $this->loadOrderPayment($orderTransfer);
+        return in_array(
+            $payment->getResultCode(),
+            [
+                ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[ApiConstants::REQUEST_MODEL_PAYMENT_CHANGE],
             ]
         );
     }

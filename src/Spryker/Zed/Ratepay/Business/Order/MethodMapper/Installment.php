@@ -6,28 +6,31 @@
  */
 namespace Spryker\Zed\Ratepay\Business\Order\MethodMapper;
 
-use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay;
-use Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer;
-use Spryker\Shared\Ratepay\RatepayConstants;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay;
+use Spryker\Shared\Ratepay\RatepayConstants;
 
 class Installment extends AbstractMapper
 {
 
-    /** TODO: Fix after Installment will be added. */
-    const METHOD = 'RatepayConstants::METHOD_ELV';
+    /**
+     * @const string Method name.
+     */
+    const METHOD = RatepayConstants::METHOD_INSTALLMENT;
 
+    /**
+     * @return string
+     */
     public function getMethodName()
     {
         return static::METHOD;
     }
 
-
     /**
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return RatepayPaymentInstallmentTransfer
+     * @return \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer
      */
     protected function getPaymentTransfer(QuoteTransfer $quoteTransfer)
     {
@@ -37,7 +40,9 @@ class Installment extends AbstractMapper
     /**
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param SpyPaymentRatepay $payment
+     * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay $payment
+     *
+     * @return void
      */
     public function mapMethodDataToPayment(QuoteTransfer $quoteTransfer, SpyPaymentRatepay $payment)
     {

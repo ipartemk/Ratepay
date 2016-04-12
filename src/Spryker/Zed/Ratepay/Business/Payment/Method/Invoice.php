@@ -6,14 +6,19 @@
  */
 namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
-use Generated\Shared\Transfer\OrderTransfer;
-use Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer;
 use Spryker\Shared\Ratepay\RatepayConstants;
 
+/**
+ * Ratepay Invoice payment method.
+ */
 class Invoice extends AbstractMethod
 {
 
+    /**
+     * @const Payment method code.
+     */
     const METHOD = RatepayConstants::METHOD_INVOICE;
 
     /**
@@ -25,8 +30,8 @@ class Invoice extends AbstractMethod
     }
 
     /**
-     * @param QuoteTransfer $quoteTransfer
-     * @return RatepayPaymentInvoiceTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @return \Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer
      */
     protected function getPaymentData(QuoteTransfer $quoteTransfer)
     {
@@ -40,16 +45,11 @@ class Invoice extends AbstractMethod
      *
      * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay $payment
      *
-     * @return RatepayPaymentInvoiceTransfer
+     * @return \Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer
      */
     protected function getPaymentTransferObject($payment)
     {
         return new RatepayPaymentInvoiceTransfer();
-    }
-
-    public function paymentChange(OrderTransfer $orderTransfer)
-    {
-
     }
 
 }

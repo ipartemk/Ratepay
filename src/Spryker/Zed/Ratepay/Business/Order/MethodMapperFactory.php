@@ -1,30 +1,20 @@
 <?php
 
 /**
- * This file is part of the Spryker Demoshop.
- * For full license information, please view the LICENSE file that was distributed with this source code.
+ * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
+ * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
-
 namespace Spryker\Zed\Ratepay\Business\Order;
 
-use Spryker\Shared\Ratepay\RatepayConstants;
+use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapper\Elv as ElvMapper;
+use Spryker\Zed\Ratepay\Business\Order\MethodMapper\Installment as InstallmentMapper;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapper\Invoice as InvoiceMapper;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapper\Prepayment as PrepaymentMapper;
-use Spryker\Zed\Ratepay\Business\Order\MethodMapper\Installment as InstallmentMapper;
-use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapper\Transaction\Transaction;
 
 class MethodMapperFactory extends AbstractBusinessFactory
 {
-
-    /**
-     * return \Generated\Shared\Transfer\QuoteTransfer
-     */
-    public function getQuoteTransfer()
-    {
-        return null;
-    }
 
     /**
      * @return \Spryker\Zed\Ratepay\Business\Order\MethodMapper\Transaction\TransactionInterface
@@ -36,25 +26,37 @@ class MethodMapperFactory extends AbstractBusinessFactory
         $paymentTransactionHandler->registerMethodMapper($this->createInstallmentMethodMapper());
         $paymentTransactionHandler->registerMethodMapper($this->createInvoiceMethodMapper());
         $paymentTransactionHandler->registerMethodMapper($this->createPrepaymentMethodMapper());
-        
+
         return $paymentTransactionHandler;
     }
 
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Order\MethodMapper\Elv
+     */
     protected function createElvMethodMapper()
     {
         return new ElvMapper();
     }
-    
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Order\MethodMapper\Invoice
+     */
     protected function createInvoiceMethodMapper()
     {
         return new InvoiceMapper();
     }
 
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Order\MethodMapper\Prepayment
+     */
     protected function createPrepaymentMethodMapper()
     {
         return new PrepaymentMapper();
     }
 
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Order\MethodMapper\Installment
+     */
     protected function createInstallmentMethodMapper()
     {
         return new InstallmentMapper();

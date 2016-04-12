@@ -9,33 +9,18 @@ namespace Spryker\Zed\Ratepay\Business;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+
+use Spryker\Shared\Ratepay\RatepayConstants;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
-use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
-
-use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
-use Spryker\Zed\Ratepay\Business\Api\Converter\InvoiceConverter;
-use Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm as DeliverConfirn;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
-use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Confirm as PaymentConfirm;
-use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init as PaymentInit;
-use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PaymentRequest;
-use Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactory;
-
+use Spryker\Zed\Ratepay\Business\Api\ApiFactory;
+use Spryker\Zed\Ratepay\Business\Api\Converter\Converter as Converter;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory;
 use Spryker\Zed\Ratepay\Business\Order\Saver as Saver;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction;
-use Spryker\Zed\Ratepay\Business\Payment\Method\Elv;
-
-use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice;
-
-use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment;
+use Spryker\Zed\Ratepay\Business\Payment\Method\Elv as Elv;
+use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice as Invoice;
+use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment as Prepayment;
 
 /**
  * @method \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface getQueryContainer()
@@ -63,159 +48,26 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         $paymentTransactionHandler->registerMethodMapper($this->createInvoice());
         $paymentTransactionHandler->registerMethodMapper($this->createElv());
         $paymentTransactionHandler->registerMethodMapper($this->createPrepayment());
+
         return $paymentTransactionHandler;
     }
 
     /**
-     *
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\FactoryInterface
+     * @return Api\Model\RequestModelFactoryInterface
      */
-    public function createRequestModelFactory()
+    public function createApiRequestFactory()
     {
-        static $factory;
-        if ($factory === null) {
-            $configuration = $this->getConfig();
-            $factory = new RequestModelFactory();
-            $factory
-                ->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_HEAD,
-                    function () use ($configuration) {
-                        return $this->createHeadModel($configuration);
-                    }
-                )
-                ->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_BASKET,
-                    function () {
-                        return $this->createBasketModel();
-                    }
-                )
-                ->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_BASKET_ITEM,
-                    function () {
-                        return $this->createBasketItemModel();
-                    }
-                )
-                ->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_CUSTOMER,
-                    function () use ($factory) {
-                        return $this->createCustomerModel($factory);
-                    }
-                )
-                ->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_ADDRESS,
-                    function () {
-                        return $this->createAddressModel();
-                    }
-                )
-                ->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_PAYMENT,
-                    function () {
-                        return $this->createPaymentModel();
-                    }
-                )
-                ->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_PAYMENT_INIT,
-                    function () use ($factory) {
-                        return $this->createInitModel($factory);
-                    }
-                )
-                ->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST,
-                    function () use ($factory) {
-                        return $this->createPaymentRequestModel($factory);
-                    }
-                )
-                ->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_BANK_ACCOUNT,
-                    function () use ($factory) {
-                        return $this->createBankAccountRequestModel($factory);
-                    }
-                )
-                ->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM,
-                    function () use ($factory) {
-                        return $this->createPaymentConfirmModel($factory);
-                    }
-                )
-                ->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM,
-                    function () use ($factory) {
-                        return $this->createDeliverConfirmModel($factory);
-                    }
-                );
-        }
+        $factory = new ApiFactory();
 
-        return $factory;
+        return $factory->createRequestModelFactory();
     }
 
-    protected function createHeadModel($configuration)
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory
+     */
+    public function getMethodMapperFactory()
     {
-        return new Head(
-            $configuration->getSystemId(),
-            $configuration->getProfileId(),
-            $configuration->getSecurityCode()
-        );
-    }
-
-    protected function createBasketModel()
-    {
-        return new ShoppingBasket();
-    }
-
-    protected function createBasketItemModel()
-    {
-        return new ShoppingBasketItem();
-    }
-
-    protected function createCustomerModel(RequestModelFactory $factory)
-    {
-        return new Customer(
-            $factory->build(ApiConstants::REQUEST_MODEL_ADDRESS),
-            $factory->build(ApiConstants::REQUEST_MODEL_ADDRESS)
-        );
-    }
-
-    protected function createAddressModel()
-    {
-        return new Address();
-    }
-
-    protected function createPaymentModel()
-    {
-        return new Payment();
-    }
-
-    protected function createInitModel(RequestModelFactory $factory)
-    {
-        return new PaymentInit($factory->build(ApiConstants::REQUEST_MODEL_HEAD));
-    }
-
-    protected function createPaymentRequestModel(RequestModelFactory $factory)
-    {
-        return new PaymentRequest(
-            $factory->build(ApiConstants::REQUEST_MODEL_HEAD),
-            $factory->build(ApiConstants::REQUEST_MODEL_CUSTOMER),
-            $factory->build(ApiConstants::REQUEST_MODEL_BASKET),
-            $factory->build(ApiConstants::REQUEST_MODEL_PAYMENT)
-        );
-    }
-
-    protected function createPaymentConfirmModel(RequestModelFactory $factory)
-    {
-        return new PaymentConfirm($factory->build(ApiConstants::REQUEST_MODEL_HEAD));
-    }
-
-    protected function createDeliverConfirmModel(RequestModelFactory $factory)
-    {
-        return new DeliverConfirn(
-            $factory->build(ApiConstants::REQUEST_MODEL_HEAD),
-            $factory->build(ApiConstants::REQUEST_MODEL_BASKET)
-        );
-    }
-
-    protected function createBankAccountRequestModel()
-    {
-        return new BankAccount();
+        return new MethodMapperFactory();
     }
 
     /**
@@ -223,9 +75,12 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
      */
     protected function createMonologWriter()
     {
-        return new StreamHandler('/tmp/ratepay.log');
+        return new StreamHandler(RatepayConstants::LOGGER_STREAM_OUTPUT);
     }
 
+    /**
+     * @return \Monolog\Logger
+     */
     protected function createMonolog()
     {
         $log = new Logger('ratepay');
@@ -257,41 +112,36 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         return new Invoice(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
-            $this->createRequestModelFactory(),
+            $this->createApiRequestFactory(),
             $this->createMonolog(),
-            $this->createConverter()/*,
-            $this->getQueryContainer(),*/
-        );
-    }
-
-    public function createElv()
-    {
-        return new Elv(
-            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
-            $this->createRequestModelFactory(),
-            $this->createMonolog(),
-            $this->createConverter()/*,
-            $this->getQueryContainer(),*/
-        );
-    }
-
-    public function createPrepayment()
-    {
-        return new Prepayment(
-            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
-            $this->createRequestModelFactory(),
-            $this->createMonolog(),
-            $this->createConverter()/*,
-            $this->getQueryContainer(),*/
+            $this->createConverter()
         );
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Elv
      */
-    public function getMethodMapperFactory()
+    public function createElv()
     {
-        return new MethodMapperFactory();
+        return new Elv(
+            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
+            $this->createApiRequestFactory(),
+            $this->createMonolog(),
+            $this->createConverter()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment
+     */
+    public function createPrepayment()
+    {
+        return new Prepayment(
+            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
+            $this->createApiRequestFactory(),
+            $this->createMonolog(),
+            $this->createConverter()
+        );
     }
 
 }

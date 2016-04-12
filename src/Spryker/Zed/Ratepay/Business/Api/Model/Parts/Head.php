@@ -50,6 +50,11 @@ class Head extends AbstractRequest
     protected $operationSubstring;
 
     /**
+     * @var string
+     */
+    protected $externalOrderId;
+
+    /**
      * @param string $systemId
      * @param string $profileId
      * @param string $securityCode
@@ -89,6 +94,12 @@ class Head extends AbstractRequest
             $return['operation'] = [
                 '@subtype' => $this->getOperationSubstring(),
                 '#' => $this->getOperation(),
+            ];
+        }
+
+        if ($this->getExternalOrderId() !== null) {
+            $return['external'] = [
+                'order_id' => $this->getExternalOrderId(),
             ];
         }
 
@@ -230,6 +241,26 @@ class Head extends AbstractRequest
     public function getOperationSubstring()
     {
         return $this->operationSubstring;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalOrderId()
+    {
+        return $this->externalOrderId;
+    }
+
+    /**
+     * @param string $externalOrderId
+     *
+     * @return $this
+     */
+    public function setExternalOrderId($externalOrderId)
+    {
+        $this->externalOrderId = $externalOrderId;
+
+        return $this;
     }
 
 }
