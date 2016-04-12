@@ -16,6 +16,11 @@ class ShoppingBasketItem extends AbstractRequest
     /**
      * @var string
      */
+    protected $itemName;
+
+    /**
+     * @var string
+     */
     protected $articleNumber;
 
     /**
@@ -44,6 +49,11 @@ class ShoppingBasketItem extends AbstractRequest
     protected $discount;
 
     /**
+     * @var array
+     */
+    protected $productOptions = [];
+
+    /**
      * @return array
      */
     protected function buildData()
@@ -54,8 +64,12 @@ class ShoppingBasketItem extends AbstractRequest
             '@quantity' => $this->getQuantity(),
             '@unit-price-gross' => $this->getUnitPriceGross(),
             '@tax-rate' => $this->getTaxRate(),
-            '@discount' => $this->getDiscount()
+            '@discount' => $this->getDiscount(),
+            '#' => $this->getItemName()
         ];
+        if (count($this->getProductOptions())) {
+            $return['@description-addition'] = implode("; ", $this->getProductOptions());
+        }
 
         return $return;
     }
@@ -66,6 +80,25 @@ class ShoppingBasketItem extends AbstractRequest
     public function getRootTag()
     {
         return static::ROOT_TAG;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemName()
+    {
+        return $this->itemName;
+    }
+
+    /**
+     * @param string $itemName
+     * @return $this
+     */
+    public function setItemName($itemName)
+    {
+        $this->itemName = $itemName;
+
+        return $this;
     }
 
     /**
@@ -187,5 +220,37 @@ class ShoppingBasketItem extends AbstractRequest
 
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function getProductOptions()
+    {
+        return $this->productOptions;
+    }
+
+    /**
+     * @param string $productOption
+     * @return $this
+     */
+    public function addProductOption($productOption)
+    {
+        $this->productOptions[] = $productOption;
+
+        return $this;
+    }
+
+    /**
+     * @param array $productOptions
+     * @return $this
+     */
+    public function setProductOptions($productOptions)
+    {
+        $this->productOptions = $productOptions;
+
+        return $this;
+    }
+
+
 
 }

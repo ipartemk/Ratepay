@@ -124,6 +124,7 @@ abstract class AbstractMethod implements MethodInterface
      */
     protected function mapBankAccountData($quoteTransfer, $paymentData, $request)
     {
+        /** @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount $bankAccount */
         $bankAccount = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_BANK_ACCOUNT);
         $request->getCustomer()->setBankAccount($bankAccount);
         $this->converter->mapBankAccount($quoteTransfer, $paymentData, $request->getCustomer()->getBankAccount());

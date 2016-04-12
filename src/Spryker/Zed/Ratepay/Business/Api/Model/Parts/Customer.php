@@ -15,6 +15,13 @@ class Customer extends AbstractRequest
 
     const ROOT_TAG = 'customer';
 
+    const ALLOW_CREDIT_INQUIRY_YES = 'yes';
+    const ALLOW_CREDIT_INQUIRY_NO = 'no';
+    public $allowCreditInquiryValues = [
+        self::ALLOW_CREDIT_INQUIRY_YES,
+        self::ALLOW_CREDIT_INQUIRY_NO,
+    ];
+
     /**
      * @var string
      */
@@ -68,7 +75,7 @@ class Customer extends AbstractRequest
     /**
      * @var string
      */
-    protected $allowCreditInquiry;
+    protected $allowCreditInquiry = self::ALLOW_CREDIT_INQUIRY_NO;
 
     /**
      * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount
@@ -320,7 +327,9 @@ class Customer extends AbstractRequest
      */
     public function setAllowCreditInquiry($allowCreditInquiry)
     {
-        $this->allowCreditInquiry = $allowCreditInquiry;
+        if (in_array($allowCreditInquiry, $this->allowCreditInquiryValues)) {
+            $this->allowCreditInquiry = $allowCreditInquiry;
+        }
         return $this;
     }
 

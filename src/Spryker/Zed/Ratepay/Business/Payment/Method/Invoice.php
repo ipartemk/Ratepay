@@ -35,7 +35,10 @@ class Invoice extends AbstractMethod
      */
     protected function getPaymentData(QuoteTransfer $quoteTransfer)
     {
-        return $quoteTransfer->requirePayment()->getPayment()->requireRatepayInvoice()->getRatepayInvoice();
+        return $quoteTransfer->requirePayment()
+            ->getPayment()
+            ->requireRatepayInvoice()
+            ->getRatepayInvoice();
     }
 
     /**
