@@ -67,12 +67,27 @@ class Transaction implements TransactionInterface
      *
      * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
      */
-    public function cancelOrder(OrderTransfer $orderTransfer)
+    public function cancelPayment(OrderTransfer $orderTransfer)
     {
         $paymentMethod = $this->getPaymentMethod($orderTransfer);
         return $this
             ->getMethodMapper($paymentMethod)
-            ->cancelOrder($orderTransfer);
+            ->paymentCancel($orderTransfer);
+    }
+
+    /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     */
+    public function refundPayment(OrderTransfer $orderTransfer)
+    {
+        $paymentMethod = $this->getPaymentMethod($orderTransfer);
+        return $this
+            ->getMethodMapper($paymentMethod)
+            ->paymentRefund($orderTransfer);
     }
 
     /**
@@ -113,6 +128,20 @@ class Transaction implements TransactionInterface
         return $this
             ->getMethodMapper($paymentMethod)
             ->isCancellationConfirmed($orderTransfer);
+    }
+
+    /**
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isRefundApproved(OrderTransfer $orderTransfer)
+    {
+        $paymentMethod = $this->getPaymentMethod($orderTransfer);
+        return $this
+            ->getMethodMapper($paymentMethod)
+            ->isRefundApproved($orderTransfer);
     }
 
     /**

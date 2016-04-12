@@ -41,7 +41,16 @@ interface TransactionInterface
      *
      * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
      */
-    public function cancelOrder(OrderTransfer $orderTransfer);
+    public function cancelPayment(OrderTransfer $orderTransfer);
+
+    /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     */
+    public function refundPayment(OrderTransfer $orderTransfer);
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
@@ -63,5 +72,12 @@ interface TransactionInterface
      * @return bool
      */
     public function isCancellationConfirmed(OrderTransfer $orderTransfer);
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isRefundApproved(OrderTransfer $orderTransfer);
 
 }

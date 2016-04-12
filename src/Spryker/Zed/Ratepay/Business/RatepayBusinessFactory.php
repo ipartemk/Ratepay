@@ -15,7 +15,8 @@ use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 
 use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
 use Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm as DeliverConfirm;
-use Spryker\Zed\Ratepay\Business\Api\Model\Order\Cancel as OrderCancellation;
+use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Cancel as PaymentCancel;
+use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Refund as PaymentRefund;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
@@ -128,7 +129,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
                 ->registerBuilder(
                     ApiConstants::REQUEST_MODEL_BANK_ACCOUNT,
                     function () use ($factory) {
-                        return $this->createBankAccountRequestModel($factory);
+                        return $this->createBankAccountRequestModel();
                     }
                 )
                 ->registerBuilder(
@@ -143,9 +144,14 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
                         return $this->createDeliverConfirmModel($factory);
                     }
                 )->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_ORDER_CANCEL,
+                    ApiConstants::REQUEST_MODEL_PAYMENT_CANCEL,
                     function () use ($factory) {
-                        return $this->cancelOrder($factory);
+                        return $this->cancelPayment($factory);
+                    }
+                )->registerBuilder(
+                    ApiConstants::REQUEST_MODEL_PAYMENT_REFUND,
+                    function () use ($factory) {
+                        return $this->refundPayment($factory);
                     }
                 );
         }
@@ -218,9 +224,17 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         );
     }
     
-    protected function cancelOrder(RequestModelFactory $factory)
+    protected function cancelPayment(RequestModelFactory $factory)
     {
-        return new OrderCancellation(
+        return new PaymentCancel(
+            $factory->build(ApiConstants::REQUEST_MODEL_HEAD),
+            $factory->build(ApiConstants::REQUEST_MODEL_BASKET)
+        );
+    }
+
+    protected function refundPayment(RequestModelFactory $factory)
+    {
+        return new PaymentRefund(
             $factory->build(ApiConstants::REQUEST_MODEL_HEAD),
             $factory->build(ApiConstants::REQUEST_MODEL_BASKET)
         );

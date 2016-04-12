@@ -4,11 +4,10 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\Ratepay\Business\Api\Model\Order;
+namespace Spryker\Zed\Ratepay\Business\Api\Model\Payment;
 
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
-use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Base;
 
 class Cancel extends Base
 {

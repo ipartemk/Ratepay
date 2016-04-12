@@ -48,7 +48,14 @@ interface MethodInterface
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function cancelOrder(OrderTransfer $orderTransfer);
+    public function paymentCancel(OrderTransfer $orderTransfer);
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
+    public function paymentRefund(OrderTransfer $orderTransfer);
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
@@ -77,5 +84,12 @@ interface MethodInterface
      * @return bool
      */
     public function isCancellationConfirmed(OrderTransfer $orderTransfer);
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isRefundApproved(OrderTransfer $orderTransfer);
 
 }
