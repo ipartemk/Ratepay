@@ -198,6 +198,35 @@ abstract class AbstractMethod implements MethodInterface
     }
 
     /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
+    public function cancelOrder(OrderTransfer $orderTransfer)
+    {
+        $cancellationModelType = ApiConstants::REQUEST_MODEL_ORDER_CANCEL;
+        $payment = $this->loadOrderPayment($orderTransfer);
+        $paymentData = $this->getTransferObjectFromPayment($payment);
+
+        /**
+         * @var \Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm $request
+         */
+        $request = $this->modelFactory->build($cancellationModelType);
+        $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
+        $request->getHead()->setExternalOrderId($orderTransfer->requireOrderReference()->getOrderReference());
+        $this->mapShoppingBasketAndItems($orderTransfer, $paymentData, $request);
+
+        $response = $this->sendRequest((string)$request);
+        $this->logDebug($cancellationModelType, $request, $response);
+
+        if ($response->isSuccessful()) {
+            $payment->setResultCode($response->getResultCode())->save();
+        }
+
+        return $this->converter->responseToTransferObject($response);
+    }
+
+    /**
      * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay $payment
      *
      * @return mixed
@@ -264,6 +293,22 @@ abstract class AbstractMethod implements MethodInterface
             $payment->getResultCode(),
             [
                 ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM],
+            ]
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isCancellationConfirmed(OrderTransfer $orderTransfer)
+    {
+        $payment = $this->loadOrderPayment($orderTransfer);
+        return in_array(
+            $payment->getResultCode(),
+            [
+                ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[ApiConstants::REQUEST_MODEL_ORDER_CANCEL],
             ]
         );
     }

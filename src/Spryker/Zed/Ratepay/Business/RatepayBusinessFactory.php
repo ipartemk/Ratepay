@@ -14,7 +14,8 @@ use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 
 use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
-use Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm as DeliverConfirn;
+use Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm as DeliverConfirm;
+use Spryker\Zed\Ratepay\Business\Api\Model\Order\Cancel as OrderCancellation;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
@@ -141,6 +142,11 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
                     function () use ($factory) {
                         return $this->createDeliverConfirmModel($factory);
                     }
+                )->registerBuilder(
+                    ApiConstants::REQUEST_MODEL_ORDER_CANCEL,
+                    function () use ($factory) {
+                        return $this->cancelOrder($factory);
+                    }
                 );
         }
 
@@ -206,7 +212,15 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
 
     protected function createDeliverConfirmModel(RequestModelFactory $factory)
     {
-        return new DeliverConfirn(
+        return new DeliverConfirm(
+            $factory->build(ApiConstants::REQUEST_MODEL_HEAD),
+            $factory->build(ApiConstants::REQUEST_MODEL_BASKET)
+        );
+    }
+    
+    protected function cancelOrder(RequestModelFactory $factory)
+    {
+        return new OrderCancellation(
             $factory->build(ApiConstants::REQUEST_MODEL_HEAD),
             $factory->build(ApiConstants::REQUEST_MODEL_BASKET)
         );

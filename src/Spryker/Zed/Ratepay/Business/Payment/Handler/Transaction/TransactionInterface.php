@@ -35,6 +35,15 @@ interface TransactionInterface
     public function capturePayment(OrderTransfer $orderTransfer);
 
     /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     */
+    public function cancelOrder(OrderTransfer $orderTransfer);
+
+    /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return bool
@@ -47,5 +56,12 @@ interface TransactionInterface
      * @return bool
      */
     public function isCaptureApproved(OrderTransfer $orderTransfer);
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isCancellationConfirmed(OrderTransfer $orderTransfer);
 
 }

@@ -61,6 +61,21 @@ class Transaction implements TransactionInterface
     }
 
     /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     */
+    public function cancelOrder(OrderTransfer $orderTransfer)
+    {
+        $paymentMethod = $this->getPaymentMethod($orderTransfer);
+        return $this
+            ->getMethodMapper($paymentMethod)
+            ->cancelOrder($orderTransfer);
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return bool
@@ -84,6 +99,20 @@ class Transaction implements TransactionInterface
         return $this
             ->getMethodMapper($paymentMethod)
             ->isCaptureApproved($orderTransfer);
+    }
+
+    /**
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isCancellationConfirmed(OrderTransfer $orderTransfer)
+    {
+        $paymentMethod = $this->getPaymentMethod($orderTransfer);
+        return $this
+            ->getMethodMapper($paymentMethod)
+            ->isCancellationConfirmed($orderTransfer);
     }
 
     /**

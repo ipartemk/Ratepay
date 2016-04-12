@@ -14,6 +14,8 @@ abstract class Base extends AbstractRequest
 
     const ROOT_TAG = 'request';
 
+    const OPERATION = '';
+
     /**
      * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head
      */
