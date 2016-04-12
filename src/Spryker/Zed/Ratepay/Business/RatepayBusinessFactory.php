@@ -14,6 +14,7 @@ use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 
 use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
+use Spryker\Zed\Ratepay\Business\Api\Converter\InvoiceConverter;
 use Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm as DeliverConfirn;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
@@ -241,11 +242,17 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         return new Saver();
     }
 
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Api\Converter\Converter
+     */
     protected function createConverter()
     {
         return new Converter();
     }
 
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Invoice
+     */
     public function createInvoice()
     {
         return new Invoice(

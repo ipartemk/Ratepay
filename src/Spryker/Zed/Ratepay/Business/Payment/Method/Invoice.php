@@ -24,9 +24,16 @@ class Invoice extends AbstractMethod
         return static::METHOD;
     }
 
+    /**
+     * @param QuoteTransfer $quoteTransfer
+     * @return RatepayPaymentInvoiceTransfer
+     */
     protected function getPaymentData(QuoteTransfer $quoteTransfer)
     {
-        return $quoteTransfer->requirePayment()->getPayment()->requireRatepayInvoice()->getRatepayInvoice();
+        return $quoteTransfer->requirePayment()
+            ->getPayment()
+            ->requireRatepayInvoice()
+            ->getRatepayInvoice();
     }
 
     /**

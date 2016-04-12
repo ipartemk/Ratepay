@@ -21,9 +21,16 @@ class Prepayment extends AbstractMethod
         return static::METHOD;
     }
 
+    /**
+     * @param QuoteTransfer $quoteTransfer
+     * @return RatepayPaymentPrepaymentTransfer
+     */
     protected function getPaymentData(QuoteTransfer $quoteTransfer)
     {
-        return $quoteTransfer->requirePayment()->getPayment()->requireRatepayPrepayment()->getRatepayPrepayment();
+        return $quoteTransfer->requirePayment()
+            ->getPayment()
+            ->requireRatepayPrepayment()
+            ->getRatepayPrepayment();
     }
 
     /**

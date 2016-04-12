@@ -27,27 +27,35 @@ class Converter implements ConverterInterface
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer $ratepayPaymentTransfer
+     * @param \Spryker\Shared\Transfer\AbstractTransfer $ratepayPaymentTransfer
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer $customer
      *
      * @return void
      */
     public function mapCustomer(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, Customer $customer)
     {
-        /** @var \Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer $ratepayPayment */
+        /** @var \Generated\Shared\Transfer\CustomerTransfer $ratepayPayment */
         $customerTransfer = $quoteTransfer->requireCustomer()->getCustomer();
+        /** @var \Generated\Shared\Transfer\AddressTransfer $billingAddress */
+        $billingAddress = $quoteTransfer->requireBillingAddress()->getBillingAddress();
         $customer
-            ->setAllowCreditInquiry($ratepayPaymentTransfer->requireCustomerAllowCreditInquiry()->getCustomerAllowCreditInquiry() ? 'yes' : 'no')
+            ->setAllowCreditInquiry(
+                $ratepayPaymentTransfer->requireCustomerAllowCreditInquiry()->getCustomerAllowCreditInquiry() ?
+                    Customer::ALLOW_CREDIT_INQUIRY_YES : Customer::ALLOW_CREDIT_INQUIRY_NO
+            )
             ->setGender($ratepayPaymentTransfer->requireGender()->getGender())
             ->setDob($ratepayPaymentTransfer->requireDateOfBirth()->getDateOfBirth())
             ->setIpAddress($ratepayPaymentTransfer->requireIpAddress()->getIpAddress())
-            ->setFirstName($customerTransfer->requireFirstName()->getFirstName())
-            ->setLastName($customerTransfer->requireLastName()->getLastName())
+            ->setFirstName($billingAddress->getFirstName())
+            ->setLastName($billingAddress->getLastName())
             ->setEmail($customerTransfer->requireEmail()->getEmail())
             ->setPhone($quoteTransfer->requireBillingAddress()->getBillingAddress()->requirePhone()->getPhone());
 
-        $this->mapAddress($quoteTransfer->requireBillingAddress()->getBillingAddress(), ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_BILLING, $customer->getBillingAddress());
-        $this->mapAddress($quoteTransfer->requireShippingAddress()->getShippingAddress(), ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_DELIVERY, $customer->getShippingAddress());
+        $this->mapAddress($billingAddress, ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_BILLING, $customer->getBillingAddress());
+        $this->mapAddress(
+            $quoteTransfer->requireShippingAddress()->getShippingAddress(),
+            ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_DELIVERY, $customer->getShippingAddress()
+        );
     }
 
     /**
@@ -69,6 +77,11 @@ class Converter implements ConverterInterface
             ->setZipCode($addressTransfer->requireZipCode()->getZipCode());
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount $bankAccount
+     */
     public function mapBankAccount(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, BankAccount $bankAccount)
     {
         $bankAccount->setOwner($ratepayPaymentTransfer->getBankAccountHolder());
@@ -76,6 +89,11 @@ class Converter implements ConverterInterface
         $bankAccount->setBicSwift($ratepayPaymentTransfer->getBankAccountBic());
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment $payment
+     */
     public function mapPayment(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, Payment $payment)
     {
         $totalsTransfer = $quoteTransfer->requireTotals()->getTotals();
@@ -87,6 +105,11 @@ class Converter implements ConverterInterface
         $payment->setAmount($grandTotal);
     }
 
+    /**
+     * @param $quoteTransfer
+     * @param $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket $basket
+     */
     public function mapBasket($quoteTransfer, $ratepayPaymentTransfer, ShoppingBasket $basket)
     {
         $totalsTransfer = $quoteTransfer->requireTotals()->getTotals();
@@ -106,8 +129,13 @@ class Converter implements ConverterInterface
         $basket->setDiscountUnitPrice($discountUnitPrice);
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem $basketItem
+     */
     public function mapBasketItem(ItemTransfer $itemTransfer, ShoppingBasketItem $basketItem)
     {
+        $basketItem->setItemName($itemTransfer->requireName()->getName());
         $basketItem->setArticleNumber($itemTransfer->requireSku()->getSku());
         $basketItem->setUniqueArticleNumber($itemTransfer->requireGroupKey()->getGroupKey());
         $basketItem->setQuantity($itemTransfer->requireQuantity()->getQuantity());
@@ -117,6 +145,11 @@ class Converter implements ConverterInterface
         $itemPrice = $this->centsToDecimal($itemTransfer->requireUnitGrossPriceWithProductOptionAndDiscountAmounts()->getUnitGrossPriceWithProductOptionAndDiscountAmounts());
         $basketItem->setDiscount($itemDiscount);
         $basketItem->setUnitPriceGross($itemPrice);
+
+        // @todo: ProductOptions didn't tested, because we have no implementation for it now.
+        foreach ($itemTransfer->getProductOptions() as $productOption) {
+            $basketItem->addProductOption($productOption->getLabelOptionValue());
+        }
     }
 
     /**

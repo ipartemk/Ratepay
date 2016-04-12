@@ -21,6 +21,10 @@ class Elv extends AbstractMethod
         return static::METHOD;
     }
 
+    /**
+     * @param QuoteTransfer $quoteTransfer
+     * @return RatepayPaymentElvTransfer
+     */
     protected function getPaymentData(QuoteTransfer $quoteTransfer)
     {
         return $quoteTransfer->requirePayment()->getPayment()->requireRatepayElv()->getRatepayElv();
