@@ -45,29 +45,9 @@ class Refund extends Base
         $this->getHead()->setOperationSubstring(static::OPERATION_SUBTYPE);
         $data = parent::buildData();
         $data['content'] = [
-            $this->getShoppingBasket()->getRootTag() => $this->getShoppingBasket(),
+            $this->basket->getRootTag() => $this->basket,
         ];
 
         return $data;
     }
-
-    /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket $basket
-     *
-     * @return $this
-     */
-    public function setShoppingBasket(ShoppingBasket $basket)
-    {
-        $this->basket = $basket;
-        return $this;
-    }
-
-    /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket
-     */
-    public function getShoppingBasket()
-    {
-        return $this->basket;
-    }
-
 }

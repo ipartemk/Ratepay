@@ -39,7 +39,7 @@ interface TransactionInterface
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function cancelPayment(OrderTransfer $orderTransfer);
 
@@ -48,7 +48,7 @@ interface TransactionInterface
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function refundPayment(OrderTransfer $orderTransfer);
 

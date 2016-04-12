@@ -31,7 +31,7 @@ interface RatepayFacadeInterface
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function preCheckPayment(QuoteTransfer $quoteTransfer);
 
@@ -41,7 +41,7 @@ interface RatepayFacadeInterface
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      * @param int $idPayment
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function preAuthorizePayment(OrderTransfer $orderTransfer);
 
@@ -51,7 +51,7 @@ interface RatepayFacadeInterface
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      * @param int $idPayment
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function reAuthorizePayment(OrderTransfer $orderTransfer, $idPayment);
 
@@ -61,7 +61,7 @@ interface RatepayFacadeInterface
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      * @param int $idPayment
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function revertPayment(OrderTransfer $orderTransfer, $idPayment);
 
@@ -70,7 +70,7 @@ interface RatepayFacadeInterface
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function capturePayment(OrderTransfer $orderTransfer);
 
@@ -79,7 +79,7 @@ interface RatepayFacadeInterface
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function cancelPayment(OrderTransfer $orderTransfer);
 
@@ -88,7 +88,7 @@ interface RatepayFacadeInterface
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function refundPayment(OrderTransfer $orderTransfer);
 
@@ -97,7 +97,7 @@ interface RatepayFacadeInterface
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionCalculationResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function calculateInstallmentPayments(QuoteTransfer $quoteTransfer);
 

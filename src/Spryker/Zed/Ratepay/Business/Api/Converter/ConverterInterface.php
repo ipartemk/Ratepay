@@ -7,8 +7,10 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
+use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
@@ -27,6 +29,15 @@ interface ConverterInterface
      * @return void
      */
     public function mapCustomer(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, Customer $customer);
+
+    /**
+     * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
+     * @param string $type
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address $address
+     *
+     * @return void
+     */
+    public function mapAddress(AddressTransfer $addressTransfer, $type, Address $address);
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quote

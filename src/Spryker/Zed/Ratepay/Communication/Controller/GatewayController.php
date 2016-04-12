@@ -19,7 +19,7 @@ class GatewayController extends AbstractGatewayController
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionCalculationResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function preauthorizePaymentAction(QuoteTransfer $quoteTransfer)
     {

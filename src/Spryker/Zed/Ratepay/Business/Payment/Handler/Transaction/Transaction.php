@@ -65,7 +65,7 @@ class Transaction implements TransactionInterface
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function cancelPayment(OrderTransfer $orderTransfer)
     {
@@ -80,7 +80,7 @@ class Transaction implements TransactionInterface
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function refundPayment(OrderTransfer $orderTransfer)
     {

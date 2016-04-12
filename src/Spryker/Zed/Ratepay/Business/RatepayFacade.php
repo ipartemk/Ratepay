@@ -77,7 +77,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      * @param int $idPayment
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function reAuthorizePayment(OrderTransfer $orderTransfer, $idPayment)
     {
@@ -93,7 +93,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      * @param int $idPayment
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function revertPayment(OrderTransfer $orderTransfer, $idPayment)
     {
@@ -108,7 +108,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function capturePayment(OrderTransfer $orderTransfer)
     {
@@ -123,7 +123,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function cancelPayment(OrderTransfer $orderTransfer)
     {
@@ -138,7 +138,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionTransactionResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function refundPayment(OrderTransfer $orderTransfer)
     {
@@ -153,7 +153,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\PayolutionCalculationResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function calculateInstallmentPayments(QuoteTransfer $quoteTransfer)
     {
