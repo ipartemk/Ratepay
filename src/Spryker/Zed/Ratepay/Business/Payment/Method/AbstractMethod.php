@@ -96,7 +96,7 @@ abstract class AbstractMethod implements MethodInterface
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return void
+     * @return \Spryker\Shared\Transfer\TransferInterface
      */
     abstract protected function getPaymentData(QuoteTransfer $quoteTransfer);
 
@@ -130,6 +130,7 @@ abstract class AbstractMethod implements MethodInterface
     }
 
     /**
+     *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function paymentInit()
@@ -146,6 +147,7 @@ abstract class AbstractMethod implements MethodInterface
     }
 
     /**
+     *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
@@ -251,6 +253,16 @@ abstract class AbstractMethod implements MethodInterface
     }
 
     /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return void
+     */
+    public function paymentChange(OrderTransfer $orderTransfer)
+    {
+
+    }
+
+    /**
      * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay $payment
      *
      * @return mixed
@@ -272,7 +284,7 @@ abstract class AbstractMethod implements MethodInterface
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer|\Generated\Shared\Transfer\QuoteTransfer $dataTransfer
-     * @param $paymentData
+     * @param \Spryker\Shared\Transfer\TransferInterface $paymentData
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
      *
      * @return void

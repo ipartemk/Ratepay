@@ -11,8 +11,15 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 
 class Cancel extends Base
 {
+
+    /**
+     * @const Method operation.
+     */
     const OPERATION = 'PAYMENT_CHANGE';
 
+    /**
+     * @const Method operation subtype.
+     */
     const OPERATION_SUBTYPE = 'cancellation';
 
     /**
@@ -40,7 +47,7 @@ class Cancel extends Base
         $data['content'] = [
             $this->getShoppingBasket()->getRootTag() => $this->getShoppingBasket(),
         ];
-        
+
         return $data;
     }
 
@@ -62,4 +69,5 @@ class Cancel extends Base
     {
         return $this->basket;
     }
+
 }

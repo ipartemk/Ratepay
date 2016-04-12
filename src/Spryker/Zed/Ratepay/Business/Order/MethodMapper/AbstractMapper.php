@@ -14,7 +14,7 @@ abstract class AbstractMapper implements PaymentMethodMapperInterface
 {
 
     /**
-     * 
+     *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return \Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer|\Generated\Shared\Transfer\RatepayPaymentElvTransfer|\Generated\Shared\Transfer\RatepayPaymentPrepaymentTransfer|\Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer
@@ -22,14 +22,15 @@ abstract class AbstractMapper implements PaymentMethodMapperInterface
     abstract protected function getPaymentTransfer(QuoteTransfer $quoteTransfer);
 
     /**
-     * 
+     *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param SpyPaymentRatepay $payment
+     * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay $payment
+     *
+     * @return void
      */
     public function mapMethodDataToPayment(QuoteTransfer $quoteTransfer, SpyPaymentRatepay $payment)
     {
         $paymentTransfer = $this->getPaymentTransfer($quoteTransfer);
-
         $payment
             ->setPaymentType($quoteTransfer->requirePayment()->getPayment()->requirePaymentMethod()->getPaymentMethod())
             ->setTransactionId($paymentTransfer->requireTransactionId()->getTransactionId())
@@ -43,5 +44,5 @@ abstract class AbstractMapper implements PaymentMethodMapperInterface
             ->setIpAddress($paymentTransfer->requireIpAddress()->getIpAddress())
             ->setCurrencyIso3($paymentTransfer->requireCurrencyIso3()->getCurrencyIso3());
     }
-}
 
+}

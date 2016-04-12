@@ -6,15 +6,20 @@
  */
 namespace Spryker\Zed\Ratepay\Business\Order\MethodMapper;
 
-use Generated\Shared\Transfer\RatepayPaymentPrepaymentTransfer;
-use Spryker\Shared\Ratepay\RatepayConstants;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Spryker\Shared\Ratepay\RatepayConstants;
 
 class Prepayment extends AbstractMapper
 {
 
+    /**
+     * @const string Method name.
+     */
     const METHOD = RatepayConstants::METHOD_PREPAYMENT;
 
+    /**
+     * @return string
+     */
     public function getMethodName()
     {
         return static::METHOD;
@@ -24,10 +29,11 @@ class Prepayment extends AbstractMapper
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return RatepayPaymentPrepaymentTransfer
+     * @return \Generated\Shared\Transfer\RatepayPaymentPrepaymentTransfer
      */
     protected function getPaymentTransfer(QuoteTransfer $quoteTransfer)
     {
         return $quoteTransfer->getPayment()->getRatepayPrepayment();
     }
+
 }

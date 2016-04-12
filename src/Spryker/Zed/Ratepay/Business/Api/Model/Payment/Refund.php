@@ -11,8 +11,15 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 
 class Refund extends Base
 {
+
+    /**
+     * @const Method operation.
+     */
     const OPERATION = 'PAYMENT_CHANGE';
 
+    /**
+     * @const Method operation subtype.
+     */
     const OPERATION_SUBTYPE = 'return';
 
     /**
@@ -62,4 +69,5 @@ class Refund extends Base
     {
         return $this->basket;
     }
+
 }

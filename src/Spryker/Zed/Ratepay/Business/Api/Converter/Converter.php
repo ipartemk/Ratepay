@@ -4,7 +4,6 @@
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
-
 namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\AddressTransfer;
@@ -54,6 +53,7 @@ class Converter implements ConverterInterface
      * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
      * @param string $type
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address $address
+     *
      * @return void
      */
     public function mapAddress(AddressTransfer $addressTransfer, $type, Address $address)
@@ -69,6 +69,13 @@ class Converter implements ConverterInterface
             ->setZipCode($addressTransfer->requireZipCode()->getZipCode());
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Spryker\Shared\Transfer\TransferInterface $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount $bankAccount
+     *
+     * @return void
+     */
     public function mapBankAccount(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, BankAccount $bankAccount)
     {
         $bankAccount->setOwner($ratepayPaymentTransfer->getBankAccountHolder());
@@ -76,6 +83,13 @@ class Converter implements ConverterInterface
         $bankAccount->setBicSwift($ratepayPaymentTransfer->getBankAccountBic());
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Spryker\Shared\Transfer\TransferInterface $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment $payment
+     *
+     * @return void
+     */
     public function mapPayment(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, Payment $payment)
     {
         $totalsTransfer = $quoteTransfer->requireTotals()->getTotals();
@@ -87,6 +101,13 @@ class Converter implements ConverterInterface
         $payment->setAmount($grandTotal);
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Spryker\Shared\Transfer\TransferInterface $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket $basket
+     *
+     * @return void
+     */
     public function mapBasket($quoteTransfer, $ratepayPaymentTransfer, ShoppingBasket $basket)
     {
         $totalsTransfer = $quoteTransfer->requireTotals()->getTotals();
@@ -106,6 +127,12 @@ class Converter implements ConverterInterface
         $basket->setDiscountUnitPrice($discountUnitPrice);
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem $basketItem
+     *
+     * @return void
+     */
     public function mapBasketItem(ItemTransfer $itemTransfer, ShoppingBasketItem $basketItem)
     {
         $basketItem->setArticleNumber($itemTransfer->requireSku()->getSku());
