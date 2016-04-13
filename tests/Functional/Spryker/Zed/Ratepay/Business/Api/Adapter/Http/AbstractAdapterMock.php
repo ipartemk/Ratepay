@@ -59,17 +59,6 @@ abstract class AbstractAdapterMock implements AdapterInterface
     }
 
     /**
-     * @param array|string $data
-     * @param string $user
-     * @param string $password
-     *
-     * @return string
-     */
-    public function sendAuthorizedRequest($data, $user, $password)
-    {
-    }
-
-    /**
      * @return array
      */
     abstract public function getSuccessResponse();

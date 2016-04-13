@@ -7,7 +7,6 @@
 namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
 use Generated\Shared\Transfer\OrderTransfer;
-use Generated\Shared\Transfer\QuoteTransfer;
 
 interface MethodInterface
 {
@@ -24,72 +23,40 @@ interface MethodInterface
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param string $transactionId
+     * @param string $transactionShortId
+     * @param int $resultCode
      *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
      */
-    public function paymentRequest(QuoteTransfer $quoteTransfer);
+    public function paymentRequest($quoteTransfer, $transactionId, $transactionShortId, $resultCode);
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
      */
     public function paymentConfirm(OrderTransfer $orderTransfer);
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
      */
     public function deliveryConfirm(OrderTransfer $orderTransfer);
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
      */
     public function paymentCancel(OrderTransfer $orderTransfer);
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
      */
     public function paymentRefund(OrderTransfer $orderTransfer);
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
-     */
-    public function paymentChange(OrderTransfer $orderTransfer);
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    public function isPreAuthorizationApproved(OrderTransfer $orderTransfer);
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    public function isCaptureApproved(OrderTransfer $orderTransfer);
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    public function isCancellationConfirmed(OrderTransfer $orderTransfer);
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    public function isRefundApproved(OrderTransfer $orderTransfer);
 
 }

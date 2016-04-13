@@ -43,12 +43,12 @@ class Refund extends Base
     protected function buildData()
     {
         $this->getHead()->setOperationSubstring(static::OPERATION_SUBTYPE);
-        $data = parent::buildData();
-        $data['content'] = [
+        $paymentRequestData = parent::buildData();
+        $paymentRequestData['content'] = [
             $this->getShoppingBasket()->getRootTag() => $this->basket,
         ];
 
-        return $data;
+        return $paymentRequestData;
     }
 
     /**

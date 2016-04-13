@@ -21,6 +21,7 @@ use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Elv as Elv;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice as Invoice;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment as Prepayment;
+use Spryker\Zed\Ratepay\Business\Status\TransactionStatus as TransactionStatus;
 
 /**
  * @method \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface getQueryContainer()
@@ -44,12 +45,25 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
      */
     public function createPaymentTransactionHandler()
     {
-        $paymentTransactionHandler = new Transaction();
+        $paymentTransactionHandler = new Transaction(
+            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
+            $this->createConverter(),
+            $this->createMonolog()
+        );
+
         $paymentTransactionHandler->registerMethodMapper($this->createInvoice());
         $paymentTransactionHandler->registerMethodMapper($this->createElv());
         $paymentTransactionHandler->registerMethodMapper($this->createPrepayment());
 
         return $paymentTransactionHandler;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Status\TransactionStatus
+     */
+    public function createStatusTransaction()
+    {
+        return new TransactionStatus();
     }
 
     /**
@@ -111,9 +125,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     public function createInvoice()
     {
         return new Invoice(
-            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
             $this->createApiRequestFactory(),
-            $this->createMonolog(),
             $this->createConverter()
         );
     }
@@ -124,9 +136,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     public function createElv()
     {
         return new Elv(
-            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
             $this->createApiRequestFactory(),
-            $this->createMonolog(),
             $this->createConverter()
         );
     }
@@ -137,9 +147,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     public function createPrepayment()
     {
         return new Prepayment(
-            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
             $this->createApiRequestFactory(),
-            $this->createMonolog(),
             $this->createConverter()
         );
     }
