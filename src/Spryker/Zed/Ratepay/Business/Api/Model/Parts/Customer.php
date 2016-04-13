@@ -116,7 +116,8 @@ class Customer extends AbstractRequest
                 $this->getBillingAddress(),
                 $this->getShippingAddress(),
             ],
-            'customer-allow-credit-inquiry' => $this->getAllowCreditInquiry()
+            'customer-allow-credit-inquiry' => $this->getAllowCreditInquiry(),
+            
         ];
 
         $bankAccount = $this->getBankAccount();

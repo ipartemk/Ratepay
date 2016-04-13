@@ -55,6 +55,16 @@ class Head extends AbstractRequest
     protected $externalOrderId;
 
     /**
+     * @var string
+     */
+    protected $customerId;
+
+    /**
+     * @var string
+     */
+    protected $deviceFingerprint;
+
+    /**
      * @param string $systemId
      * @param string $profileId
      * @param string $securityCode
@@ -79,6 +89,12 @@ class Head extends AbstractRequest
                 'profile-id'   => $this->getProfileId(),
                 'securitycode' => $this->getSecurityCode()
             ],
+            'customer-device' => [
+                'device-token' => $this->getDeviceFingerprint()
+            ],
+            'external' => [
+                'merchant-consumer-id' => $this->getCustomerId(),
+            ],
             'meta' => [
                 'systems' => [
                     'system' => [
@@ -99,7 +115,7 @@ class Head extends AbstractRequest
 
         if ($this->getExternalOrderId() !== null) {
             $return['external'] = [
-                'order_id' => $this->getExternalOrderId(),
+                'order-id' => $this->getExternalOrderId(),
             ];
         }
 
@@ -259,6 +275,45 @@ class Head extends AbstractRequest
     public function setExternalOrderId($externalOrderId)
     {
         $this->externalOrderId = $externalOrderId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerId()
+    {
+        return $this->customerId;
+    }
+
+    /**
+     * @param string $customerId
+     *
+     * @return $this
+     */
+    public function setCustomerId($customerId)
+    {
+        $this->customerId = $customerId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeviceFingerprint()
+    {
+        return $this->deviceFingerprint;
+    }
+
+    /**
+     * @param string $deviceFingerprint
+     * @return $this
+     */
+    public function setDeviceFingerprint($deviceFingerprint)
+    {
+        $this->deviceFingerprint = $deviceFingerprint;
 
         return $this;
     }

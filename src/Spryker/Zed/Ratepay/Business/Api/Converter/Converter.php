@@ -48,7 +48,8 @@ class Converter implements ConverterInterface
             ->setFirstName($billingAddress->getFirstName())
             ->setLastName($billingAddress->getLastName())
             ->setEmail($customerTransfer->requireEmail()->getEmail())
-            ->setPhone($quoteTransfer->requireBillingAddress()->getBillingAddress()->requirePhone()->getPhone());
+            ->setPhone($quoteTransfer->requireBillingAddress()->getBillingAddress()->requirePhone()->getPhone())
+        ;
 
         $this->mapAddress($billingAddress, ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_BILLING, $customer->getBillingAddress());
         $this->mapAddress(

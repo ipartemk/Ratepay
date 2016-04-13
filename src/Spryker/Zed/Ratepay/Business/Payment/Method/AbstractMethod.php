@@ -109,7 +109,11 @@ abstract class AbstractMethod implements MethodInterface
      */
     protected function mapPaymentData($quoteTransfer, $paymentData, $request)
     {
-        $request->getHead()->setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId());
+        $request->getHead()->
+            setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId())
+            ->setCustomerId($quoteTransfer->getCustomer()->getIdCustomer())
+            ->setDeviceFingerprint($paymentData->requireDeviceFingerprint()->getDeviceFingerprint())
+        ;
         $this->converter->mapPayment($quoteTransfer, $paymentData, $request->getPayment());
         $this->converter->mapCustomer($quoteTransfer, $paymentData, $request->getCustomer());
         $this->mapShoppingBasketAndItems($quoteTransfer, $paymentData, $request);
@@ -163,6 +167,7 @@ abstract class AbstractMethod implements MethodInterface
          */
         $request = $this->modelFactory->build($confirmationModelType);
         $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
+        $request->getHead()->setExternalOrderId($orderTransfer->requireOrderReference()->getOrderReference());
 
         $response = $this->sendRequest((string)$request);
         $this->logDebug($confirmationModelType, $request, $response);
