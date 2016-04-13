@@ -15,10 +15,12 @@ use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 
 use Generated\Shared\Transfer\TotalsTransfer;
-
+use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay;
+use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
 use Spryker\Zed\Ratepay\Business\Api\ApiFactory;
-
 use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
+
+use Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
 
 abstract class AbstractMethodMapperTest extends Test
 {
@@ -27,6 +29,14 @@ abstract class AbstractMethodMapperTest extends Test
      * @return \Spryker\Zed\Ratepay\Business\Api\Converter\Converter
      */
     protected function createConverter()
+    {
+        return new Converter();
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface
+     */
+    protected function createQueryContainer()
     {
         return new Converter();
     }
@@ -64,7 +74,9 @@ abstract class AbstractMethodMapperTest extends Test
     protected function getOrderTransfer()
     {
         $orderTransfer = new OrderTransfer();
-        $orderTransfer->setTotals($this->getTotalsTransfer())
+        $orderTransfer
+            ->setIdSalesOrder('TEST--1')
+            ->setTotals($this->getTotalsTransfer())
             ->setBillingAddress($this->getAddressTransfer('billing'))
             ->setShippingAddress($this->getAddressTransfer('shipping'))
             ->setCustomer($this->getCustomerTransfer())
@@ -93,6 +105,17 @@ abstract class AbstractMethodMapperTest extends Test
         $request = $paymentMethod->paymentInit();
 
         $this->assertInstanceOf('\Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init', $request);
+
+        $this->assertEquals('Spryker www.spryker.dev', $request->getHead()->getSystemId());
+
+        $this->assertNotNull($request->getHead()->getProfileId());
+        $this->assertNotNull($request->getHead()->getSecurityCode());
+
+        $this->assertNull($request->getHead()->getOperation());
+        $this->assertNull($request->getHead()->getTransactionId());
+        $this->assertNull($request->getHead()->getTransactionShortId());
+        $this->assertNull($request->getHead()->getExternalOrderId());
+        $this->assertNull($request->getHead()->getOperationSubstring());
     }
 
 
@@ -107,16 +130,88 @@ abstract class AbstractMethodMapperTest extends Test
         $request = $paymentMethod->paymentRequest($quoteTransfer, 'test1', 'test2', 305);
 
         $this->assertInstanceOf('\Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request', $request);
+        $this->assertEquals('Spryker www.spryker.dev', $request->getHead()->getSystemId());
 
+        //head
+        $this->assertNotNull($request->getHead()->getProfileId());
+        $this->assertNotNull($request->getHead()->getSecurityCode());
+
+        //customer data
+        $this->assertEquals('test@test.com', $request->getCustomer()->getEmail());
+        $this->assertEquals('billingJohn', $request->getCustomer()->getFirstName());
+        $this->assertEquals('billingDoe', $request->getCustomer()->getLastName());
+        $this->assertEquals('M', $request->getCustomer()->getGender());
+        $this->assertEquals('yes', $request->getCustomer()->getAllowCreditInquiry());
+        $this->assertEquals('billing12345678', $request->getCustomer()->getPhone());
+        $this->assertNotNull($request->getCustomer()->getIpAddress());
+
+        //Basket
+        $this->assertEquals('33.46', $request->getShoppingBasket()->getAmount());
+        $this->assertEquals('EUR', $request->getShoppingBasket()->getCurrency());
+        $this->assertEquals('4.90', $request->getShoppingBasket()->getShippingUnitPrice());
+        $this->assertEquals('0.00', $request->getShoppingBasket()->getShippingTaxRate());
+        $this->assertEquals('Shipping costs', $request->getShoppingBasket()->getShippingTitle());
+        $this->assertEquals('0.00', $request->getShoppingBasket()->getDiscountTaxRate());
+        $this->assertEquals('0.00', $request->getShoppingBasket()->getDiscountUnitPrice());
+        $this->assertEquals('Discount', $request->getShoppingBasket()->getDiscountTitle());
+
+        $this->assertArrayHasKey(0, $request->getShoppingBasket()->getItems());
+        $this->assertArrayHasKey(1, $request->getShoppingBasket()->getItems());
+
+        //basketItems
+        $basketItems = $request->getShoppingBasket()->getItems();
+
+        /**
+         * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem $firstItem
+         */
+        $firstItem = $basketItems[0];
+        $this->assertEquals('1test', $firstItem->getItemName());
+        $this->assertEquals('133333', $firstItem->getArticleNumber());
+        $this->assertEquals('133333333333', $firstItem->getUniqueArticleNumber());
+        $this->assertEquals('12', $firstItem->getQuantity());
+        $this->assertEquals('1555.55', $firstItem->getUnitPriceGross());
+        $this->assertEquals('19', $firstItem->getTaxRate());
+        $this->assertEquals(0, $firstItem->getDiscount());
+
+        /**
+         * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem $firstItem
+         */
+        $secondItem = $basketItems[1];
+        $this->assertEquals('2test', $secondItem->getItemName());
+        $this->assertEquals('233333', $secondItem->getArticleNumber());
+        $this->assertEquals('233333333333', $secondItem->getUniqueArticleNumber());
+        $this->assertEquals('22', $secondItem->getQuantity());
+        $this->assertEquals('2555.55', $secondItem->getUnitPriceGross());
+        $this->assertEquals('29', $secondItem->getTaxRate());
+        $this->assertEquals(0, $secondItem->getDiscount());
+
+        //payment
+        $this->assertEquals('EUR', $request->getPayment()->getCurrency());
+        $this->assertEquals('33.46', $request->getPayment()->getAmount());
+        $this->testPaymentSpecificRequestData($request);
     }
 
-//
-//    /**
-//     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-//     *
-//     * @return void
-//     */
-//    abstract public function testPaymentConfirm(OrderTransfer $orderTransfer);
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
+     *
+     * @return void
+     */
+    abstract protected function testPaymentSpecificRequestData($request);
+
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return void
+     */
+    public function testPaymentConfirm()
+    {
+        $paymentMethod = $this->getPaymentMethod();
+        $request = $paymentMethod->paymentConfirm($this->getOrderTransfer());
+
+        $this->assertInstanceOf('\Spryker\Zed\Ratepay\Business\Api\Model\Payment\Confirm', $request);
+    }
+
 //
 //    /**
 //     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
@@ -152,10 +247,7 @@ abstract class AbstractMethodMapperTest extends Test
         $customerTransfer
             ->setEmail('test@test.com')
             ->setFirstName('John')
-            ->setLastName('Doe')
-            ->setLastName('Doe')
-            ->setSalutation('Mr')
-            ->setCompany('CompanyTest');
+            ->setLastName('Doe');
 
         return $customerTransfer;
     }
@@ -196,14 +288,30 @@ abstract class AbstractMethodMapperTest extends Test
         $itemTransfer
             ->setName($itemPrefix . 'test')
             ->setSku($itemPrefix . '33333')
-            ->setGroupKey($itemPrefix . '33333')
-            ->setQuantity('2')
-            ->setUnitGrossPrice('2222')
-            ->setTaxRate('19')
-            ->setUnitTotalDiscountAmountWithProductOption('19')
-            ->setUnitGrossPriceWithProductOptions('55555');
+            ->setGroupKey($itemPrefix . '33333333333')
+            ->setQuantity($itemPrefix . '2')
+            ->setUnitGrossPrice($itemPrefix . '1')
+            ->setTaxRate($itemPrefix . '9')
+            ->setUnitTotalDiscountAmountWithProductOption($itemPrefix . '9')
+            ->setUnitGrossPriceWithProductOptions($itemPrefix . '55555');
 
         return $itemTransfer;
+    }
+
+    /**
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay
+     */
+    protected function getQueryContainerMock()
+    {
+        $queryContainer = $this->getMock(RatepayQueryContainerInterface::class);
+        $queryPaymentsMock = $this->getMock(SpyPaymentRatepayQuery::class, ['findByFkSalesOrder', 'getFirst']);
+
+        $ratepayPaymentEntity = new SpyPaymentRatepay();
+        $queryPaymentsMock->method('findByFkSalesOrder')->willReturnSelf();
+        $queryPaymentsMock->method('getFirst')->willReturn($ratepayPaymentEntity);
+        $queryContainer->method('queryPayments')->willReturn($queryPaymentsMock);
+
+        return $queryContainer;
     }
 
 }

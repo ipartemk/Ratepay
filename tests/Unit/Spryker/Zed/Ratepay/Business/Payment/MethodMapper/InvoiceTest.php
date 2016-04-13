@@ -21,7 +21,8 @@ class InvoiceTest extends AbstractMethodMapperTest
     {
         return new Invoice(
             $this->createApiRequestFactory(),
-            $this->createConverter()
+            $this->createConverter(),
+            $this->getQueryContainerMock()
         );
     }
 
@@ -38,7 +39,7 @@ class InvoiceTest extends AbstractMethodMapperTest
             ->setCustomerAllowCreditInquiry(true)
             ->setGender('M')
             ->setIpAddress('127.0.0.1')
-            ->setPaymentType('')
+            ->setPaymentType('INVOICE')
             ->setTransactionId('58-201604122719694')
             ->setTransactionShortId('5QTZ.2VWD.OMWW.9D3E');
 
@@ -46,6 +47,18 @@ class InvoiceTest extends AbstractMethodMapperTest
         $payment->setRatepayInvoice($paymentTransfer);
 
         return $payment;
+    }
+
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
+     *
+     * @return void
+     */
+    protected function testPaymentSpecificRequestData($request)
+    {
+        $this->assertEquals('INVOICE', $request->getPayment()->getMethod());
+        $this->assertNull($request->getPayment()->getInstallmentDetails());
+        $this->assertNull($request->getPayment()->getDebitPayType());
     }
 
 }

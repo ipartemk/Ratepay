@@ -8,10 +8,10 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactoryInterface;
+use \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
 
 abstract class AbstractMethod implements MethodInterface
 {
@@ -32,17 +32,25 @@ abstract class AbstractMethod implements MethodInterface
     protected $converter;
 
     /**
+     * @var \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface $queryContainer
+     */
+    protected $queryContainer;
+
+    /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactoryInterface $modelFactory
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface $converter
+     * @param \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface $queryContainer
      *
      */
     public function __construct(
         RequestModelFactoryInterface $modelFactory,
-        ConverterInterface $converter
+        ConverterInterface $converter,
+        RatepayQueryContainerInterface $queryContainer
     ) {
         $this->modelFactory = $modelFactory;
         $this->converter = $converter;
+        $this->queryContainer = $queryContainer;
     }
 
     /**
@@ -250,8 +258,11 @@ abstract class AbstractMethod implements MethodInterface
      */
     protected function loadOrderPayment(OrderTransfer $orderTransfer)
     {
-        $query = new SpyPaymentRatepayQuery();
-        return $query->findByFkSalesOrder($orderTransfer->requireIdSalesOrder()->getIdSalesOrder())->getFirst();
+        return $this->queryContainer
+            ->queryPayments()
+            ->findByFkSalesOrder(
+                $orderTransfer->requireIdSalesOrder()->getIdSalesOrder()
+            )->getFirst();
     }
 
 }

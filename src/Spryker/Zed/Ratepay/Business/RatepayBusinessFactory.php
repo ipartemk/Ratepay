@@ -126,7 +126,8 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         return new Invoice(
             $this->createApiRequestFactory(),
-            $this->createConverter()
+            $this->createConverter(),
+            $this->getQueryContainer()
         );
     }
 
@@ -137,7 +138,8 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         return new Elv(
             $this->createApiRequestFactory(),
-            $this->createConverter()
+            $this->createConverter(),
+            $this->getQueryContainer()
         );
     }
 
@@ -148,7 +150,8 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         return new Prepayment(
             $this->createApiRequestFactory(),
-            $this->createConverter()
+            $this->createConverter(),
+            $this->getQueryContainer()
         );
     }
 

@@ -17,7 +17,7 @@ interface MethodInterface
     public function getMethodName();
 
     /**
-     * @return mixed
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init
      */
     public function paymentInit();
 
