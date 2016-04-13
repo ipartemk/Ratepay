@@ -7,8 +7,8 @@
 
 namespace Unit\Spryker\Zed\Ratepay\Business\Api\Response;
 
-use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;
 use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
+use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;
 
 class ConverterTest extends \PHPUnit_Framework_TestCase
 {
@@ -68,4 +68,5 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
                 <content />
             </response>';
     }
+
 }

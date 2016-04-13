@@ -10,24 +10,21 @@ namespace Unit\Spryker\Zed\Ratepay\Business\Payment\MethodMapper;
 use Codeception\TestCase\Test;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\PaymentTransfer;
-use Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use Generated\Shared\Transfer\ItemTransfer;
+use Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer;
 use Generated\Shared\Transfer\TotalsTransfer;
 
-use Spryker\Shared\Ratepay\RatepayConstants;
-use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 
-use Spryker\Zed\Ratepay\Business\Api\ApiFactory;
-use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
-use Symfony\Component\HttpKernel\Log\NullLogger;
-use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
-
-use Orm\Zed\Ratepay\Persistence\Map\SpyPaymentRatepayTableMap;
 use Spryker\Zed\Library\Generator\StringGenerator;
+use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
+use Spryker\Zed\Ratepay\Business\Api\ApiFactory;
+
+use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice;
+use Symfony\Component\HttpKernel\Log\NullLogger;
 
 class InvoiceTest extends Test
 {
@@ -40,10 +37,10 @@ class InvoiceTest extends Test
         $quoteTransfer = $this->getQuoteTransfer();
 
         $invoiceMethod = new Invoice(
-             $this->createAdapter(),
-             $this->createApiRequestFactory(),
-             $this->createMonolog(),
-             $this->createConverter()
+            $this->createAdapter(),
+            $this->createApiRequestFactory(),
+            $this->createMonolog(),
+            $this->createConverter()
         );
 
         $invoiceMethod->paymentInit();
@@ -152,7 +149,6 @@ class InvoiceTest extends Test
             ->setTaxRate('19')
             ->setUnitTotalDiscountAmountWithProductOption('19')
             ->setUnitGrossPriceWithProductOptionAndDiscountAmounts('55555');
-
 
         $quoteTransfer = new QuoteTransfer();
         $quoteTransfer->setBillingAddress($addressTransfer);

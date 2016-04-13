@@ -16,7 +16,9 @@ class Customer extends AbstractRequest
     const ROOT_TAG = 'customer';
 
     const ALLOW_CREDIT_INQUIRY_YES = 'yes';
+
     const ALLOW_CREDIT_INQUIRY_NO = 'no';
+
     public $allowCreditInquiryValues = [
         self::ALLOW_CREDIT_INQUIRY_YES,
         self::ALLOW_CREDIT_INQUIRY_NO,

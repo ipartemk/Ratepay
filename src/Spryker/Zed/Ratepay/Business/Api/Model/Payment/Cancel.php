@@ -45,9 +45,18 @@ class Cancel extends Base
         $this->getHead()->setOperationSubstring(static::OPERATION_SUBTYPE);
         $data = parent::buildData();
         $data['content'] = [
-            $this->basket->getRootTag() => $this->basket,
+            $this->getShoppingBasket()->getRootTag() => $this->basket,
         ];
 
         return $data;
     }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket
+     */
+    public function getShoppingBasket()
+    {
+        return $this->basket;
+    }
+
 }

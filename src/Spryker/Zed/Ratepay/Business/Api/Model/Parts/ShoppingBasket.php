@@ -13,6 +13,12 @@ class ShoppingBasket extends AbstractRequest
 
     const ROOT_TAG = 'shopping-basket';
 
+    const DEFAULT_DISCOUNT_NODE_VALUE = 'Discount';
+
+    const DEFAULT_SHIPPING_NODE_VALUE = 'Shipping costs';
+
+    const BASKET_DISCOUNT_COEFFICIENT = -1;
+
     /**
      * @var float
      */
@@ -41,12 +47,12 @@ class ShoppingBasket extends AbstractRequest
     /**
      * @var string
      */
-    protected $shippingTitle = '';
+    protected $shippingTitle = self::DEFAULT_SHIPPING_NODE_VALUE;
 
     /**
      * @var float
      */
-    protected $discountUnitPrice;
+    protected $discountUnitPrice = 0;
 
     /**
      * @var float
@@ -56,7 +62,7 @@ class ShoppingBasket extends AbstractRequest
     /**
      * @var string
      */
-    protected $discountTitle = '';
+    protected $discountTitle = self::DEFAULT_DISCOUNT_NODE_VALUE;
 
     /**
      * @return array
@@ -73,7 +79,7 @@ class ShoppingBasket extends AbstractRequest
                 '#' => $this->getShippingTitle(),
             ],
             'discount' => [
-                '@unit-price-gross' => $this->getDiscountUnitPrice(),
+                '@unit-price-gross' => $this->getDiscountUnitPrice() * self::BASKET_DISCOUNT_COEFFICIENT,
                 '@tax-rate' => $this->getDiscountTaxRate(),
                 '#' => $this->getDiscountTitle(),
             ]

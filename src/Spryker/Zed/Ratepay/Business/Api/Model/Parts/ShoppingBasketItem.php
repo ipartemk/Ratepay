@@ -13,6 +13,8 @@ class ShoppingBasketItem extends AbstractRequest
 
     const ROOT_TAG = 'item';
 
+    const ITEM_DISCOUNT_COEFFICIENT = -1;
+
     /**
      * @var string
      */
@@ -46,7 +48,7 @@ class ShoppingBasketItem extends AbstractRequest
     /**
      * @var float
      */
-    protected $discount;
+    protected $discount = 0;
 
     /**
      * @var array
@@ -64,7 +66,7 @@ class ShoppingBasketItem extends AbstractRequest
             '@quantity' => $this->getQuantity(),
             '@unit-price-gross' => $this->getUnitPriceGross(),
             '@tax-rate' => $this->getTaxRate(),
-            '@discount' => $this->getDiscount(),
+            '@discount' => $this->getDiscount() * self::ITEM_DISCOUNT_COEFFICIENT,
             '#' => $this->getItemName()
         ];
         if (count($this->getProductOptions())) {
@@ -250,7 +252,5 @@ class ShoppingBasketItem extends AbstractRequest
 
         return $this;
     }
-
-
 
 }

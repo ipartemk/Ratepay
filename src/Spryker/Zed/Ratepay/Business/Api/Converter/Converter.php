@@ -53,7 +53,8 @@ class Converter implements ConverterInterface
         $this->mapAddress($billingAddress, ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_BILLING, $customer->getBillingAddress());
         $this->mapAddress(
             $quoteTransfer->requireShippingAddress()->getShippingAddress(),
-            ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_DELIVERY, $customer->getShippingAddress()
+            ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_DELIVERY,
+            $customer->getShippingAddress()
         );
     }
 
@@ -149,10 +150,12 @@ class Converter implements ConverterInterface
         $basketItem->setQuantity($itemTransfer->requireQuantity()->getQuantity());
         $basketItem->setTaxRate($itemTransfer->requireTaxRate()->getTaxRate());
 
-        $itemDiscount = $this->centsToDecimal($itemTransfer->requireUnitTotalDiscountAmountWithProductOption()->getUnitTotalDiscountAmountWithProductOption());
-        $itemPrice = $this->centsToDecimal($itemTransfer->requireUnitGrossPriceWithProductOptionAndDiscountAmounts()->getUnitGrossPriceWithProductOptionAndDiscountAmounts());
-        $basketItem->setDiscount($itemDiscount);
+        $itemPrice = $this->centsToDecimal($itemTransfer->requireUnitGrossPriceWithProductOptions()->getUnitGrossPriceWithProductOptions());
         $basketItem->setUnitPriceGross($itemPrice);
+
+        //todo:: uncomment discount amount when discount per item will be implemented.
+        //$itemDiscount = $this->centsToDecimal($itemTransfer->requireUnitTotalDiscountAmountWithProductOption()->getUnitTotalDiscountAmountWithProductOption());
+        //$basketItem->setDiscount($itemDiscount);
 
         // @todo: ProductOptions didn't tested, because we have no implementation for it now.
         foreach ($itemTransfer->getProductOptions() as $productOption) {
