@@ -9,7 +9,13 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
+use Psr\Log\LoggerInterface;
+use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
+use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
+use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
+use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;
 use Spryker\Zed\Ratepay\Business\Exception\NoMethodMapperException;
 use Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface;
 
@@ -17,9 +23,39 @@ class Transaction implements TransactionInterface
 {
 
     /**
+     * @var \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface
+     */
+    protected $executionAdapter;
+
+    /**
+     * @var \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface
+     */
+    protected $converter;
+
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * @var array
      */
     protected $methodMappers = [];
+
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface $executionAdapter
+     * @param \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface $converter
+     * @param \Psr\Log\LoggerInterface $logger
+     */
+    public function __construct(
+        AdapterInterface $executionAdapter,
+        ConverterInterface $converter,
+        LoggerInterface $logger
+    ) {
+        $this->executionAdapter = $executionAdapter;
+        $this->converter = $converter;
+        $this->logger = $logger;
+    }
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
@@ -29,9 +65,32 @@ class Transaction implements TransactionInterface
     public function preCheckPayment(QuoteTransfer $quoteTransfer)
     {
         $paymentMethod = $quoteTransfer->requirePayment()->getPayment()->requirePaymentMethod()->getPaymentMethod();
-        return $this
-            ->getMethodMapper($paymentMethod)
-            ->paymentRequest($quoteTransfer);
+
+        //init payment method call.
+        $request = $this->getMethodMapper($paymentMethod)
+            ->paymentInit();
+        $response = $this->sendRequest((string)$request);
+        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_INIT, $request, $response);
+        $initResponseTransfer = $this->converter->responseToTransferObject($response);
+
+        if (!$initResponseTransfer->getSuccessful()) {
+            return $initResponseTransfer;
+        }
+
+        //payment request call.
+        $transactionId = $initResponseTransfer->requireTransactionId()->getTransactionId();
+        $transactionShortId = $initResponseTransfer->requireTransactionShortId()->getTransactionShortId();
+        $resultCode = $initResponseTransfer->requireResultCode()->getResultCode();
+        $request = $this->getMethodMapper($paymentMethod)
+            ->paymentRequest($quoteTransfer, $transactionId, $transactionShortId, $resultCode);
+
+        $response = $this->sendRequest((string)$request);
+        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST, $request, $response);
+
+        $responseTransfer = $this->converter->responseToTransferObject($response);
+        $this->fixResponseTransferTransactionId($responseTransfer, $responseTransfer->getTransactionId(), $responseTransfer->getTransactionShortId());
+
+        return $responseTransfer;
     }
 
     /**
@@ -42,9 +101,17 @@ class Transaction implements TransactionInterface
     public function preAuthorizePayment(OrderTransfer $orderTransfer)
     {
         $paymentMethod = $this->getPaymentMethod($orderTransfer);
-        return $this
-            ->getMethodMapper($paymentMethod)
+        $request = $this
+            ->getMethodMapper($paymentMethod->getPaymentType())
             ->paymentConfirm($orderTransfer);
+
+        $response = $this->sendRequest((string)$request);
+        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM, $request, $response);
+
+        if ($response->isSuccessful()) {
+            $paymentMethod->setResultCode($response->getResultCode())->save();
+        }
+        return $this->converter->responseToTransferObject($response);
     }
 
     /**
@@ -55,9 +122,18 @@ class Transaction implements TransactionInterface
     public function capturePayment(OrderTransfer $orderTransfer)
     {
         $paymentMethod = $this->getPaymentMethod($orderTransfer);
-        return $this
-            ->getMethodMapper($paymentMethod)
+        $request = $this
+            ->getMethodMapper($paymentMethod->getPaymentType())
             ->deliveryConfirm($orderTransfer);
+
+        $response = $this->sendRequest((string)$request);
+        $this->logDebug(ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM, $request, $response);
+
+        if ($response->isSuccessful()) {
+            $paymentMethod->setResultCode($response->getResultCode())->save();
+        }
+
+        return $this->converter->responseToTransferObject($response);
     }
 
     /**
@@ -70,9 +146,18 @@ class Transaction implements TransactionInterface
     public function cancelPayment(OrderTransfer $orderTransfer)
     {
         $paymentMethod = $this->getPaymentMethod($orderTransfer);
-        return $this
-            ->getMethodMapper($paymentMethod)
+        $request = $this
+            ->getMethodMapper($paymentMethod->getPaymentType())
             ->paymentCancel($orderTransfer);
+
+        $response = $this->sendRequest((string)$request);
+        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_CANCEL, $request, $response);
+
+        if ($response->isSuccessful()) {
+            $paymentMethod->setResultCode($response->getResultCode())->save();
+        }
+
+        return $this->converter->responseToTransferObject($response);
     }
 
     /**
@@ -85,75 +170,30 @@ class Transaction implements TransactionInterface
     public function refundPayment(OrderTransfer $orderTransfer)
     {
         $paymentMethod = $this->getPaymentMethod($orderTransfer);
-        return $this
-            ->getMethodMapper($paymentMethod)
+        $request = $this
+            ->getMethodMapper($paymentMethod->getPaymentType())
             ->paymentRefund($orderTransfer);
+
+        $response = $this->sendRequest((string)$request);
+        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_REFUND, $request, $response);
+
+        if ($response->isSuccessful()) {
+            $paymentMethod->setResultCode($response->getResultCode())->save();
+        }
+
+        return $this->converter->responseToTransferObject($response);
     }
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return bool
-     */
-    public function isPreAuthorizationApproved(OrderTransfer $orderTransfer)
-    {
-        $paymentMethod = $this->getPaymentMethod($orderTransfer);
-        return $this
-            ->getMethodMapper($paymentMethod)
-            ->isPreAuthorizationApproved($orderTransfer);
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    public function isCaptureApproved(OrderTransfer $orderTransfer)
-    {
-        $paymentMethod = $this->getPaymentMethod($orderTransfer);
-        return $this
-            ->getMethodMapper($paymentMethod)
-            ->isCaptureApproved($orderTransfer);
-    }
-
-    /**
-     *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    public function isCancellationConfirmed(OrderTransfer $orderTransfer)
-    {
-        $paymentMethod = $this->getPaymentMethod($orderTransfer);
-        return $this
-            ->getMethodMapper($paymentMethod)
-            ->isCancellationConfirmed($orderTransfer);
-    }
-
-    /**
-     *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    public function isRefundApproved(OrderTransfer $orderTransfer)
-    {
-        $paymentMethod = $this->getPaymentMethod($orderTransfer);
-        return $this
-            ->getMethodMapper($paymentMethod)
-            ->isRefundApproved($orderTransfer);
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     * @return string
+     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay
      */
     protected function getPaymentMethod(OrderTransfer $orderTransfer)
     {
         $query = new SpyPaymentRatepayQuery();
-        $payment = $query->findByFkSalesOrder($orderTransfer->requireIdSalesOrder()->getIdSalesOrder())->getFirst();
 
-        return $payment->getPaymentType();
+        return $query->findByFkSalesOrder($orderTransfer->requireIdSalesOrder()->getIdSalesOrder())->getFirst();
     }
 
     /**
@@ -180,6 +220,62 @@ class Transaction implements TransactionInterface
         }
 
         return $this->methodMappers[$accountBrand];
+    }
+
+    /**
+     * @param string $request
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse
+     */
+    protected function sendRequest($request)
+    {
+        return new BaseResponse($this->executionAdapter->sendRequest($request));
+    }
+
+    /**
+     * According to the documentation the transaction ID is always returned, if it was sent, but it is not the fact for
+     * error cases, therefore we have to set transaction ID, so it is not lost after each error.
+     *
+     * @param \Generated\Shared\Transfer\RatepayResponseTransfer $responseTransfer
+     * @param string $transId
+     * @param string $transShortId
+     *
+     * @return void
+     */
+    protected function fixResponseTransferTransactionId(RatepayResponseTransfer $responseTransfer, $transId, $transShortId)
+    {
+        if ($responseTransfer->getTransactionId() === '' && $transId !== '') {
+            $responseTransfer->setTransactionId($transId)->setTransactionShortId($transShortId);
+        }
+    }
+
+    /**
+     * @param string $message
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Base $request
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response
+     *
+     * @return void
+     */
+    protected function logDebug($message, $request, $response)
+    {
+        $this->logger->debug(
+            $message,
+            [
+                'request_transaction_id' => $request->getHead()->getTransactionId(),
+                'request_type' => $request->getHead()->getOperation(),
+
+                'response_result_code' => $response->getResultCode(),
+                'response_result_text' => $response->getResultText(),
+                'response_transaction_id' => $response->getTransactionId(),
+                'response_transaction_short_id' => $response->getTransactionShortId(),
+                'response_reason_code' => $response->getReasonCode(),
+                'response_reason_text' => $response->getReasonText(),
+                'response_status_code' => $response->getStatusCode(),
+                'response_status_text' => $response->getStatusText(),
+
+                'request_body' => (string)$request,
+            ]
+        );
     }
 
 }

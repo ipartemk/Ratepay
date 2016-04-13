@@ -57,27 +57,5 @@ interface TransactionInterface
      *
      * @return bool
      */
-    public function isPreAuthorizationApproved(OrderTransfer $orderTransfer);
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    public function isCaptureApproved(OrderTransfer $orderTransfer);
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    public function isCancellationConfirmed(OrderTransfer $orderTransfer);
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    public function isRefundApproved(OrderTransfer $orderTransfer);
 
 }

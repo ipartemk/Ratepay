@@ -49,26 +49,6 @@ interface RatepayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     * @param int $idPayment
-     *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
-     */
-    public function reAuthorizePayment(OrderTransfer $orderTransfer, $idPayment);
-
-    /**
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     * @param int $idPayment
-     *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
-     */
-    public function revertPayment(OrderTransfer $orderTransfer, $idPayment);
-
-    /**
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
@@ -117,24 +97,6 @@ interface RatepayFacadeInterface
      *
      * @return bool
      */
-    public function isReAuthorizationApproved(OrderTransfer $orderTransfer);
-
-    /**
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    public function isReversalApproved(OrderTransfer $orderTransfer);
-
-    /**
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
     public function isCaptureApproved(OrderTransfer $orderTransfer);
 
     /**
@@ -145,5 +107,15 @@ interface RatepayFacadeInterface
      * @return bool
      */
     public function isRefundApproved(OrderTransfer $orderTransfer);
+
+
+    /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return bool
+     */
+    public function isCancellationConfirmed(OrderTransfer $orderTransfer);
 
 }

@@ -121,8 +121,8 @@ class SaverTest extends Test
             ->setZipCode('10623')
             ->setCity('Berlin');
 
-        $RatepayPaymentTransfer = new RatepayPaymentTransfer();
-        $RatepayPaymentTransfer
+        $ratepayPaymentTransfer = new RatepayPaymentTransfer();
+        $ratepayPaymentTransfer
             ->setEmail($email)
             ->setGender(SpyCustomerTableMap::COL_GENDER_MALE)
             ->setDateOfBirth('1970-01-02')
@@ -141,7 +141,7 @@ class SaverTest extends Test
         $checkoutResponseTransfer->getSaveOrder()->setIdSalesOrder($orderEntity->getIdSalesOrder());
 
         $paymentTransfer = new PaymentTransfer();
-        $paymentTransfer->setRatepay($RatepayPaymentTransfer);
+        $paymentTransfer->setRatepay($ratepayPaymentTransfer);
 
         $quoteTransfer->setPayment($paymentTransfer);
 

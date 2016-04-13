@@ -18,9 +18,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
      */
     public function testConverterData()
     {
-        $responseObject = new BaseResponse($this->getTestResponseData());
-        $exporter = new Converter();
-        $responseTransfer = $exporter->responseToTransferObject($responseObject);
+        $responseTransfer = $this->getResponseTransferObject($this->getTestPaymentConfirmResponseData());
 
         //test instance.
         $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayResponseTransfer', $responseTransfer);
@@ -43,10 +41,31 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('5QTZ.2VWD.OMWW.9D3E', $responseTransfer->getTransactionShortId());
     }
 
+    public function testResponseSuccessState()
+    {
+        $successResponseTransfer = $this->getResponseTransferObject($this->getTestPaymentConfirmResponseData());
+        $unSuccessResponseTransfer = $this->getResponseTransferObject($this->getTestPaymentConfirmUnsuccessResponseData());
+
+        $this->assertEquals(true, $successResponseTransfer->getSuccessful());
+        $this->assertNotEquals(true, $unSuccessResponseTransfer->getSuccessful());
+    }
+
     /**
-     * @return array
+     * @param string $responseXml
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    private function getTestResponseData()
+    private function getResponseTransferObject($responseXml)
+    {
+        $responseObject = new BaseResponse($responseXml);
+        $exporter = new Converter();
+        return $exporter->responseToTransferObject($responseObject);
+    }
+
+    /**
+     * @return string
+     */
+    private function getTestPaymentConfirmResponseData()
     {
         return
             '<response xmlns="urn://www.ratepay.com/payment/1_0" version="1.0">
@@ -63,6 +82,33 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
                         <reason code="303">No RMS reason code</reason>
                         <result code="400">Transaction result successful</result>
                         <customer-message>Die Prüfung war erfolgreich. Vielen Dank, dass Sie die Zahlart Rechnung gewählt haben.</customer-message>
+                    </processing>
+                </head>
+                <content />
+            </response>';
+    }
+
+
+    /**
+     * @return string
+     */
+    private function getTestPaymentConfirmUnsuccessResponseData()
+    {
+        return
+            '<response xmlns="urn://www.ratepay.com/payment/1_0" version="1.0">
+                <head>
+                    <system-id>Spryker www.spryker.dev</system-id>
+                    <transaction-id>58-201604122719694</transaction-id>
+                    <transaction-short-id>5QTZ.2VWD.OMWW.9D3E</transaction-short-id>
+                    <operation>PAYMENT_CONFIRM</operation>
+                    <response-type>PAYMENT_PERMISSION</response-type>
+                    <external />
+                    <processing>
+                        <timestamp>2016-04-12T16:27:33.000</timestamp>
+                        <status code="OK">Successfully</status>
+                        <reason code="303">XXXX</reason>
+                        <result code="401">XXXX</result>
+                        <customer-message>XXXXXXXX</customer-message>
                     </processing>
                 </head>
                 <content />

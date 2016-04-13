@@ -75,38 +75,6 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     * @param int $idPayment
-     *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
-     */
-    public function reAuthorizePayment(OrderTransfer $orderTransfer, $idPayment)
-    {
-        return $this
-            ->getFactory()
-            ->createPaymentTransactionHandler()
-            ->reAuthorizePayment($orderTransfer, $idPayment);
-    }
-
-    /**
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     * @param int $idPayment
-     *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
-     */
-    public function revertPayment(OrderTransfer $orderTransfer, $idPayment)
-    {
-        return $this
-            ->getFactory()
-            ->createPaymentTransactionHandler()
-            ->revertPayment($orderTransfer, $idPayment);
-    }
-
-    /**
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
@@ -176,38 +144,8 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createPaymentTransactionHandler()
+            ->createStatusTransaction()
             ->isPreAuthorizationApproved($orderTransfer);
-    }
-
-    /**
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    public function isReAuthorizationApproved(OrderTransfer $orderTransfer)
-    {
-        return $this
-            ->getFactory()
-            ->createPaymentTransactionHandler()
-            ->isReAuthorizationApproved($orderTransfer);
-    }
-
-    /**
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     *
-     * @return bool
-     */
-    public function isReversalApproved(OrderTransfer $orderTransfer)
-    {
-        return $this
-            ->getFactory()
-            ->createPaymentTransactionHandler()
-            ->isReversalApproved($orderTransfer);
     }
 
     /**
@@ -221,7 +159,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createPaymentTransactionHandler()
+            ->createStatusTransaction()
             ->isCaptureApproved($orderTransfer);
     }
 
@@ -236,7 +174,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createPaymentTransactionHandler()
+            ->createStatusTransaction()
             ->isRefundApproved($orderTransfer);
     }
 
@@ -251,7 +189,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createPaymentTransactionHandler()
+            ->createStatusTransaction()
             ->isCancellationConfirmed($orderTransfer);
     }
 
