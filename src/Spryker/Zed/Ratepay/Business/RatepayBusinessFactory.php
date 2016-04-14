@@ -49,7 +49,10 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         $paymentTransactionHandler = new Transaction(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
             $this->createConverter(),
-            $this->createLogger()
+            [
+                $this->createPaymentLogger(),
+                $this->createMonologFileLogger()
+            ]
         );
 
         $paymentTransactionHandler->registerMethodMapper($this->createInvoice());
@@ -88,9 +91,28 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\Ratepay\Business\Payment\Model\PaymentLogger
      */
-    protected function createLogger()
+    protected function createPaymentLogger()
     {
         return new PaymentLogger();
+    }
+    
+    /**
+     * @return \Monolog\Logger
+     */
+    protected function createMonologFileLogger()
+    {
+        $log = new Logger('ratepay');
+        $log->pushHandler($this->createMonologStreamHandler());
+
+        return $log;
+    }
+    
+    /**
+     * @return \Monolog\Handler\StreamHandler
+     */
+    protected function createMonologStreamHandler()
+    {
+        return new StreamHandler(RatepayConstants::LOGGER_STREAM_OUTPUT);
     }
     
     /**

@@ -12,7 +12,7 @@ use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PyamentRequest;
-use Spryker\Zed\Ratepay\Business\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
@@ -34,9 +34,9 @@ class Transaction implements TransactionInterface
     protected $converter;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Log\LoggerInterface
+     * @var \Psr\Log\LoggerInterface[]
      */
-    protected $logger;
+    protected $loggers;
 
     /**
      * @var array
@@ -46,16 +46,16 @@ class Transaction implements TransactionInterface
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface $executionAdapter
      * @param \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface $converter
-     * @param \Spryker\Zed\Ratepay\Business\Log\LoggerInterface $logger
+     * @param \Psr\Log\LoggerInterface[] $loggers
      */
     public function __construct(
         AdapterInterface $executionAdapter,
         ConverterInterface $converter,
-        LoggerInterface $logger
+        $loggers
     ) {
         $this->executionAdapter = $executionAdapter;
         $this->converter = $converter;
-        $this->logger = $logger;
+        $this->loggers = $loggers;
     }
 
     /**
@@ -71,7 +71,7 @@ class Transaction implements TransactionInterface
         $request = $this->getMethodMapper($paymentMethod)
             ->paymentInit();
         $response = $this->sendRequest((string)$request);
-        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_INIT, $request, $response);
+        $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_INIT, $request, $response);
         $initResponseTransfer = $this->converter->responseToTransferObject($response);
 
         if (!$initResponseTransfer->getSuccessful()) {
@@ -86,7 +86,7 @@ class Transaction implements TransactionInterface
             ->paymentRequest($quoteTransfer, $transactionId, $transactionShortId, $resultCode);
 
         $response = $this->sendRequest((string)$request);
-        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST, $request, $response);
+        $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST, $request, $response);
 
         $responseTransfer = $this->converter->responseToTransferObject($response);
         $this->fixResponseTransferTransactionId($responseTransfer, $responseTransfer->getTransactionId(), $responseTransfer->getTransactionShortId());
@@ -107,7 +107,7 @@ class Transaction implements TransactionInterface
             ->paymentConfirm($orderTransfer);
 
         $response = $this->sendRequest((string)$request);
-        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM, $request, $response);
+        $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM, $request, $response);
 
         if ($response->isSuccessful()) {
             $paymentMethod->setResultCode($response->getResultCode())->save();
@@ -128,7 +128,7 @@ class Transaction implements TransactionInterface
             ->deliveryConfirm($orderTransfer);
 
         $response = $this->sendRequest((string)$request);
-        $this->logDebug(ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM, $request, $response);
+        $this->logInfo(ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM, $request, $response);
 
         if ($response->isSuccessful()) {
             $paymentMethod->setResultCode($response->getResultCode())->save();
@@ -152,7 +152,7 @@ class Transaction implements TransactionInterface
             ->paymentCancel($orderTransfer);
 
         $response = $this->sendRequest((string)$request);
-        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_CANCEL, $request, $response);
+        $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_CANCEL, $request, $response);
 
         if ($response->isSuccessful()) {
             $paymentMethod->setResultCode($response->getResultCode())->save();
@@ -176,7 +176,7 @@ class Transaction implements TransactionInterface
             ->paymentRefund($orderTransfer);
 
         $response = $this->sendRequest((string)$request);
-        $this->logDebug(ApiConstants::REQUEST_MODEL_PAYMENT_REFUND, $request, $response);
+        $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_REFUND, $request, $response);
 
         if ($response->isSuccessful()) {
             $paymentMethod->setResultCode($response->getResultCode())->save();
@@ -257,7 +257,7 @@ class Transaction implements TransactionInterface
      *
      * @return void
      */
-    protected function logDebug($message, $request, $response)
+    protected function logInfo($message, $request, $response)
     {
         $context = [
             'order_id' => $request->getHead()->getOrderId(),
@@ -283,7 +283,9 @@ class Transaction implements TransactionInterface
             $context['payment_method'] = $request->getPayment()->getMethod();
         }
 
-        $this->logger->log($message, $context);
+        foreach ($this->loggers as $logger) {
+            $logger->info($message, $context);
+        }
     }
 
 }

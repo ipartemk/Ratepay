@@ -42,20 +42,6 @@
         <id-method-parameter value="spy_payment_ratepay_pk_seq"/>
     </table>
 
-    <table name="spy_payment_ratepay_history" phpName="SpyPaymentRatepayHistory">
-        <column name="id_payment_ratepay_history" type="INTEGER" autoIncrement="true" primaryKey="true"/>
-        <column name="fk_payment_ratepay" required="true" type="INTEGER"/>
-
-        <!-- Request history rows -->
-
-        <foreign-key name="spy_payment_ratepay-fk_payment_ratepay" foreignTable="spy_payment_ratepay" phpName="SpyPaymentRatepay">
-            <reference foreign="id_payment_ratepay" local="fk_payment_ratepay"/>
-        </foreign-key>
-
-        <behavior name="timestampable"/>
-        <id-method-parameter value="spy_payment_ratepay_history_pk_seq"/>
-    </table>
-
     <table name="spy_payment_ratepay_log" phpName="SpyPaymentRatepayLog">
         <column name="id_payment_ratepay_log" type="INTEGER" autoIncrement="true" primaryKey="true"/>
 
