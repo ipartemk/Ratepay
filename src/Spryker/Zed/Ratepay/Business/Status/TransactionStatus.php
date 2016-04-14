@@ -8,11 +8,26 @@
 namespace Spryker\Zed\Ratepay\Business\Status;
 
 use Generated\Shared\Transfer\OrderTransfer;
-use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
+use \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
 
 class TransactionStatus implements TransactionStatusInterface
 {
+
+    /**
+     * @var \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface $queryContainer
+     */
+    protected $queryContainer;
+
+    /**
+     * @param \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface $queryContainer
+     *
+     */
+    public function __construct(
+        RatepayQueryContainerInterface $queryContainer
+    ) {
+        $this->queryContainer = $queryContainer;
+    }
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
@@ -21,8 +36,11 @@ class TransactionStatus implements TransactionStatusInterface
      */
     protected function loadOrderPayment(OrderTransfer $orderTransfer)
     {
-        $query = new SpyPaymentRatepayQuery();
-        return $query->findByFkSalesOrder($orderTransfer->requireIdSalesOrder()->getIdSalesOrder())->getFirst();
+        return $this->queryContainer
+            ->queryPayments()
+            ->findByFkSalesOrder(
+                $orderTransfer->requireIdSalesOrder()->getIdSalesOrder()
+            )->getFirst();
     }
 
     /**

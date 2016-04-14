@@ -52,7 +52,8 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
             [
                 $this->createPaymentLogger(),
                 $this->createMonologFileLogger()
-            ]
+            ],
+            $this->getQueryContainer()
         );
 
         $paymentTransactionHandler->registerMethodMapper($this->createInvoice());
@@ -67,7 +68,9 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
      */
     public function createStatusTransaction()
     {
-        return new TransactionStatus();
+        return new TransactionStatus(
+            $this->getQueryContainer()
+        );
     }
 
     /**
@@ -95,7 +98,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         return new PaymentLogger();
     }
-    
+
     /**
      * @return \Monolog\Logger
      */
@@ -106,7 +109,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
 
         return $log;
     }
-    
+
     /**
      * @return \Monolog\Handler\StreamHandler
      */
@@ -114,7 +117,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         return new StreamHandler(RatepayConstants::LOGGER_STREAM_OUTPUT);
     }
-    
+
     /**
      * @return \Spryker\Zed\Ratepay\Business\Order\SaverInterface
      */

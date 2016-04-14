@@ -8,10 +8,10 @@
 namespace Unit\Spryker\Zed\Ratepay\Business\Payment\MethodMapper;
 
 use Generated\Shared\Transfer\PaymentTransfer;
-use Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer;
-use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice;
+use Generated\Shared\Transfer\RatepayPaymentElvTransfer;
+use Spryker\Zed\Ratepay\Business\Payment\Method\Elv;
 
-class InvoiceTest extends AbstractMethodMapperTest
+class ElvTest extends AbstractMethodMapperTest
 {
 
     /**
@@ -19,7 +19,7 @@ class InvoiceTest extends AbstractMethodMapperTest
      */
     public function getPaymentMethod()
     {
-        return new Invoice(
+        return new Elv(
             $this->createApiRequestFactory(),
             $this->createConverter(),
             $this->getQueryContainerMock()
@@ -31,18 +31,18 @@ class InvoiceTest extends AbstractMethodMapperTest
      */
     protected function getPaymentTransfer()
     {
-        $paymentTransfer = new RatepayPaymentInvoiceTransfer();
+        $paymentTransfer = new RatepayPaymentElvTransfer();
         $this->setRatepayPaymentEntityData($paymentTransfer);
 
         $payment = new PaymentTransfer();
-        $payment->setRatepayInvoice($paymentTransfer);
+        $payment->setRatepayElv($paymentTransfer);
 
         return $payment;
     }
 
     /**
      *
-     * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay|\Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer $ratepayPaymentEntity
+     * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay|\Generated\Shared\Transfer\RatepayPaymentElvTransfer $ratepayPaymentEntity
      *
      * @return void
      */
@@ -55,10 +55,14 @@ class InvoiceTest extends AbstractMethodMapperTest
             ->setCustomerAllowCreditInquiry(true)
             ->setGender('M')
             ->setIpAddress('127.0.0.1')
-            ->setPaymentType('INVOICE')
+            ->setPaymentType('ELV')
             ->setTransactionId('58-201604122719694')
             ->setTransactionShortId('5QTZ.2VWD.OMWW.9D3E')
-            ->setDeviceFingerprint('122356');
+            ->setDeviceFingerprint('122356')
+
+            ->setBankAccountBic('XXXXXXXXXXX')
+            ->setBankAccountIban('XXXX XXXX XXXX XXXX XXXX XX')
+            ->setBankAccountHolder('TestHolder');
     }
 
     /**
@@ -68,10 +72,14 @@ class InvoiceTest extends AbstractMethodMapperTest
      */
     protected function testPaymentSpecificRequestData($request)
     {
-        $this->assertEquals('INVOICE', $request->getPayment()->getMethod());
+        $this->assertEquals('ELV', $request->getPayment()->getMethod());
 
         $this->assertNull($request->getPayment()->getInstallmentDetails());
         $this->assertNull($request->getPayment()->getDebitPayType());
+
+        $this->assertEquals('TestHolder', $request->getCustomer()->getBankAccount()->getOwner());
+        $this->assertEquals('XXXXXXXXXXX', $request->getCustomer()->getBankAccount()->getBicSwift());
+        $this->assertEquals('XXXX XXXX XXXX XXXX XXXX XX', $request->getCustomer()->getBankAccount()->getIban());
     }
 
 }

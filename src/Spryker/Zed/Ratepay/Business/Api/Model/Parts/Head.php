@@ -274,16 +274,16 @@ class Head extends AbstractRequest
 
     /**
      * @param int $orderId
-     * 
+     *
      * @return $this
      */
     public function setOrderId($orderId)
     {
         $this->orderId = $orderId;
-        
+
         return $this;
     }
-    
+
     /**
      * @return string
      */

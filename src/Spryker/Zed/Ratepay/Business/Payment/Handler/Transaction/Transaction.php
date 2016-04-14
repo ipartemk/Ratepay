@@ -10,15 +10,14 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
-use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
-use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PyamentRequest;
-use Psr\Log\LoggerInterface;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
+use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PyamentRequest;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;
 use Spryker\Zed\Ratepay\Business\Exception\NoMethodMapperException;
 use Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface;
+use Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
 
 class Transaction implements TransactionInterface
 {
@@ -39,6 +38,11 @@ class Transaction implements TransactionInterface
     protected $loggers;
 
     /**
+     * @var \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface $queryContainer
+     */
+    protected $queryContainer;
+
+    /**
      * @var array
      */
     protected $methodMappers = [];
@@ -47,15 +51,18 @@ class Transaction implements TransactionInterface
      * @param \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface $executionAdapter
      * @param \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface $converter
      * @param \Psr\Log\LoggerInterface[] $loggers
+     * @param \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface $queryContainer
      */
     public function __construct(
         AdapterInterface $executionAdapter,
         ConverterInterface $converter,
-        $loggers
+        $loggers,
+        RatepayQueryContainerInterface $queryContainer
     ) {
         $this->executionAdapter = $executionAdapter;
         $this->converter = $converter;
         $this->loggers = $loggers;
+        $this->queryContainer = $queryContainer;
     }
 
     /**
@@ -192,9 +199,11 @@ class Transaction implements TransactionInterface
      */
     protected function getPaymentMethod(OrderTransfer $orderTransfer)
     {
-        $query = new SpyPaymentRatepayQuery();
-
-        return $query->findByFkSalesOrder($orderTransfer->requireIdSalesOrder()->getIdSalesOrder())->getFirst();
+        return $this->queryContainer
+            ->queryPayments()
+            ->findByFkSalesOrder(
+                $orderTransfer->requireIdSalesOrder()->getIdSalesOrder()
+            )->getFirst();
     }
 
     /**

@@ -8,10 +8,10 @@
 namespace Unit\Spryker\Zed\Ratepay\Business\Payment\MethodMapper;
 
 use Generated\Shared\Transfer\PaymentTransfer;
-use Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer;
-use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice;
+use Generated\Shared\Transfer\RatepayPaymentPrepaymentTransfer;
+use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment;
 
-class InvoiceTest extends AbstractMethodMapperTest
+class PrepaymentTest extends AbstractMethodMapperTest
 {
 
     /**
@@ -19,7 +19,7 @@ class InvoiceTest extends AbstractMethodMapperTest
      */
     public function getPaymentMethod()
     {
-        return new Invoice(
+        return new Prepayment(
             $this->createApiRequestFactory(),
             $this->createConverter(),
             $this->getQueryContainerMock()
@@ -31,18 +31,18 @@ class InvoiceTest extends AbstractMethodMapperTest
      */
     protected function getPaymentTransfer()
     {
-        $paymentTransfer = new RatepayPaymentInvoiceTransfer();
+        $paymentTransfer = new RatepayPaymentPrepaymentTransfer();
         $this->setRatepayPaymentEntityData($paymentTransfer);
 
         $payment = new PaymentTransfer();
-        $payment->setRatepayInvoice($paymentTransfer);
+        $payment->setRatepayPrepayment($paymentTransfer);
 
         return $payment;
     }
 
     /**
      *
-     * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay|\Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer $ratepayPaymentEntity
+     * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay|\Generated\Shared\Transfer\RatepayPaymentPrepaymentTransfer $ratepayPaymentEntity
      *
      * @return void
      */
@@ -55,7 +55,7 @@ class InvoiceTest extends AbstractMethodMapperTest
             ->setCustomerAllowCreditInquiry(true)
             ->setGender('M')
             ->setIpAddress('127.0.0.1')
-            ->setPaymentType('INVOICE')
+            ->setPaymentType('PREPAYMENT')
             ->setTransactionId('58-201604122719694')
             ->setTransactionShortId('5QTZ.2VWD.OMWW.9D3E')
             ->setDeviceFingerprint('122356');
@@ -68,7 +68,7 @@ class InvoiceTest extends AbstractMethodMapperTest
      */
     protected function testPaymentSpecificRequestData($request)
     {
-        $this->assertEquals('INVOICE', $request->getPayment()->getMethod());
+        $this->assertEquals('PREPAYMENT', $request->getPayment()->getMethod());
 
         $this->assertNull($request->getPayment()->getInstallmentDetails());
         $this->assertNull($request->getPayment()->getDebitPayType());

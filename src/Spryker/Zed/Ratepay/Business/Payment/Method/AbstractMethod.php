@@ -109,8 +109,7 @@ abstract class AbstractMethod implements MethodInterface
         $request->getHead()->
             setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId())
             ->setCustomerId($quoteTransfer->getCustomer()->getIdCustomer())
-            ->setDeviceFingerprint($paymentData->requireDeviceFingerprint()->getDeviceFingerprint())
-        ;
+            ->setDeviceFingerprint($paymentData->requireDeviceFingerprint()->getDeviceFingerprint());
         $this->converter->mapPayment($quoteTransfer, $paymentData, $request->getPayment());
         $this->converter->mapCustomer($quoteTransfer, $paymentData, $request->getCustomer());
         $this->mapShoppingBasketAndItems($quoteTransfer, $paymentData, $request);
