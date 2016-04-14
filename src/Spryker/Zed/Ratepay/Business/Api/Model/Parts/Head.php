@@ -50,6 +50,11 @@ class Head extends AbstractRequest
     protected $operationSubstring;
 
     /**
+     * @var int
+     */
+    protected $orderId;
+
+    /**
      * @var string
      */
     protected $externalOrderId;
@@ -259,6 +264,26 @@ class Head extends AbstractRequest
         return $this->operationSubstring;
     }
 
+    /**
+     * @return int
+     */
+    public function getOrderId()
+    {
+        return $this->orderId;
+    }
+
+    /**
+     * @param int $orderId
+     * 
+     * @return $this
+     */
+    public function setOrderId($orderId)
+    {
+        $this->orderId = $orderId;
+        
+        return $this;
+    }
+    
     /**
      * @return string
      */

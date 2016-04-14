@@ -59,24 +59,23 @@
     <table name="spy_payment_ratepay_log" phpName="SpyPaymentRatepayLog">
         <column name="id_payment_ratepay_log" type="INTEGER" autoIncrement="true" primaryKey="true"/>
 
-        <column name="log_message" type="VARCHAR"/>
-        <column name="log_level" type="VARCHAR"/>
-
         <column name="fk_sales_order" type="INTEGER"/>
-        <column name="request_payment_type" required="true" type="ENUM" valueSet="INVOICE, INSTALLMENT, ELV, PREPAYMENT"/>
-        <column name="request_type" required="true" type="ENUM" valueSet="INIT"/>
-        <column name="request_transaction_id" required="true" type="VARCHAR" size="50"/>
-        <column name="request_transaction_short_id" required="true" type="VARCHAR" size="50"/>
+        <column name="payment_method" type="ENUM" valueSet="INVOICE, INSTALLMENT, ELV, PREPAYMENT"/>
+        <column name="request_type" required="true" type="ENUM" valueSet="PAYMENT_INIT, PAYMENT_REQUEST, PAYMENT_CONFIRM, PAYMENT_CHANGE, CONFIRMATION_DELIVER, PAYMENT_CANCEL, PAYMENT_REFUND"/>
+        <column name="request_transaction_id" type="VARCHAR" size="50"/>
+        <column name="request_transaction_short_id" type="VARCHAR" size="50"/>
+        <column name="request_body" type="LONGVARCHAR" />
 
         <column name="response_type" type="VARCHAR"/>
-        <column name="response_transaction_id" type="VARCHAR"/>
-        <column name="response_transaction_short_id" type="VARCHAR"/>
-        <column name="response_status_code" type="INTEGER"/>
-        <column name="response_status_text" type="VARCHAR"/>
-        <column name="response_reason_code" type="INTEGER"/>
-        <column name="response_reason_text" type="VARCHAR"/>
         <column name="response_result_code" type="INTEGER"/>
         <column name="response_result_text" type="VARCHAR"/>
+        <column name="response_transaction_id" type="VARCHAR"/>
+        <column name="response_transaction_short_id" type="VARCHAR"/>
+        <column name="response_reason_code" type="INTEGER"/>
+        <column name="response_reason_text" type="VARCHAR"/>
+        <column name="response_status_code" type="INTEGER"/>
+        <column name="response_status_text" type="VARCHAR"/>
+        <column name="response_customer_message" type="VARCHAR"/>
 
         <foreign-key name="spy_payment_ratepay_log-fk_sales_order" foreignTable="spy_sales_order" phpName="SpySalesOrder">
             <reference foreign="id_sales_order" local="fk_sales_order"/>

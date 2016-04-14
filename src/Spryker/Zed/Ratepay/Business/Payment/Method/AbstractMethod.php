@@ -146,6 +146,7 @@ abstract class AbstractMethod implements MethodInterface
          */
         $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM);
         $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
+        $request->getHead()->setOrderId($orderTransfer->requireOrderReference()->getIdSalesOrder());
         $request->getHead()->setExternalOrderId($orderTransfer->requireOrderReference()->getOrderReference());
 
         return $request;
@@ -186,6 +187,7 @@ abstract class AbstractMethod implements MethodInterface
          */
         $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_PAYMENT_CANCEL);
         $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
+        $request->getHead()->setOrderId($orderTransfer->requireOrderReference()->getIdSalesOrder());
         $request->getHead()->setExternalOrderId($orderTransfer->requireOrderReference()->getOrderReference());
         $this->mapShoppingBasketAndItems($orderTransfer, $paymentData, $request);
 
@@ -207,6 +209,7 @@ abstract class AbstractMethod implements MethodInterface
          */
         $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_PAYMENT_REFUND);
         $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
+        $request->getHead()->setOrderId($orderTransfer->requireOrderReference()->getIdSalesOrder());
         $request->getHead()->setExternalOrderId($orderTransfer->requireOrderReference()->getOrderReference());
         $this->mapShoppingBasketAndItems($orderTransfer, $paymentData, $request);
 

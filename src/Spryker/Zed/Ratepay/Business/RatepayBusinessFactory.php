@@ -21,6 +21,7 @@ use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Elv as Elv;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice as Invoice;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment as Prepayment;
+use Spryker\Zed\Ratepay\Business\Payment\Model\PaymentLogger;
 use Spryker\Zed\Ratepay\Business\Status\TransactionStatus as TransactionStatus;
 
 /**
@@ -48,7 +49,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         $paymentTransactionHandler = new Transaction(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
             $this->createConverter(),
-            $this->createMonolog()
+            $this->createLogger()
         );
 
         $paymentTransactionHandler->registerMethodMapper($this->createInvoice());
@@ -85,24 +86,13 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Monolog\Handler\StreamHandler
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Model\PaymentLogger
      */
-    protected function createMonologWriter()
+    protected function createLogger()
     {
-        return new StreamHandler(RatepayConstants::LOGGER_STREAM_OUTPUT);
+        return new PaymentLogger();
     }
-
-    /**
-     * @return \Monolog\Logger
-     */
-    protected function createMonolog()
-    {
-        $log = new Logger('ratepay');
-        $log->pushHandler($this->createMonologWriter());
-
-        return $log;
-    }
-
+    
     /**
      * @return \Spryker\Zed\Ratepay\Business\Order\SaverInterface
      */

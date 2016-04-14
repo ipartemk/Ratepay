@@ -11,7 +11,8 @@ use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
-use Psr\Log\LoggerInterface;
+use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PyamentRequest;
+use Spryker\Zed\Ratepay\Business\Log\LoggerInterface;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
@@ -33,7 +34,7 @@ class Transaction implements TransactionInterface
     protected $converter;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var \Spryker\Zed\Ratepay\Business\Log\LoggerInterface
      */
     protected $logger;
 
@@ -45,7 +46,7 @@ class Transaction implements TransactionInterface
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface $executionAdapter
      * @param \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface $converter
-     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Spryker\Zed\Ratepay\Business\Log\LoggerInterface $logger
      */
     public function __construct(
         AdapterInterface $executionAdapter,
@@ -258,24 +259,31 @@ class Transaction implements TransactionInterface
      */
     protected function logDebug($message, $request, $response)
     {
-        $this->logger->debug(
-            $message,
-            [
-                'request_transaction_id' => $request->getHead()->getTransactionId(),
-                'request_type' => $request->getHead()->getOperation(),
+        $context = [
+            'order_id' => $request->getHead()->getOrderId(),
 
-                'response_result_code' => $response->getResultCode(),
-                'response_result_text' => $response->getResultText(),
-                'response_transaction_id' => $response->getTransactionId(),
-                'response_transaction_short_id' => $response->getTransactionShortId(),
-                'response_reason_code' => $response->getReasonCode(),
-                'response_reason_text' => $response->getReasonText(),
-                'response_status_code' => $response->getStatusCode(),
-                'response_status_text' => $response->getStatusText(),
+            'payment_method' => null,
+            'request_type' => $request->getHead()->getOperation(),
+            'request_transaction_id' => $request->getHead()->getTransactionId(),
+            'request_transaction_short_id' => $request->getHead()->getTransactionShortId(),
+            'request_body' => (string)$request,
 
-                'request_body' => (string)$request,
-            ]
-        );
+            'response_type' => $response->getResponseType(),
+            'response_result_code' => $response->getResultCode(),
+            'response_result_text' => $response->getResultText(),
+            'response_transaction_id' => $response->getTransactionId(),
+            'response_transaction_short_id' => $response->getTransactionShortId(),
+            'response_reason_code' => $response->getReasonCode(),
+            'response_reason_text' => $response->getReasonText(),
+            'response_status_code' => $response->getStatusCode(),
+            'response_status_text' => $response->getStatusText(),
+            'response_customer_message' => $response->getCustomerMessage(),
+        ];
+        if ($request instanceof PyamentRequest) {
+            $context['payment_method'] = $request->getPayment()->getMethod();
+        }
+
+        $this->logger->log($message, $context);
     }
 
 }
