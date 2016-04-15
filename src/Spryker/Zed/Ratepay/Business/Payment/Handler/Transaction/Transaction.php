@@ -10,6 +10,7 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
+use Psr\Log\LoggerInterface;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
@@ -33,9 +34,9 @@ class Transaction implements TransactionInterface
     protected $converter;
 
     /**
-     * @var \Psr\Log\LoggerInterface[]
+     * @var \Psr\Log\LoggerInterface
      */
-    protected $loggers;
+    protected $logger;
 
     /**
      * @var \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface $queryContainer
@@ -50,18 +51,18 @@ class Transaction implements TransactionInterface
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface $executionAdapter
      * @param \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface $converter
-     * @param \Psr\Log\LoggerInterface[] $loggers
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface $queryContainer
      */
     public function __construct(
         AdapterInterface $executionAdapter,
         ConverterInterface $converter,
-        $loggers,
+        LoggerInterface $logger,
         RatepayQueryContainerInterface $queryContainer
     ) {
         $this->executionAdapter = $executionAdapter;
         $this->converter = $converter;
-        $this->loggers = $loggers;
+        $this->logger = $logger;
         $this->queryContainer = $queryContainer;
     }
 
@@ -72,7 +73,11 @@ class Transaction implements TransactionInterface
      */
     public function preCheckPayment(QuoteTransfer $quoteTransfer)
     {
-        $paymentMethod = $quoteTransfer->requirePayment()->getPayment()->requirePaymentMethod()->getPaymentMethod();
+        $paymentMethod = $quoteTransfer
+            ->requirePayment()
+            ->getPayment()
+            ->requirePaymentMethod()
+            ->getPaymentMethod();
 
         //init payment method call.
         $request = $this->getMethodMapper($paymentMethod)
@@ -292,9 +297,7 @@ class Transaction implements TransactionInterface
             $context['payment_method'] = $request->getPayment()->getMethod();
         }
 
-        foreach ($this->loggers as $logger) {
-            $logger->info($message, $context);
-        }
+        $this->logger->info($message, $context);
     }
 
 }

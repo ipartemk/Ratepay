@@ -49,10 +49,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         $paymentTransactionHandler = new Transaction(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
             $this->createConverter(),
-            [
-                $this->createPaymentLogger(),
-                $this->createMonologFileLogger()
-            ],
+            $this->createPaymentLogger(),
             $this->getQueryContainer()
         );
 
@@ -97,25 +94,6 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     protected function createPaymentLogger()
     {
         return new PaymentLogger();
-    }
-
-    /**
-     * @return \Monolog\Logger
-     */
-    protected function createMonologFileLogger()
-    {
-        $log = new Logger('ratepay');
-        $log->pushHandler($this->createMonologStreamHandler());
-
-        return $log;
-    }
-
-    /**
-     * @return \Monolog\Handler\StreamHandler
-     */
-    protected function createMonologStreamHandler()
-    {
-        return new StreamHandler(RatepayConstants::LOGGER_STREAM_OUTPUT);
     }
 
     /**
