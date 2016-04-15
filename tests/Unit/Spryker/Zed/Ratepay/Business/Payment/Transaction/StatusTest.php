@@ -103,15 +103,6 @@ class StatusTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array $constantResults
-     * @return void
-     */
-    protected function executeTests($constantResults)
-    {
-
-    }
-
-    /**
      * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay $queryContainerMock
      *
      * @return \Spryker\Zed\Ratepay\Business\Status\TransactionStatus

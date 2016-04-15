@@ -125,14 +125,10 @@ class Converter implements ConverterInterface
         $basket->setAmount($grandTotal);
         $basket->setCurrency($ratepayPaymentTransfer->requireCurrencyIso3()->getCurrencyIso3());
 
-        $shippingTaxRate = $this->centsToDecimal(0);
         $shippingUnitPrice = $this->centsToDecimal($totalsTransfer->requireExpenseTotal()->getExpenseTotal());
-        $basket->setShippingTaxRate($shippingTaxRate);
         $basket->setShippingUnitPrice($shippingUnitPrice);
 
-        $discountTaxRate = $this->centsToDecimal(0);
         $discountUnitPrice = $this->centsToDecimal($totalsTransfer->requireDiscountTotal()->getDiscountTotal());
-        $basket->setDiscountTaxRate($discountTaxRate);
         $basket->setDiscountUnitPrice($discountUnitPrice);
     }
 

@@ -42,7 +42,7 @@ class ShoppingBasket extends AbstractRequest
     /**
      * @var float
      */
-    protected $shippingTaxRate;
+    protected $shippingTaxRate = 0;
 
     /**
      * @var string
@@ -57,7 +57,7 @@ class ShoppingBasket extends AbstractRequest
     /**
      * @var float
      */
-    protected $discountTaxRate;
+    protected $discountTaxRate = 0;
 
     /**
      * @var string
