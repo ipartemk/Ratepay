@@ -9,7 +9,6 @@ namespace Unit\Spryker\Zed\Ratepay\Business\Api\Response;
 
 use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;
-use Unit\Spryker\Zed\Ratepay\Business\Api\Response\Response;
 
 class ConverterTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,7 +18,6 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
      */
     public function testConverterData()
     {
-        $re= new Response();
         $responseTransfer = $this->getResponseTransferObject(Response::getTestPaymentConfirmResponseData());
 
         //test instance.

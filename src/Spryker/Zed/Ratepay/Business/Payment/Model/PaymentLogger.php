@@ -19,7 +19,7 @@ class PaymentLogger implements LoggerInterface
      */
     public function emergency($message, array $context = [])
     {
-        $this->persist($context);
+        $this->persist($message, $context);
     }
 
     /**
@@ -29,7 +29,7 @@ class PaymentLogger implements LoggerInterface
      */
     public function alert($message, array $context = [])
     {
-        $this->persist($context);
+        $this->persist($message, $context);
     }
 
     /**
@@ -39,7 +39,7 @@ class PaymentLogger implements LoggerInterface
      */
     public function critical($message, array $context = [])
     {
-        $this->persist($context);
+        $this->persist($message, $context);
     }
 
     /**
@@ -49,7 +49,7 @@ class PaymentLogger implements LoggerInterface
      */
     public function error($message, array $context = [])
     {
-        $this->persist($context);
+        $this->persist($message, $context);
     }
 
     /**
@@ -59,7 +59,7 @@ class PaymentLogger implements LoggerInterface
      */
     public function warning($message, array $context = [])
     {
-        $this->persist($context);
+        $this->persist($message, $context);
     }
 
     /**
@@ -69,7 +69,7 @@ class PaymentLogger implements LoggerInterface
      */
     public function notice($message, array $context = [])
     {
-        $this->persist($context);
+        $this->persist($message, $context);
     }
 
     /**
@@ -79,7 +79,7 @@ class PaymentLogger implements LoggerInterface
      */
     public function info($message, array $context = [])
     {
-        $this->persist($context);
+        $this->persist($message, $context);
     }
 
     /**
@@ -89,7 +89,7 @@ class PaymentLogger implements LoggerInterface
      */
     public function debug($message, array $context = [])
     {
-        $this->persist($context);
+        $this->persist($message, $context);
     }
 
     /**
@@ -100,19 +100,21 @@ class PaymentLogger implements LoggerInterface
      */
     public function log($level, $message, array $context = [])
     {
-        $this->persist($context);
+        $this->persist($message, $context);
     }
 
     /**
+     * @param string $message
      * @param array $context
      * @return null
      */
-    protected function persist(array $context = [])
+    protected function persist($message, array $context = [])
     {
         $paymentLogEntity = new SpyPaymentRatepayLog();
 
         $paymentLogEntity->setFkSalesOrder($context['order_id']);
-
+        $paymentLogEntity->setMessage($message);
+        
         $paymentLogEntity->setPaymentMethod($context['payment_method']);
         $paymentLogEntity->setRequestType($context['request_type']);
         $paymentLogEntity->setRequestTransactionId($context['request_transaction_id']);

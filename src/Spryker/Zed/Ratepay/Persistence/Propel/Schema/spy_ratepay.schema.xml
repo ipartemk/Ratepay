@@ -47,6 +47,8 @@
         <column name="id_payment_ratepay_log" type="INTEGER" autoIncrement="true" primaryKey="true"/>
 
         <column name="fk_sales_order" type="INTEGER"/>
+        <column name="message" type="VARCHAR" />
+
         <column name="payment_method" type="ENUM" valueSet="INVOICE, INSTALLMENT, ELV, PREPAYMENT"/>
         <column name="request_type" required="true" type="ENUM" valueSet="PAYMENT_INIT, PAYMENT_REQUEST, PAYMENT_CONFIRM, PAYMENT_CHANGE, CONFIRMATION_DELIVER, PAYMENT_CANCEL, PAYMENT_REFUND"/>
         <column name="request_transaction_id" type="VARCHAR" size="50"/>

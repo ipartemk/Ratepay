@@ -20,7 +20,7 @@ class RatepayQueryContainer extends AbstractQueryContainer implements RatepayQue
      *
      * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery
      */
-    public function queryPayments()
+    public function queryPayments() 
     {
         return $this->getFactory()->createPaymentRatepayQuery();
     }
