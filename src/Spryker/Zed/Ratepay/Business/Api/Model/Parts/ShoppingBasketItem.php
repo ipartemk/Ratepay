@@ -56,6 +56,16 @@ class ShoppingBasketItem extends AbstractRequest
     protected $productOptions = [];
 
     /**
+     * @var string
+     */
+    protected $description;
+
+    /**
+     * @var string
+     */
+    protected $descriptionAddition;
+
+    /**
      * @return array
      */
     protected function buildData()
@@ -69,10 +79,13 @@ class ShoppingBasketItem extends AbstractRequest
             '@discount' => $this->getDiscount() * self::ITEM_DISCOUNT_COEFFICIENT,
             '#' => $this->getItemName()
         ];
-        if (count($this->getProductOptions())) {
-            $return['@description-addition'] = implode("; ", $this->getProductOptions());
+        if ($this->getDescription() !== null) {
+            $return['@description'] = $this->getDescription();
         }
-
+        if ($this->getDescriptionAddition() !== null) {
+            $return['@description-addition'] = $this->getDescriptionAddition();
+        }
+        
         return $return;
     }
 
@@ -249,6 +262,45 @@ class ShoppingBasketItem extends AbstractRequest
     public function setProductOptions($productOptions)
     {
         $this->productOptions = $productOptions;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescriptionAddition()
+    {
+        return $this->descriptionAddition;
+    }
+
+    /**
+     * @param string $descriptionAddition
+     *
+     * @return $this
+     */
+    public function setDescriptionAddition($descriptionAddition)
+    {
+        $this->descriptionAddition = $descriptionAddition;
 
         return $this;
     }

@@ -292,5 +292,5 @@ class ShoppingBasket extends AbstractRequest
 
         return $this;
     }
-
+    
 }

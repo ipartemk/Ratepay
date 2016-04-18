@@ -15,6 +15,7 @@
         <property name="gender" type="string"/>
         <property name="ipAddress" type="string"/>
         <property name="deviceFingerprint" type="string"/>
+        <property name="deviceIdentSId" type="string"/>
 
         <!-- These should be here, because then they are easily mapped to Symfony forms data source -->
         <property name="dateOfBirth" type="string"/>
@@ -31,6 +32,7 @@
         <property name="gender" type="string"/>
         <property name="ipAddress" type="string"/>
         <property name="deviceFingerprint" type="string"/>
+        <property name="deviceIdentSId" type="string"/>
 
         <property name="bankAccountHolder" type="string"/>
         <property name="bankAccountBic" type="string"/>
@@ -51,6 +53,7 @@
         <property name="gender" type="string"/>
         <property name="ipAddress" type="string"/>
         <property name="deviceFingerprint" type="string"/>
+        <property name="deviceIdentSId" type="string"/>
 
         <!-- These should be here, because then they are easily mapped to Symfony forms data source -->
         <property name="dateOfBirth" type="string"/>
@@ -67,6 +70,7 @@
         <property name="gender" type="string"/>
         <property name="ipAddress" type="string"/>
         <property name="deviceFingerprint" type="string"/>
+        <property name="deviceIdentSId" type="string"/>
 
         <property name="customer" type="RatepayPaymentCustomer"/>
 
@@ -105,6 +109,7 @@
     <transfer name="Payment">
         <property name="ratepayInvoice" type="RatepayPaymentInvoice"/>
         <property name="ratepayElv" type="RatepayPaymentElv"/>
+        <property name="ratepayInstallment" type="RatepayPaymentInstallment"/>
         <property name="ratepayPrepayment" type="RatepayPaymentPrepayment"/>
     </transfer>
 
@@ -131,6 +136,8 @@
         <property name="taxRate" type="float" />
         <property name="unitGrossPriceWithProductOptionAndDiscountAmounts" type="int" />
         <property name="unitTotalDiscountAmountWithProductOption" type="int" />
+        <property name="description" type="string" />
+        <property name="descriptionAddition" type="string" />
     </transfer>
 
     <!-- Data dependency on the Customer transfer object -->

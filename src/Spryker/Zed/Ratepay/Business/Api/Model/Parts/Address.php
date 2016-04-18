@@ -63,10 +63,8 @@ class Address extends AbstractRequest
      */
     protected function buildData()
     {
-        return [
+        $result = [
             '@type' => $this->getAddressType(),
-            'first-name' => $this->getFirstName(),
-            'last-name' => $this->getLastName(),
             'street' => $this->getStreet(),
             'street-additional' => $this->getStreetAdditional(),
             'street-number' => $this->getStreetNumber(),
@@ -74,6 +72,14 @@ class Address extends AbstractRequest
             'city' => $this->getCity(),
             'country-code' => $this->getCountryCode(),
         ];
+        if ($this->getFirstName() !== null) {
+            $result['first-name'] = $this->getFirstName();
+        }
+        if ($this->getLastName() !== null) {
+            $result['last-name'] = $this->getLastName();
+        }
+
+        return $result;
     }
 
     /**

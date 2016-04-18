@@ -50,7 +50,11 @@ class Converter implements ConverterInterface
             ->setEmail($customerTransfer->requireEmail()->getEmail())
             ->setPhone($quoteTransfer->requireBillingAddress()->getBillingAddress()->requirePhone()->getPhone());
 
-        $this->mapAddress($billingAddress, ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_BILLING, $customer->getBillingAddress());
+        $this->mapAddress(
+            $billingAddress,
+            ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_BILLING,
+            $customer->getBillingAddress()
+        );
         $this->mapAddress(
             $quoteTransfer->requireShippingAddress()->getShippingAddress(),
             ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_DELIVERY,
@@ -68,14 +72,19 @@ class Converter implements ConverterInterface
     public function mapAddress(AddressTransfer $addressTransfer, $type, Address $address)
     {
         $address->setAddressType($type)
-            ->setFirstName($addressTransfer->requireFirstName()->getFirstName())
-            ->setLastName($addressTransfer->requireLastName()->getLastName())
             ->setCity($addressTransfer->requireCity()->getCity())
             ->setCountryCode($addressTransfer->requireIso2Code()->getIso2Code())
             ->setStreet($addressTransfer->requireAddress1()->getAddress1())
             ->setStreetAdditional($addressTransfer->getAddress3()) // This is optional.
             ->setStreetNumber($addressTransfer->requireAddress2()->getAddress2())
-            ->setZipCode($addressTransfer->requireZipCode()->getZipCode());
+            ->setZipCode($addressTransfer->requireZipCode()->getZipCode())
+        ;
+        if ($type != ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_BILLING) {
+            $address
+                ->setFirstName($addressTransfer->requireFirstName()->getFirstName())
+                ->setLastName($addressTransfer->requireLastName()->getLastName())
+            ;
+        }
     }
 
     /**
@@ -145,6 +154,8 @@ class Converter implements ConverterInterface
         $basketItem->setUniqueArticleNumber($itemTransfer->requireGroupKey()->getGroupKey());
         $basketItem->setQuantity($itemTransfer->requireQuantity()->getQuantity());
         $basketItem->setTaxRate($itemTransfer->requireTaxRate()->getTaxRate());
+        $basketItem->setDescription($itemTransfer->getDescription());
+        $basketItem->setDescriptionAddition($itemTransfer->getDescriptionAddition());
 
         $itemPrice = $this->centsToDecimal($itemTransfer->requireUnitGrossPriceWithProductOptions()->getUnitGrossPriceWithProductOptions());
         $basketItem->setUnitPriceGross($itemPrice);
