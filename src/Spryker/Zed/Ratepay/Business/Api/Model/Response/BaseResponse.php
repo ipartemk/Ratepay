@@ -38,6 +38,13 @@ class BaseResponse implements ResponseInterface
         return (string)$this->xmlObject->head->processing->{'customer-message'};
     }
 
+    /**
+     * @return string
+     */
+    public function getPaymentMethod()
+    {
+        return (string)$this->xmlObject->content->payment['method'];
+    }
 
     /**
      * @return bool

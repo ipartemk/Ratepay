@@ -188,7 +188,8 @@ class Converter implements ConverterInterface
             ->setStatusText($response->getStatusText())
             ->setResultCode($response->getResultCode())
             ->setResultText($response->getResultText())
-            ->setCustomerMessage($response->getCustomerMessage());
+            ->setCustomerMessage($response->getCustomerMessage())
+            ->setPaymentMethod($response->getPaymentMethod());
 
         return $responseTransfer;
     }

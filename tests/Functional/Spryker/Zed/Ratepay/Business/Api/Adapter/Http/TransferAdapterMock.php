@@ -22,7 +22,7 @@ class TransferAdapterMock extends AbstractAdapterMock
      */
     public function getFailureResponse()
     {
-
+        return $this->requestData;
     }
 
 }

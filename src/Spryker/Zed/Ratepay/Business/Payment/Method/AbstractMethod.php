@@ -7,7 +7,6 @@
 namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
 use Generated\Shared\Transfer\OrderTransfer;
-use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactoryInterface;
@@ -64,22 +63,12 @@ abstract class AbstractMethod implements MethodInterface
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param string $transactionId
-     * @param string $transactionShortId
-     * @param int $resultCode
      *
      * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
      */
-    public function paymentRequest($quoteTransfer, $transactionId, $transactionShortId, $resultCode)
+    public function paymentRequest($quoteTransfer)
     {
         $paymentData = $this->getPaymentData($quoteTransfer);
-
-        if ($paymentData->getTransactionId() == '') {
-            $paymentData
-                ->setTransactionId($transactionId)
-                ->setTransactionShortId($transactionShortId)
-                ->setResultCode($resultCode);
-        }
 
         /**
          * @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
@@ -92,14 +81,7 @@ abstract class AbstractMethod implements MethodInterface
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Spryker\Shared\Transfer\TransferInterface
-     */
-    abstract protected function getPaymentData(QuoteTransfer $quoteTransfer);
-
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Generated\Shared\Transfer\RatepayPaymentElvTransfer $paymentData
+     * @param \Spryker\Shared\Transfer\TransferInterface $paymentData
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
      *
      * @return void

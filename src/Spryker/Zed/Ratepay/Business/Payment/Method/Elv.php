@@ -34,7 +34,7 @@ class Elv extends AbstractMethod
      *
      * @return \Generated\Shared\Transfer\RatepayPaymentElvTransfer
      */
-    protected function getPaymentData(QuoteTransfer $quoteTransfer)
+    public function getPaymentData(QuoteTransfer $quoteTransfer)
     {
         return $quoteTransfer->requirePayment()->getPayment()->requireRatepayElv()->getRatepayElv();
     }

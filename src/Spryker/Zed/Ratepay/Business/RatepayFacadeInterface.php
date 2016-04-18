@@ -33,6 +33,15 @@ interface RatepayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
+    public function initPayment(QuoteTransfer $quoteTransfer);
+
+    /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
     public function preCheckPayment(QuoteTransfer $quoteTransfer);
 
     /**
