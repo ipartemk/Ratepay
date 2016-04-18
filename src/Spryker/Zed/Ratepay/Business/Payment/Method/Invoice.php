@@ -33,7 +33,7 @@ class Invoice extends AbstractMethod
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @return \Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer
      */
-    protected function getPaymentData(QuoteTransfer $quoteTransfer)
+    public function getPaymentData(QuoteTransfer $quoteTransfer)
     {
         return $quoteTransfer->requirePayment()
             ->getPayment()

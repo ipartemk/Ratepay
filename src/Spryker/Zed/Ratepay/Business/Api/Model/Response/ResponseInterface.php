@@ -64,4 +64,9 @@ interface ResponseInterface
      */
     public function getCustomerMessage();
 
+    /**
+     * @return string
+     */
+    public function getPaymentMethod();
+
 }

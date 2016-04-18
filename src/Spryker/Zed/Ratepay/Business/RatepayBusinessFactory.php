@@ -7,10 +7,6 @@
 
 namespace Spryker\Zed\Ratepay\Business;
 
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
-
-use Spryker\Shared\Ratepay\RatepayConstants;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
 use Spryker\Zed\Ratepay\Business\Api\ApiFactory;

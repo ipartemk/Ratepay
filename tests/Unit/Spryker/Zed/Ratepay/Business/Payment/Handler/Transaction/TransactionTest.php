@@ -46,7 +46,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $responseTransfer = $transactionHandler->preAuthorizePayment($this->mockOrderTransfer());
 
         $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayResponseTransfer', $responseTransfer);
-        
+
         $this->assertEquals(
             'Die Prüfung war erfolgreich. Vielen Dank, dass Sie die Zahlart Rechnung gewählt haben.',
             $responseTransfer->getCustomerMessage()
@@ -77,7 +77,6 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $queryContainer->method('queryPayments')
             ->willReturn($paymentRatepayQuery);
-
 
         return new Transaction(
             $executionAdapter,
@@ -187,5 +186,5 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     {
         \Mockery::close();
     }
-    
+
 }

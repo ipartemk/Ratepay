@@ -46,14 +46,27 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
+    public function initPayment(QuoteTransfer $quoteTransfer)
+    {
+        return $this
+            ->getFactory()
+            ->createPaymentTransactionHandler()
+            ->initPayment($quoteTransfer);
+    }
+
+    /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
     public function preCheckPayment(QuoteTransfer $quoteTransfer)
     {
-        $ratepayResponseTransfer = $this
+        return $this
             ->getFactory()
             ->createPaymentTransactionHandler()
             ->preCheckPayment($quoteTransfer);
-
-        return $ratepayResponseTransfer;
     }
 
     /**

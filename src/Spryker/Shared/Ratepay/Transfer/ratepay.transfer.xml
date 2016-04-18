@@ -100,6 +100,7 @@
         <property name="resultCode" type="int" />
         <property name="resultText" type="string" />
         <property name="customerMessage" type="string" />
+        <property name="paymentMethod" type="string" />
     </transfer>
 
     <transfer name="Payment">

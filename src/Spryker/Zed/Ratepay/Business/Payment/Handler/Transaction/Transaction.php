@@ -71,7 +71,7 @@ class Transaction implements TransactionInterface
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function preCheckPayment(QuoteTransfer $quoteTransfer)
+    public function initPayment(QuoteTransfer $quoteTransfer)
     {
         $paymentMethod = $quoteTransfer
             ->requirePayment()
@@ -80,23 +80,43 @@ class Transaction implements TransactionInterface
             ->getPaymentMethod();
 
         //init payment method call.
-        $request = $this->getMethodMapper($paymentMethod)
+        $paymentMethod = $this->getMethodMapper($paymentMethod);
+        $request = $paymentMethod
             ->paymentInit();
         $response = $this->sendRequest((string)$request);
         $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_INIT, $request, $response);
-        $initResponseTransfer = $this->converter->responseToTransferObject($response);
 
-        if (!$initResponseTransfer->getSuccessful()) {
-            return $initResponseTransfer;
+        $initResponseTransfer = $this->converter->responseToTransferObject($response);
+        if ($initResponseTransfer->getSuccessful()) {
+            $paymentMethod
+                ->getPaymentData($quoteTransfer)
+                ->setTransactionId($initResponseTransfer->requireTransactionId()->getTransactionId())
+                ->setTransactionShortId($initResponseTransfer->requireTransactionShortId()->getTransactionShortId())
+                ->setResultCode($initResponseTransfer->requireResultCode()->getResultCode());
         }
 
-        //payment request call.
-        $transactionId = $initResponseTransfer->requireTransactionId()->getTransactionId();
-        $transactionShortId = $initResponseTransfer->requireTransactionShortId()->getTransactionShortId();
-        $resultCode = $initResponseTransfer->requireResultCode()->getResultCode();
-        $request = $this->getMethodMapper($paymentMethod)
-            ->paymentRequest($quoteTransfer, $transactionId, $transactionShortId, $resultCode);
+        return $this->converter->responseToTransferObject($response);
+    }
 
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
+    public function preCheckPayment(QuoteTransfer $quoteTransfer)
+    {
+        //init payment call.
+        $this->initPayment($quoteTransfer);
+
+        //payment request call.
+        $paymentMethod = $quoteTransfer
+            ->requirePayment()
+            ->getPayment()
+            ->requirePaymentMethod()
+            ->getPaymentMethod();
+
+        $request = $this->getMethodMapper($paymentMethod)
+            ->paymentRequest($quoteTransfer);
         $response = $this->sendRequest((string)$request);
         $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST, $request, $response);
 

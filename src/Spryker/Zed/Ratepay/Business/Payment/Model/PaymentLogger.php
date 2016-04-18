@@ -114,7 +114,7 @@ class PaymentLogger implements LoggerInterface
 
         $paymentLogEntity->setFkSalesOrder($context['order_id']);
         $paymentLogEntity->setMessage($message);
-        
+
         $paymentLogEntity->setPaymentMethod($context['payment_method']);
         $paymentLogEntity->setRequestType($context['request_type']);
         $paymentLogEntity->setRequestTransactionId($context['request_transaction_id']);
