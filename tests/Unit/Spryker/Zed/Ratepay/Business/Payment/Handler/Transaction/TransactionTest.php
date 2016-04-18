@@ -7,6 +7,7 @@
 
 namespace Unit\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 
+use Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer;
 use Spryker\Shared\Ratepay\RatepayConstants;
 use Spryker\Zed\Ratepay\Business\Api\Constants;
 use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
@@ -21,6 +22,21 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $transactionHandler = $this->getTransactionHandlerObject();
 
         $this->assertInstanceOf('\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction', $transactionHandler);
+    }
+
+    public function testInitPayment()
+    {
+        $transactionHandler = $this->getTransactionHandlerObject();
+        $transactionHandler->registerMethodMapper($this->mockMethodInvoice());
+
+        $ratepayResponseTransfer = $transactionHandler->initPayment($this->mockQuoteTransfer());
+
+        $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayResponseTransfer', $ratepayResponseTransfer);
+
+        $this->assertEquals(
+            'Die Prüfung war erfolgreich. Vielen Dank, dass Sie die Zahlart Rechnung gewählt haben.',
+            $ratepayResponseTransfer->getCustomerMessage()
+        );
     }
 
     public function testPreCheckPayment()
@@ -164,6 +180,10 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
             ->andReturn($paymentInit);
         $invoiceMethod->shouldReceive('paymentConfirm')
             ->andReturn($paymentInit);
+
+        $paymentTransfer = new RatepayPaymentInvoiceTransfer();
+        $invoiceMethod->shouldReceive('getPaymentData')
+            ->andReturn($paymentTransfer);
 
         return $invoiceMethod;
     }

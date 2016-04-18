@@ -85,7 +85,7 @@ class ShoppingBasketItem extends AbstractRequest
         if ($this->getDescriptionAddition() !== null) {
             $return['@description-addition'] = $this->getDescriptionAddition();
         }
-        
+
         return $return;
     }
 

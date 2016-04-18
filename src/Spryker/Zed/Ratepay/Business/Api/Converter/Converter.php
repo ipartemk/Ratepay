@@ -77,13 +77,11 @@ class Converter implements ConverterInterface
             ->setStreet($addressTransfer->requireAddress1()->getAddress1())
             ->setStreetAdditional($addressTransfer->getAddress3()) // This is optional.
             ->setStreetNumber($addressTransfer->requireAddress2()->getAddress2())
-            ->setZipCode($addressTransfer->requireZipCode()->getZipCode())
-        ;
+            ->setZipCode($addressTransfer->requireZipCode()->getZipCode());
         if ($type != ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_BILLING) {
             $address
                 ->setFirstName($addressTransfer->requireFirstName()->getFirstName())
-                ->setLastName($addressTransfer->requireLastName()->getLastName())
-            ;
+                ->setLastName($addressTransfer->requireLastName()->getLastName());
         }
     }
 
