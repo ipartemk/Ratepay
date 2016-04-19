@@ -6,6 +6,7 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Payment;
 
+use Spryker\Zed\Ratepay\Business\Api\Constants;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 
@@ -15,7 +16,7 @@ class Refund extends Base
     /**
      * @const Method operation.
      */
-    const OPERATION = 'PAYMENT_CHANGE';
+    const OPERATION = Constants::REQUEST_MODEL_PAYMENT_REFUND;
 
     /**
      * @const Method operation subtype.

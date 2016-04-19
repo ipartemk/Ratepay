@@ -8,9 +8,9 @@ namespace Spryker\Zed\Ratepay\Business\Api\Model\Payment;
 
 use Spryker\Zed\Ratepay\Business\Api\Constants;
 
-class Init extends Base
+class Configuration extends Base
 {
 
-    const OPERATION = Constants::REQUEST_MODEL_PAYMENT_INIT;
+    const OPERATION = Constants::REQUEST_MODEL_CONFIGURATION_REQUEST;
 
 }

@@ -218,6 +218,31 @@ class Transaction implements TransactionInterface
     }
 
     /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer
+     */
+    public function installmentConfiguration(QuoteTransfer $quoteTransfer)
+    {
+        // @todo:
+//        $paymentMethod = $this->getPaymentMethod($orderTransfer);
+//        $request = $this
+//            ->getMethodMapper($paymentMethod->getPaymentType())
+//            ->paymentRefund($orderTransfer);
+//
+//        $response = $this->sendRequest((string)$request);
+//        $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_REFUND, $request, $response);
+//
+//        if ($response->isSuccessful()) {
+//            $paymentMethod->setResultCode($response->getResultCode())->save();
+//        }
+//
+//        return $this->converter->responseToTransferObject($response);
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay

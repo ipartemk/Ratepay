@@ -88,7 +88,7 @@ interface RatepayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function calculateInstallmentPayments(QuoteTransfer $quoteTransfer);
+    public function installmentConfiguration(QuoteTransfer $quoteTransfer);
 
     /**
      * @api

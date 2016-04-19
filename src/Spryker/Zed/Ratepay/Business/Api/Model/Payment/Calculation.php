@@ -12,10 +12,10 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 
-class Request extends Base
+class Calculation extends Base
 {
 
-    const OPERATION = Constants::REQUEST_MODEL_PAYMENT_REQUEST;
+    const OPERATION = Constants::REQUEST_MODEL_CONFIGURATION_REQUEST;
 
     /**
      * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer
@@ -38,12 +38,7 @@ class Request extends Base
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket $basket
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment $payment
      */
-    public function __construct(
-        Head $head,
-        Customer $customer,
-        ShoppingBasket $basket,
-        Payment $payment
-    )
+    public function __construct(Head $head, Customer $customer, ShoppingBasket $basket, Payment $payment)
     {
         parent::__construct($head);
         $this->customer = $customer;
