@@ -16,6 +16,20 @@ use Unit\Spryker\Zed\Ratepay\Business\Api\Response\Response;
 
 class TransactionTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \Mockery;
+     */
+    protected $mockery;
+
+    /**
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->mockery = new \Mockery();
+    }
 
     public function testPreAuthorizationApproved()
     {
@@ -77,12 +91,13 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $executionAdapter = $this->getMockBuilder('\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle')
             ->disableOriginalConstructor()
             ->getMock();
+        
         $executionAdapter->method('sendRequest')
-            ->willReturn(Response::getTestPaymentConfirmResponseData());
+            ->willReturn((new Response())->getTestPaymentConfirmResponseData());
 
         $converter = new Converter();
 
-        $paymentLogger = \Mockery::mock('\Spryker\Zed\Ratepay\Business\Payment\Model\PaymentLogger');
+        $paymentLogger = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Payment\Model\PaymentLogger');
         $paymentLogger->shouldReceive('info')
             ->andReturn(null);
 
@@ -125,9 +140,9 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
      */
     private function mockPaymentRatepayQuery()
     {
-        $paymentRatepayQuery = \Mockery::mock('\Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery');
+        $paymentRatepayQuery = $this->mockery->mock('\Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery');
         $paymentRatepayQuery->shouldReceive('findByFkSalesOrder')
-            ->andReturn(\Mockery::self());
+            ->andReturn($this->mockery->self());
         $paymentRatepayQuery->shouldReceive('getFirst')
             ->andReturn($this->mockPaymentRatepay());
 
@@ -139,13 +154,13 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
      */
     private function mockQuoteTransfer()
     {
-        $quoteTransfer = \Mockery::mock('\Generated\Shared\Transfer\QuoteTransfer');
+        $quoteTransfer = $this->mockery->mock('\Generated\Shared\Transfer\QuoteTransfer');
         $quoteTransfer->shouldReceive('requirePayment')
-            ->andReturn(\Mockery::self());
+            ->andReturn($this->mockery->self());
         $quoteTransfer->shouldReceive('getPayment')
-            ->andReturn(\Mockery::self());
+            ->andReturn($this->mockery->self());
         $quoteTransfer->shouldReceive('requirePaymentMethod')
-            ->andReturn(\Mockery::self());
+            ->andReturn($this->mockery->self());
         $quoteTransfer->shouldReceive('getPaymentMethod')
             ->andReturn(RatepayConstants::METHOD_INVOICE);
 
@@ -157,7 +172,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
      */
     private function mockMethodInvoice()
     {
-        $modelPartHead = \Mockery::mock('\Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head');
+        $modelPartHead = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head');
         $modelPartHead->shouldReceive('getOrderId')
             ->andReturn(1);
         $modelPartHead->shouldReceive('getOperation')
@@ -167,11 +182,11 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $modelPartHead->shouldReceive('getTransactionShortId')
             ->andReturn('tr1_short');
 
-        $paymentInit = \Mockery::mock('\Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init');
+        $paymentInit = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init');
         $paymentInit->shouldReceive('getHead')
             ->andReturn($modelPartHead);
 
-        $invoiceMethod = \Mockery::mock('\Spryker\Zed\Ratepay\Business\Payment\Method\Invoice');
+        $invoiceMethod = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Payment\Method\Invoice');
         $invoiceMethod->shouldReceive('getMethodName')
             ->andReturn(RatepayConstants::METHOD_INVOICE);
         $invoiceMethod->shouldReceive('paymentInit')
@@ -193,9 +208,9 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
      */
     private function mockOrderTransfer()
     {
-        $orderTransfer = \Mockery::mock('\Generated\Shared\Transfer\OrderTransfer');
+        $orderTransfer = $this->mockery->mock('\Generated\Shared\Transfer\OrderTransfer');
         $orderTransfer->shouldReceive('requireIdSalesOrder')
-            ->andReturn(\Mockery::self());
+            ->andReturn($this->mockery->self());
         $orderTransfer->shouldReceive('getIdSalesOrder')
             ->andReturn(1);
 
@@ -204,7 +219,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
-        \Mockery::close();
+        $this->mockery->close();
     }
 
 }

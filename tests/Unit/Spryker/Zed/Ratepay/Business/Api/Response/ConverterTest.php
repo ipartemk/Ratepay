@@ -18,7 +18,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
      */
     public function testConverterData()
     {
-        $responseTransfer = $this->getResponseTransferObject(Response::getTestPaymentConfirmResponseData());
+        $responseTransfer = $this->getResponseTransferObject((new Response)->getTestPaymentConfirmResponseData());
 
         //test instance.
         $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayResponseTransfer', $responseTransfer);
@@ -43,8 +43,9 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
 
     public function testResponseSuccessState()
     {
-        $successResponseTransfer = $this->getResponseTransferObject(Response::getTestPaymentConfirmResponseData());
-        $unSuccessResponseTransfer = $this->getResponseTransferObject(Response::getTestPaymentConfirmUnsuccessResponseData());
+        $response = new Response;
+        $successResponseTransfer = $this->getResponseTransferObject($response->getTestPaymentConfirmResponseData());
+        $unSuccessResponseTransfer = $this->getResponseTransferObject($response->getTestPaymentConfirmUnsuccessResponseData());
 
         $this->assertEquals(true, $successResponseTransfer->getSuccessful());
         $this->assertNotEquals(true, $unSuccessResponseTransfer->getSuccessful());
