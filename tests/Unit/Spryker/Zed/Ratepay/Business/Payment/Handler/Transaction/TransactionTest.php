@@ -16,6 +16,7 @@ use Unit\Spryker\Zed\Ratepay\Business\Api\Response\Response;
 
 class TransactionTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * @var \Mockery;
      */
@@ -91,7 +92,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $executionAdapter = $this->getMockBuilder('\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle')
             ->disableOriginalConstructor()
             ->getMock();
-        
+
         $executionAdapter->method('sendRequest')
             ->willReturn((new Response())->getTestPaymentConfirmResponseData());
 

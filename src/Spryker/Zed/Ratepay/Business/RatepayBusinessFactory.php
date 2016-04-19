@@ -15,6 +15,7 @@ use Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory;
 use Spryker\Zed\Ratepay\Business\Order\Saver as Saver;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Elv as Elv;
+use Spryker\Zed\Ratepay\Business\Payment\Method\Installment;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice as Invoice;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment as Prepayment;
 use Spryker\Zed\Ratepay\Business\Payment\Model\PaymentLogger;
@@ -52,6 +53,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         $paymentTransactionHandler->registerMethodMapper($this->createInvoice());
         $paymentTransactionHandler->registerMethodMapper($this->createElv());
         $paymentTransactionHandler->registerMethodMapper($this->createPrepayment());
+        $paymentTransactionHandler->registerMethodMapper($this->createInstallment());
 
         return $paymentTransactionHandler;
     }
@@ -138,6 +140,18 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     public function createPrepayment()
     {
         return new Prepayment(
+            $this->createApiRequestFactory(),
+            $this->createConverter(),
+            $this->getQueryContainer()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Installment
+     */
+    public function createInstallment()
+    {
+        return new Installment(
             $this->createApiRequestFactory(),
             $this->createConverter(),
             $this->getQueryContainer()
