@@ -6,9 +6,11 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Payment;
 
+use Spryker\Zed\Ratepay\Business\Api\Constants;
+
 class Change extends Request
 {
 
-    const OPERATION = 'PAYMENT_CHANGE';
+    const OPERATION = Constants::REQUEST_MODEL_PAYMENT_CHANGE;
 
 }

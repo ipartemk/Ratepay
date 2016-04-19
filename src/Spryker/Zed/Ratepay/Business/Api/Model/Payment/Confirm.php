@@ -6,9 +6,11 @@
  */
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Payment;
 
+use Spryker\Zed\Ratepay\Business\Api\Constants;
+
 class Confirm extends Base
 {
 
-    const OPERATION = 'PAYMENT_CONFIRM';
+    const OPERATION = Constants::REQUEST_MODEL_PAYMENT_CONFIRM;
 
 }

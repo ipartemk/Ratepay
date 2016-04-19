@@ -60,9 +60,10 @@ interface TransactionInterface
     public function refundPayment(OrderTransfer $orderTransfer);
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return bool
+     * @return \Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer
      */
-
+    public function installmentConfiguration(QuoteTransfer $quoteTransfer);
+    
 }

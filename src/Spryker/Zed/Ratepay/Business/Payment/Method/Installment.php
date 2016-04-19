@@ -36,7 +36,12 @@ class Installment extends AbstractMethod
      */
     public function getPaymentData(QuoteTransfer $quoteTransfer)
     {
-        return $quoteTransfer->requirePayment()->getPayment()->requireRatepayInstallment()->getRatepayInstallment();
+        return $quoteTransfer
+            ->requirePayment()
+            ->getPayment()
+            ->requireRatepayInstallment()
+            ->getRatepayInstallment()
+            ;
     }
 
     /**

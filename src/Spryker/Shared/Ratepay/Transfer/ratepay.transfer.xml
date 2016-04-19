@@ -113,6 +113,20 @@
         <property name="paymentMethod" type="string" />
     </transfer>
 
+    <transfer name="RatepayInstallmentConfigurationResponse">
+        <property name="transactionId" type="string" />
+        <property name="transactionShortId" type="string" />
+
+        <property name="successful" type="bool" />
+        <property name="statusCode" type="string" />
+        <property name="statusText" type="string" />
+        <property name="reasonCode" type="int" />
+        <property name="reasonText" type="string" />
+        <property name="resultCode" type="int" />
+        <property name="resultText" type="string" />
+        <!-- @TODO: add needed fields -->
+    </transfer>
+
     <transfer name="Payment">
         <property name="ratepayInvoice" type="RatepayPaymentInvoice"/>
         <property name="ratepayElv" type="RatepayPaymentElv"/>

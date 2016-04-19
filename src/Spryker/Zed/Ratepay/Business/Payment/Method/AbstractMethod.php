@@ -198,6 +198,15 @@ abstract class AbstractMethod implements MethodInterface
     }
 
     /**
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Configuration
+     */
+    public function configurationRequest()
+    {
+        return $this->modelFactory->build(ApiConstants::REQUEST_MODEL_CONFIGURATION_REQUEST);
+    }
+
+    /**
      * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay $payment
      *
      * @return mixed

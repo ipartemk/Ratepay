@@ -17,7 +17,9 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
+use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation as PaymentCalculation;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Cancel as PaymentCancel;
+use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Configuration as PaymentConfiguration;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Confirm as PaymentConfirm;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init as PaymentInit;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Refund as PaymentRefund;
@@ -116,6 +118,16 @@ class ApiFactory extends AbstractBusinessFactory
                     ApiConstants::REQUEST_MODEL_PAYMENT_REFUND,
                     function () use ($factory) {
                         return $this->refundPayment($factory);
+                    }
+                )->registerBuilder(
+                    ApiConstants::REQUEST_MODEL_CONFIGURATION_REQUEST,
+                    function () use ($factory) {
+                        return $this->configurationRequest($factory);
+                    }
+                )->registerBuilder(
+                    ApiConstants::REQUEST_MODEL_CALCULATION_REQUEST,
+                    function () use ($factory) {
+                        return $this->calculationRequest($factory);
                     }
                 );
         }
@@ -253,6 +265,33 @@ class ApiFactory extends AbstractBusinessFactory
         return new PaymentRefund(
             $factory->build(ApiConstants::REQUEST_MODEL_HEAD),
             $factory->build(ApiConstants::REQUEST_MODEL_BASKET)
+        );
+    }
+
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactory $factory
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Configuration
+     */
+    protected function configurationRequest(RequestModelFactory $factory)
+    {
+        return new PaymentConfiguration(
+            $factory->build(ApiConstants::REQUEST_MODEL_HEAD)
+        );
+    }
+
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactory $factory
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation
+     */
+    protected function calculationRequest(RequestModelFactory $factory)
+    {
+        return new PaymentCalculation(
+            $factory->build(ApiConstants::REQUEST_MODEL_HEAD),
+            $factory->build(ApiConstants::REQUEST_MODEL_CUSTOMER),
+            $factory->build(ApiConstants::REQUEST_MODEL_BASKET),
+            $factory->build(ApiConstants::REQUEST_MODEL_PAYMENT)
         );
     }
 
