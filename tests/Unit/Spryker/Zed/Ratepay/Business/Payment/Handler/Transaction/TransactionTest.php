@@ -103,12 +103,19 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
             ->andReturn(null);
 
         $paymentRatepayQuery = $this->mockPaymentRatepayQuery();
+        $spyPaymentRatepay = $this->getMockBuilder('\Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $queryContainer = $this->getMockBuilder('\Spryker\Zed\Ratepay\Persistence\RatepayQueryContainer')
             ->disableOriginalConstructor()
             ->getMock();
         $queryContainer->method('queryPayments')
             ->willReturn($paymentRatepayQuery);
+        $queryContainer->method('findByFkSalesOrder')
+            ->willReturn($this->returnSelf());
+        $queryContainer->method('getFirst')
+            ->willReturn($spyPaymentRatepay);
 
         return new Transaction(
             $executionAdapter,

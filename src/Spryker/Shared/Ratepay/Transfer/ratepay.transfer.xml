@@ -79,13 +79,19 @@
         <property name="customerAllowCreditInquiry" type="int" />
 
         <property name="debitPayType" type="int"/>
+        <property name="debitPayTypeIndex" type="int"/>
 
         <property name="installmentTotalAmount" type="int"/> <!-- Installment total payment amount -->
         <property name="installmentLastAmount" type="int"/> <!-- Installment last payment amount -->
         <property name="installmentAmount" type="int"/> <!-- Installment rate amount -->
-        <property name="installmentNumber" type="int"/> <!-- Installment number of months -->
         <property name="installmentInterestRate" type="int"/> <!-- Installment interest rate -->
         <property name="installmentPaymentFirstDay" type="int"/> <!-- Installment first day of payment -->
+
+        <property name="installmentMonthAllowed" type="int"/> <!--Installment number of months -->
+        <property name="installmentMonthAllowedIndex" type="int"/> <!-- Installment number of months index -->
+
+        <property name="installmentCalculationType" type="int"/> <!-- Installment calculation type -->
+        <property name="installmentCalculationTypeIndex" type="int"/> <!-- Installment calculation type index -->
 
         <property name="bankAccountHolder" type="string"/>
         <property name="bankAccountBic" type="string"/>

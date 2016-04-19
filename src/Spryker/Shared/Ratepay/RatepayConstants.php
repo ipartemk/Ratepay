@@ -40,6 +40,26 @@ interface RatepayConstants
     const METHOD_INSTALLMENT = 'INSTALLMENT';
 
     /**
+     * Installment debit pay type.
+     */
+    const DEBIT_PAY_TYPE_DIRECT_DEBIT = 'DIRECT-DEBIT';
+    const DEBIT_PAY_TYPE_BANK_TRANSFER = 'BANK-TRANSFER';
+    const DEBIT_PAY_TYPES = [
+        self::DEBIT_PAY_TYPE_DIRECT_DEBIT,
+        self::DEBIT_PAY_TYPE_BANK_TRANSFER,
+    ];
+
+    /**
+     * Installment calculator types.
+     */
+    const INSTALLMENT_CALCULATION_TIME = 'Time';
+    const INSTALLMENT_CALCULATION_RATE = 'Rate';
+    const INSTALLMENT_CALCULATION_TYPES = [
+        self::INSTALLMENT_CALCULATION_TIME,
+        self::INSTALLMENT_CALCULATION_RATE,
+    ];
+
+    /**
      * Genders.
      */
     const GENDER_MALE = 'M';
