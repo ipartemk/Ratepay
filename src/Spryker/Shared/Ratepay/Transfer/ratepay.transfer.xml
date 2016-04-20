@@ -87,11 +87,15 @@
         <property name="installmentInterestRate" type="int"/> <!-- Installment interest rate -->
         <property name="installmentPaymentFirstDay" type="int"/> <!-- Installment first day of payment -->
 
+        <property name="installmentInterestRate" type="int"/> <!-- Installment interest rate -->
+
         <property name="installmentMonthAllowed" type="int"/> <!--Installment number of months -->
         <property name="installmentMonthAllowedIndex" type="int"/> <!-- Installment number of months index -->
 
         <property name="installmentCalculationType" type="int"/> <!-- Installment calculation type -->
         <property name="installmentCalculationTypeIndex" type="int"/> <!-- Installment calculation type index -->
+
+        <property name="recalculated" type="bool" />
 
         <property name="bankAccountHolder" type="string"/>
         <property name="bankAccountBic" type="string"/>

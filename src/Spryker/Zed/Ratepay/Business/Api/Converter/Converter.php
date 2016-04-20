@@ -211,6 +211,10 @@ class Converter implements ConverterInterface
             ->setStatusText($response->getStatusText())
             ->setResultCode($response->getResultCode())
             ->setResultText($response->getResultText())
+            
+            ->setMonthAllowed($response->getMonthAllowed())
+            ->setInterestrateDefault($response->getInterestRateDefault())
+            ->setPaymentFirstday($response->getPaymentFirstDay())
         ;
 
         return $responseTransfer;
