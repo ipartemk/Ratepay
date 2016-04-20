@@ -127,30 +127,4 @@ class BaseResponse implements ResponseInterface
         return (string)$this->xmlObject->head->processing->status;
     }
 
-    /**
-     * @return array
-     */
-    public function getMonthAllowed()
-    {
-        $monthAllowed = (string)$this->xmlObject->content->{'installment-configuration-result'}->{'month-allowed'};
-
-        return explode(',', $monthAllowed);
-    }
-
-    /**
-     * @return string
-     */
-    public function getInterestRateDefault()
-    {
-        return (string)$this->xmlObject->content->{'installment-configuration-result'}->{'interestrate-default'};
-    }
-
-    /**
-     * @return int
-     */
-    public function getPaymentFirstDay()
-    {
-        return (int)$this->xmlObject->content->{'installment-configuration-result'}->{'payment-firstday'};
-    }
-
 }

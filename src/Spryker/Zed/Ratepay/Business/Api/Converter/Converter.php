@@ -21,6 +21,7 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
+use Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
 
 class Converter implements ConverterInterface
@@ -195,11 +196,11 @@ class Converter implements ConverterInterface
     }
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse $response
      *
      * @return \Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer
      */
-    public function responseToInstallmentConfigurationResponseObject(ResponseInterface $response)
+    public function responseToInstallmentConfigurationResponseObject(ConfigurationResponse $response)
     {
         $responseTransfer = new RatepayInstallmentConfigurationResponseTransfer();
         $responseTransfer
@@ -213,9 +214,24 @@ class Converter implements ConverterInterface
             ->setResultCode($response->getResultCode())
             ->setResultText($response->getResultText())
 
+            ->setInterestrateMin($response->getInterestrateMin())
+            ->setInterestrateDefault($response->getInterestrateDefault())
+            ->setInterestrateMax($response->getInterestrateMax())
+            ->setInterestRateMerchantTowardsBank($response->getInterestRateMerchantTowardsBank())
+            ->setMonthNumberMin($response->getMonthNumberMin())
+            ->setMonthNumberMax($response->getMonthNumberMax())
+            ->setMonthLongrun($response->getMonthLongrun())
+            ->setAmountMinLongrun($response->getAmountMinLongrun())
             ->setMonthAllowed($response->getMonthAllowed())
-            ->setInterestrateDefault($response->getInterestRateDefault())
-            ->setPaymentFirstday($response->getPaymentFirstDay());
+            ->setValidPaymentFirstdays($response->getValidPaymentFirstdays())
+            ->setPaymentFirstday($response->getPaymentFirstday())
+            ->setPaymentAmount($response->getPaymentAmount())
+            ->setPaymentLastrate($response->getPaymentLastrate())
+            ->setRateMinNormal($response->getRateMinNormal())
+            ->setRateMinLongrun($response->getRateMinLongrun())
+            ->setServiceCharge($response->getServiceCharge())
+            ->setMinDifferenceDueday($response->getMinDifferenceDueday())
+            ;
 
         return $responseTransfer;
     }

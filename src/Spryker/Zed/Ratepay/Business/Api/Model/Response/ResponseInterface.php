@@ -68,20 +68,5 @@ interface ResponseInterface
      * @return string
      */
     public function getPaymentMethod();
-
-    /**
-     * @return array
-     */
-    public function getMonthAllowed();
-
-    /**
-     * @return string
-     */
-    public function getInterestRateDefault();
-
-    /**
-     * @return int
-     */
-    public function getPaymentFirstDay();
-
+    
 }

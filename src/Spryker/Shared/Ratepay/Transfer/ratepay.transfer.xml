@@ -127,10 +127,23 @@
         <property name="resultCode" type="int" />
         <property name="resultText" type="string" />
 
-        <!-- @TODO: add needed fields -->
+        <property name="interestrateMin" type="float"/>
+        <property name="interestrateDefault" type="float"/>
+        <property name="interestrateMax" type="float"/>
+        <property name="interestRateMerchantTowardsBank" type="float"/>
+        <property name="monthNumberMin" type="int"/>
+        <property name="monthNumberMax" type="int"/>
+        <property name="monthLongrun" type="int"/>
+        <property name="amountMinLongrun" type="int"/>
         <property name="monthAllowed" type="array"/>
+        <property name="validPaymentFirstdays" type="int"/>
         <property name="paymentFirstday" type="int"/>
-        <property name="interestrateDefault" type="int"/>
+        <property name="paymentAmount" type="int"/>
+        <property name="paymentLastrate" type="int"/>
+        <property name="rateMinNormal" type="int"/>
+        <property name="rateMinLongrun" type="int"/>
+        <property name="serviceCharge" type="float"/>
+        <property name="minDifferenceDueday" type="int"/>
     </transfer>
 
     <transfer name="RatepayInstallmentCalculationResponse">
