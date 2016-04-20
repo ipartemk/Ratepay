@@ -226,20 +226,31 @@ class Transaction implements TransactionInterface
      */
     public function installmentConfiguration(QuoteTransfer $quoteTransfer)
     {
-        // @todo:
-//        $paymentMethod = $this->getPaymentMethod($orderTransfer);
-//        $request = $this
-//            ->getMethodMapper($paymentMethod->getPaymentType())
-//            ->paymentRefund($orderTransfer);
-//
-//        $response = $this->sendRequest((string)$request);
-//        $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_REFUND, $request, $response);
-//
-//        if ($response->isSuccessful()) {
-//            $paymentMethod->setResultCode($response->getResultCode())->save();
-//        }
-//
-//        return $this->converter->responseToTransferObject($response);
+        //payment request call.
+        $paymentMethod = $quoteTransfer
+            ->requirePayment()
+            ->getPayment()
+            ->requirePaymentMethod()
+            ->getPaymentMethod();
+
+        $request = $this->getMethodMapper($paymentMethod)
+            ->configurationRequest($quoteTransfer);
+        $response = $this->sendRequest((string)$request);
+        $this->logInfo(ApiConstants::REQUEST_MODEL_CONFIGURATION_REQUEST, $request, $response);
+
+        $responseTransfer = $this->converter->responseToInstallmentConfigurationResponseObject($response);
+
+        return $responseTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
+    public function installmentCalculation(OrderTransfer $orderTransfer)
+    {
+        // @todo: implement
     }
 
     /**

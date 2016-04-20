@@ -26,9 +26,13 @@ class Transaction implements TransactionInterface
      */
     public function prepareMethodMapper(QuoteTransfer $quoteTransfer)
     {
-        $paymentMethod = $quoteTransfer->requirePayment()->getPayment()->requirePaymentMethod()->getPaymentMethod();
-        return $this
-            ->getMethodMapper($paymentMethod);
+        $paymentMethod = $quoteTransfer
+            ->requirePayment()
+            ->getPayment()
+            ->requirePaymentMethod()
+            ->getPaymentMethod();
+
+        return $this->getMethodMapper($paymentMethod);
     }
 
     /**

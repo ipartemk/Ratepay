@@ -65,5 +65,12 @@ interface TransactionInterface
      * @return \Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer
      */
     public function installmentConfiguration(QuoteTransfer $quoteTransfer);
-    
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
+    public function installmentCalculation(OrderTransfer $orderTransfer);
+
 }

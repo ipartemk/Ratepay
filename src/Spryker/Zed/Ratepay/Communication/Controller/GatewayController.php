@@ -26,4 +26,14 @@ class GatewayController extends AbstractGatewayController
         return $this->getFacade()->preCheckPayment($quoteTransfer);
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer
+     */
+    public function installmentConfigurationAction(QuoteTransfer $quoteTransfer)
+    {
+        return $this->getFacade()->installmentConfiguration($quoteTransfer);
+    }
+
 }

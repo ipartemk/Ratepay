@@ -21,4 +21,13 @@ interface RatepayClientInterface
      */
     public function preauthorizePayment(QuoteTransfer $quoteTransfer);
 
+    /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer
+     */
+    public function installmentConfiguration(QuoteTransfer $quoteTransfer);
+
 }

@@ -9,6 +9,7 @@ namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Spryker\Shared\Library\Currency\CurrencyManager;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
@@ -188,6 +189,29 @@ class Converter implements ConverterInterface
             ->setResultText($response->getResultText())
             ->setCustomerMessage($response->getCustomerMessage())
             ->setPaymentMethod($response->getPaymentMethod());
+
+        return $responseTransfer;
+    }
+
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response
+     *
+     * @return \Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer
+     */
+    public function responseToInstallmentConfigurationResponseObject(ResponseInterface $response)
+    {
+        $responseTransfer = new RatepayInstallmentConfigurationResponseTransfer();
+        $responseTransfer
+            ->setTransactionId($response->getTransactionId())
+            ->setTransactionShortId($response->getTransactionShortId())
+            ->setSuccessful($response->isSuccessful())
+            ->setReasonCode($response->getReasonCode())
+            ->setReasonText($response->getReasonText())
+            ->setStatusCode($response->getStatusCode())
+            ->setStatusText($response->getStatusText())
+            ->setResultCode($response->getResultCode())
+            ->setResultText($response->getResultText())
+        ;
 
         return $responseTransfer;
     }

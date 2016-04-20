@@ -26,8 +26,7 @@ class Saver implements SaverInterface
     {
         $paymentEntity = new SpyPaymentRatepay();
         $idSalesOrder = $checkoutResponseTransfer->getSaveOrder()->getIdSalesOrder();
-        $paymentEntity
-            ->setFkSalesOrder($idSalesOrder);
+        $paymentEntity->setFkSalesOrder($idSalesOrder);
 
         $paymentMapper->mapMethodDataToPayment($quoteTransfer, $paymentEntity);
         $paymentEntity->save();

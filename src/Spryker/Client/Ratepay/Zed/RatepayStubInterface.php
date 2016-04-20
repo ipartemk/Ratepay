@@ -19,4 +19,11 @@ interface RatepayStubInterface
      */
     public function preauthorizePayment(QuoteTransfer $quoteTransfer);
 
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer
+     */
+    public function installmentConfiguration(QuoteTransfer $quoteTransfer);
+
 }

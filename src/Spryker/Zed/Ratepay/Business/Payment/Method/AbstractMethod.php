@@ -7,6 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
 use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactoryInterface;
@@ -88,8 +89,8 @@ abstract class AbstractMethod implements MethodInterface
      */
     protected function mapPaymentData($quoteTransfer, $paymentData, $request)
     {
-        $request->getHead()->
-            setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId())
+        $request->getHead()
+            ->setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId())
             ->setCustomerId($quoteTransfer->getCustomer()->getIdCustomer())
             ->setDeviceFingerprint($paymentData->requireDeviceFingerprint()->getDeviceFingerprint());
         $this->converter->mapPayment($quoteTransfer, $paymentData, $request->getPayment());
@@ -198,12 +199,13 @@ abstract class AbstractMethod implements MethodInterface
     }
 
     /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Configuration
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
      */
-    public function configurationRequest()
+    public function configurationRequest(QuoteTransfer $quoteTransfer)
     {
-        return $this->modelFactory->build(ApiConstants::REQUEST_MODEL_CONFIGURATION_REQUEST);
+        
     }
 
     /**

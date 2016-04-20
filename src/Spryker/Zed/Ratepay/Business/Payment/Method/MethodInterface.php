@@ -64,4 +64,11 @@ interface MethodInterface
      */
     public function paymentRefund(OrderTransfer $orderTransfer);
 
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
+     */
+    public function configurationRequest(QuoteTransfer $quoteTransfer);
+
 }

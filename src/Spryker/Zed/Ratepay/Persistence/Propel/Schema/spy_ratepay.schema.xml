@@ -50,7 +50,7 @@
         <column name="message" type="VARCHAR" />
 
         <column name="payment_method" type="ENUM" valueSet="INVOICE, INSTALLMENT, ELV, PREPAYMENT"/>
-        <column name="request_type" required="true" type="ENUM" valueSet="PAYMENT_INIT, PAYMENT_REQUEST, PAYMENT_CONFIRM, PAYMENT_CHANGE, CONFIRMATION_DELIVER, PAYMENT_CANCEL, PAYMENT_REFUND"/>
+        <column name="request_type" required="true" type="ENUM" valueSet="PAYMENT_INIT, PAYMENT_REQUEST, PAYMENT_CONFIRM, PAYMENT_CHANGE, CONFIRMATION_DELIVER, PAYMENT_CANCEL, PAYMENT_REFUND, CONFIGURATION_REQUEST, CALCULATION_REQUEST"/>
         <column name="request_transaction_id" type="VARCHAR" size="50"/>
         <column name="request_transaction_short_id" type="VARCHAR" size="50"/>
         <column name="request_body" type="LONGVARCHAR" />

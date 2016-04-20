@@ -29,4 +29,17 @@ class RatepayClient extends AbstractClient implements RatepayClientInterface
             ->preauthorizePayment($quoteTransfer);
     }
 
+    /**
+     * @api
+     *
+     * @inheritdoc
+     */
+    public function installmentConfiguration(QuoteTransfer $quoteTransfer)
+    {
+        return $this
+            ->getFactory()
+            ->createRatepayStub()
+            ->installmentConfiguration($quoteTransfer);
+    }
+
 }

@@ -124,7 +124,11 @@
         <property name="reasonText" type="string" />
         <property name="resultCode" type="int" />
         <property name="resultText" type="string" />
+
         <!-- @TODO: add needed fields -->
+        <property name="monthAllowed" type="array"/>
+        <property name="paymentFirstday" type="int"/>
+        <property name="interestrateDefault" type="int"/>
     </transfer>
 
     <transfer name="Payment">

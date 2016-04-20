@@ -9,6 +9,7 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer;
 use Spryker\Shared\Ratepay\RatepayConstants;
+use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 
 /**
  * Ratepay Elv payment method.
@@ -46,15 +47,35 @@ class Installment extends AbstractMethod
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $paymentData
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
+     */
+    public function configurationRequest(QuoteTransfer $quoteTransfer)
+    {
+        $paymentData = $this->getPaymentData($quoteTransfer);
+
+        /**
+         * @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
+         */
+        $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_CONFIGURATION_REQUEST);
+        $this->mapConfigurationData($quoteTransfer, $paymentData, $request);
+
+        return $request;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Spryker\Shared\Transfer\TransferInterface $paymentData
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
      *
      * @return void
      */
-    protected function mapPaymentData($quoteTransfer, $paymentData, $request)
+    protected function mapConfigurationData($quoteTransfer, $paymentData, $request)
     {
-        parent::mapPaymentData($quoteTransfer, $paymentData, $request);
-        $this->mapBankAccountData($quoteTransfer, $paymentData, $request);
+        $request->getHead()
+            ->setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId())
+            ->setCustomerId($quoteTransfer->getCustomer()->getIdCustomer())
+        ;
     }
 
     /**

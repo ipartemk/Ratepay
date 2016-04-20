@@ -35,4 +35,12 @@ class RatepayStub implements RatepayStubInterface
         return $this->zedRequestClient->call('/ratepay/gateway/preauthorize-payment', $quoteTransfer);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function installmentConfiguration(QuoteTransfer $quoteTransfer)
+    {
+        return $this->zedRequestClient->call('/ratepay/gateway/installment-configuration', $quoteTransfer);
+    }
+
 }
