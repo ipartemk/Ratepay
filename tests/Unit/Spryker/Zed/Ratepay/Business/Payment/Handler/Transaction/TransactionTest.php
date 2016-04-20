@@ -8,10 +8,12 @@
 namespace Unit\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer;
+use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
 use Spryker\Shared\Ratepay\RatepayConstants;
 use Spryker\Zed\Ratepay\Business\Api\Constants;
 use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction;
+use Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
 use Unit\Spryker\Zed\Ratepay\Business\Api\Response\Response;
 
 class TransactionTest extends \PHPUnit_Framework_TestCase
@@ -97,31 +99,15 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
             ->willReturn((new Response())->getTestPaymentConfirmResponseData());
 
         $converter = new Converter();
-
         $paymentLogger = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Payment\Model\PaymentLogger');
         $paymentLogger->shouldReceive('info')
             ->andReturn(null);
-
-        $paymentRatepayQuery = $this->mockPaymentRatepayQuery();
-        $spyPaymentRatepay = $this->getMockBuilder('\Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $queryContainer = $this->getMockBuilder('\Spryker\Zed\Ratepay\Persistence\RatepayQueryContainer')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $queryContainer->method('queryPayments')
-            ->willReturn($paymentRatepayQuery);
-        $queryContainer->method('findByFkSalesOrder')
-            ->willReturn($this->returnSelf());
-        $queryContainer->method('getFirst')
-            ->willReturn($spyPaymentRatepay);
 
         return new Transaction(
             $executionAdapter,
             $converter,
             $paymentLogger,
-            $queryContainer
+            $this->mockRatepayQueryContainer()
         );
     }
 
@@ -144,17 +130,18 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery
+     * @return \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface
      */
-    private function mockPaymentRatepayQuery()
+    private function mockRatepayQueryContainer()
     {
-        $paymentRatepayQuery = $this->mockery->mock('\Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery');
-        $paymentRatepayQuery->shouldReceive('findByFkSalesOrder')
-            ->andReturn($this->mockery->self());
-        $paymentRatepayQuery->shouldReceive('getFirst')
-            ->andReturn($this->mockPaymentRatepay());
+        $queryContainer = $this->getMock(RatepayQueryContainerInterface::class);
+        $queryPaymentsMock = $this->getMock(SpyPaymentRatepayQuery::class, ['findByFkSalesOrder', 'getFirst']);
 
-        return $paymentRatepayQuery;
+        $queryPaymentsMock->method('findByFkSalesOrder')->willReturnSelf();
+        $queryPaymentsMock->method('getFirst')->willReturn($this->mockPaymentRatepay());
+        $queryContainer->method('queryPayments')->willReturn($queryPaymentsMock);
+
+        return $queryContainer;
     }
 
     /**
