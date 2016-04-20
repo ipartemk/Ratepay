@@ -9,6 +9,7 @@ namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer;
 use Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Spryker\Shared\Library\Currency\CurrencyManager;
@@ -211,13 +212,39 @@ class Converter implements ConverterInterface
             ->setStatusText($response->getStatusText())
             ->setResultCode($response->getResultCode())
             ->setResultText($response->getResultText())
-            
+
             ->setMonthAllowed($response->getMonthAllowed())
             ->setInterestrateDefault($response->getInterestRateDefault())
-            ->setPaymentFirstday($response->getPaymentFirstDay())
-        ;
+            ->setPaymentFirstday($response->getPaymentFirstDay());
 
         return $responseTransfer;
+    }
+
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response
+     *
+     * @return \Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer
+     */
+    public function responseToInstallmentCalculationResponseObject(ResponseInterface $response)
+    {
+        //todo remove temporaty data.
+        $responseTransfer = new RatepayInstallmentCalculationResponseTransfer();
+        $responseTransfer
+//            ->setBaseResponse($this->responseToTransferObject($response))
+            ->setTotalAmount(244.67)
+            ->setAmount(230)
+            ->setInterestAmount(10.72)
+            ->setServiceCharge(3.95)
+            ->setInterestRate(13.7)
+            ->setAnnualPercentageRate(19.36)
+            ->setMonthlyDebitInterest(1.08)
+            ->setRate(40.79)
+            ->setNumberOfRates(6)
+            ->setLastRate(40.72)
+            ->setPaymentFirstDay(28);
+
+        return $responseTransfer;
+
     }
 
     /**

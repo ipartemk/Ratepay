@@ -88,4 +88,11 @@ interface ConverterInterface
      */
     public function responseToInstallmentConfigurationResponseObject(ResponseInterface $response);
 
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response
+     *
+     * @return \Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer
+     */
+    public function responseToInstallmentCalculationResponseObject(ResponseInterface $response);
+
 }

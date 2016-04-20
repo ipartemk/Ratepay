@@ -87,8 +87,6 @@
         <property name="installmentInterestRate" type="int"/> <!-- Installment interest rate -->
         <property name="installmentPaymentFirstDay" type="int"/> <!-- Installment first day of payment -->
 
-        <property name="installmentInterestRate" type="int"/> <!-- Installment interest rate -->
-
         <property name="installmentMonthAllowed" type="int"/> <!--Installment number of months -->
         <property name="installmentMonthAllowedIndex" type="int"/> <!-- Installment number of months index -->
 
@@ -133,6 +131,22 @@
         <property name="monthAllowed" type="array"/>
         <property name="paymentFirstday" type="int"/>
         <property name="interestrateDefault" type="int"/>
+    </transfer>
+
+    <transfer name="RatepayInstallmentCalculationResponse">
+        <property name="baseResponse" type="RatepayResponse"/>
+
+        <property name="totalAmount" type="float" />
+        <property name="amount" type="float" />
+        <property name="interestAmount" type="float" />
+        <property name="serviceCharge" type="float" />
+        <property name="interestRate" type="float" />
+        <property name="annualPercentageRate" type="float" />
+        <property name="monthlyDebitInterest" type="float" />
+        <property name="numberOfRates" type="int" />
+        <property name="rate" type="float" />
+        <property name="lastRate" type="float" />
+        <property name="paymentFirstDay" type="int" />
     </transfer>
 
     <transfer name="Payment">

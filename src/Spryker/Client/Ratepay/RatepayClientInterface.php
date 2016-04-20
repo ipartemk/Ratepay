@@ -39,4 +39,13 @@ interface RatepayClientInterface
      */
     public function getInstallmentConfiguration(QuoteTransfer $quoteTransfer);
 
+    /**
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
+    public function getInstallmentCalculation(QuoteTransfer $quoteTransfer);
+
 }

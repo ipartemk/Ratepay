@@ -205,7 +205,7 @@ abstract class AbstractMethod implements MethodInterface
      */
     public function configurationRequest(QuoteTransfer $quoteTransfer)
     {
-        
+
     }
 
     /**

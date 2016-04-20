@@ -43,8 +43,8 @@ class Request extends Base
         Customer $customer,
         ShoppingBasket $basket,
         Payment $payment
-    )
-    {
+    ) {
+
         parent::__construct($head);
         $this->customer = $customer;
         $this->basket = $basket;

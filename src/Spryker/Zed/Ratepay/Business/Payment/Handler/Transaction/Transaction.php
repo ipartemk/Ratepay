@@ -244,13 +244,28 @@ class Transaction implements TransactionInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer
      */
-    public function installmentCalculation(OrderTransfer $orderTransfer)
+    public function installmentCalculation(QuoteTransfer $quoteTransfer)
     {
-        // @todo: implement
+        //payment request call.
+        $paymentMethod = $quoteTransfer
+            ->requirePayment()
+            ->getPayment()
+            ->requirePaymentMethod()
+            ->getPaymentMethod();
+
+        $request = $this->getMethodMapper($paymentMethod)
+            // @todo: implement
+            ->configurationRequest($quoteTransfer);
+        $response = $this->sendRequest((string)$request);
+        $this->logInfo(ApiConstants::REQUEST_MODEL_CALCULATION_REQUEST, $request, $response);
+
+        $responseTransfer = $this->converter->responseToInstallmentCalculationResponseObject($response);
+
+        return $responseTransfer;
     }
 
     /**

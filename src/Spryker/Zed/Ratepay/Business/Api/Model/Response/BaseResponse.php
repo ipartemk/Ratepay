@@ -144,7 +144,7 @@ class BaseResponse implements ResponseInterface
     {
         return (string)$this->xmlObject->content->{'installment-configuration-result'}->{'interestrate-default'};
     }
-    
+
     /**
      * @return int
      */
@@ -152,4 +152,5 @@ class BaseResponse implements ResponseInterface
     {
         return (int)$this->xmlObject->content->{'installment-configuration-result'}->{'payment-firstday'};
     }
+
 }

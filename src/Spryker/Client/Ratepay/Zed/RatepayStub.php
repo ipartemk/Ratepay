@@ -43,4 +43,14 @@ class RatepayStub implements RatepayStubInterface
         return $this->zedRequestClient->call('/ratepay/gateway/installment-configuration', $quoteTransfer);
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
+    public function installmentCalculation(QuoteTransfer $quoteTransfer)
+    {
+        return $this->zedRequestClient->call('/ratepay/gateway/installment-calculation', $quoteTransfer);
+    }
+
 }

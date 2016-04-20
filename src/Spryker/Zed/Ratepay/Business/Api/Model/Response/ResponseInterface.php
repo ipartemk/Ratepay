@@ -73,7 +73,7 @@ interface ResponseInterface
      * @return array
      */
     public function getMonthAllowed();
-    
+
     /**
      * @return string
      */

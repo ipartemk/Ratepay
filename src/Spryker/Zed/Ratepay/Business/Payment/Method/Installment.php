@@ -41,8 +41,7 @@ class Installment extends AbstractMethod
             ->requirePayment()
             ->getPayment()
             ->requireRatepayInstallment()
-            ->getRatepayInstallment()
-            ;
+            ->getRatepayInstallment();
     }
 
     /**
@@ -74,8 +73,7 @@ class Installment extends AbstractMethod
     {
         $request->getHead()
             ->setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId())
-            ->setCustomerId($quoteTransfer->getCustomer()->getIdCustomer())
-        ;
+            ->setCustomerId($quoteTransfer->getCustomer()->getIdCustomer());
     }
 
     /**
