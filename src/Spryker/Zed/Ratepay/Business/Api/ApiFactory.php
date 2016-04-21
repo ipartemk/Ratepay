@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
@@ -14,6 +13,7 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
@@ -78,6 +78,12 @@ class ApiFactory extends AbstractBusinessFactory
                     ApiConstants::REQUEST_MODEL_PAYMENT,
                     function () {
                         return $this->createPaymentModel();
+                    }
+                )
+                ->registerBuilder(
+                    ApiConstants::REQUEST_MODEL_INSTALLMENT_CALCULATION,
+                    function () {
+                        return $this->createInstallmentCalculation();
                     }
                 )
                 ->registerBuilder(
@@ -195,6 +201,14 @@ class ApiFactory extends AbstractBusinessFactory
     }
 
     /**
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation
+     */
+    protected function createInstallmentCalculation()
+    {
+        return new InstallmentCalculation();
+    }
+
+    /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactory $factory
      *
      * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init
@@ -289,9 +303,7 @@ class ApiFactory extends AbstractBusinessFactory
     {
         return new PaymentCalculation(
             $factory->build(ApiConstants::REQUEST_MODEL_HEAD),
-            $factory->build(ApiConstants::REQUEST_MODEL_CUSTOMER),
-            $factory->build(ApiConstants::REQUEST_MODEL_BASKET),
-            $factory->build(ApiConstants::REQUEST_MODEL_PAYMENT)
+            $factory->build(ApiConstants::REQUEST_MODEL_INSTALLMENT_CALCULATION)
         );
     }
 

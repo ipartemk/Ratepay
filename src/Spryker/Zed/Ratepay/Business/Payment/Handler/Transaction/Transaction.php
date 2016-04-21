@@ -16,6 +16,7 @@ use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PyamentRequest;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;
+use Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse;
 use Spryker\Zed\Ratepay\Business\Exception\NoMethodMapperException;
 use Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface;
@@ -259,9 +260,8 @@ class Transaction implements TransactionInterface
             ->getPaymentMethod();
 
         $request = $this->getMethodMapper($paymentMethod)
-            // @todo: implement
-            ->configurationRequest($quoteTransfer);
-        $response = $this->sendRequest((string)$request);
+            ->calculationRequest($quoteTransfer);
+        $response = $this->sendCalculationRequest((string)$request);
         $this->logInfo(ApiConstants::REQUEST_MODEL_CALCULATION_REQUEST, $request, $response);
 
         $responseTransfer = $this->converter->responseToInstallmentCalculationResponseObject($response);
@@ -327,6 +327,16 @@ class Transaction implements TransactionInterface
     protected function sendConfigurationRequest($request)
     {
         return new ConfigurationResponse($this->executionAdapter->sendRequest($request));
+    }
+
+    /**
+     * @param string $request
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse
+     */
+    protected function sendCalculationRequest($request)
+    {
+        return new CalculationResponse($this->executionAdapter->sendRequest($request));
     }
 
     /**

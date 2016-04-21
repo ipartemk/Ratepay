@@ -209,6 +209,16 @@ abstract class AbstractMethod implements MethodInterface
     }
 
     /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
+     */
+    public function calculationRequest(QuoteTransfer $quoteTransfer)
+    {
+
+    }
+
+    /**
      * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay $payment
      *
      * @return mixed

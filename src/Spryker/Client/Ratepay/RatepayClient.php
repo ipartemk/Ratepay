@@ -45,26 +45,9 @@ class RatepayClient extends AbstractClient implements RatepayClientInterface
     /**
      * @api
      *
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer
+     * @inheritdoc
      */
-    public function getInstallmentConfiguration(QuoteTransfer $quoteTransfer)
-    {
-        return $this
-            ->getFactory()
-            ->createRatepayStub()
-            ->installmentConfiguration($quoteTransfer);
-    }
-
-    /**
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
-     */
-    public function getInstallmentCalculation(QuoteTransfer $quoteTransfer)
+    public function installmentCalculation(QuoteTransfer $quoteTransfer)
     {
         return $this
             ->getFactory()

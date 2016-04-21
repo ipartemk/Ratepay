@@ -29,7 +29,7 @@ interface RatepayStubInterface
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     * @return \Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer
      */
     public function installmentCalculation(QuoteTransfer $quoteTransfer);
 

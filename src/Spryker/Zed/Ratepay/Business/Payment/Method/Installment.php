@@ -64,7 +64,25 @@ class Installment extends AbstractMethod
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Spryker\Shared\Transfer\TransferInterface $paymentData
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
+     */
+    public function calculationRequest(QuoteTransfer $quoteTransfer)
+    {
+        $paymentData = $this->getPaymentData($quoteTransfer);
+
+        /**
+         * @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation $request
+         */
+        $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_CALCULATION_REQUEST);
+        $this->mapCalculationData($quoteTransfer, $paymentData, $request);
+
+        return $request;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $paymentData
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
      *
      * @return void
@@ -74,6 +92,31 @@ class Installment extends AbstractMethod
         $request->getHead()
             ->setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId())
             ->setCustomerId($quoteTransfer->getCustomer()->getIdCustomer());
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $paymentData
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation $request
+     *
+     * @return void
+     */
+    protected function mapCalculationData($quoteTransfer, $paymentData, $request)
+    {
+        $request->getHead()
+            ->setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId())
+            ->setCustomerId($quoteTransfer->getCustomer()->getIdCustomer())
+            ->setOperationSubstring($paymentData->getInstallmentSubType())
+        ;
+        
+        $request->getInstallmentCalculation()
+            ->setSubType($paymentData->getInstallmentSubType())
+            ->setAmount($paymentData->getInstallmentAmount())
+            ->setCalculationRate($paymentData->getInstallmentRate())
+            ->setMonth($paymentData->getInstallmentMonth())
+            ->setPaymentFirstday($paymentData->getInstallmentPaymentFirstDay())
+            ->setCalculationStart($paymentData->getInstallmentCalculationStart())
+        ;
     }
 
     /**

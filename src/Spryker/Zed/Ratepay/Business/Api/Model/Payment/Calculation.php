@@ -7,43 +7,27 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Payment;
 
 use Spryker\Zed\Ratepay\Business\Api\Constants;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation;
 
 class Calculation extends Base
 {
 
-    const OPERATION = Constants::REQUEST_MODEL_CONFIGURATION_REQUEST;
+    const OPERATION = Constants::REQUEST_MODEL_CALCULATION_REQUEST;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation
      */
-    protected $customer;
-
-    /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket
-     */
-    protected $basket;
-
-    /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment
-     */
-    protected $payment;
+    protected $installmentCalculation;
 
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head $head
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer $customer
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket $basket
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment $payment
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation $installmentCalculation
      */
-    public function __construct(Head $head, Customer $customer, ShoppingBasket $basket, Payment $payment)
+    public function __construct(Head $head, InstallmentCalculation $installmentCalculation)
     {
         parent::__construct($head);
-        $this->customer = $customer;
-        $this->basket = $basket;
-        $this->payment = $payment;
+        $this->installmentCalculation = $installmentCalculation;
     }
 
     /**
@@ -53,68 +37,31 @@ class Calculation extends Base
     {
         $result = parent::buildData();
         $result['content'] = [
-            $this->getPayment()->getRootTag()=> $this->getPayment(),
-            $this->getCustomer()->getRootTag() => $this->getCustomer(),
-            $this->getShoppingBasket()->getRootTag() => $this->getShoppingBasket(),
+            $this->getInstallmentCalculation()->getRootTag() => $this->getInstallmentCalculation()
         ];
+
         return $result;
     }
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer $customer
-     *
+     * @return InstallmentCalculation
+     */
+    public function getInstallmentCalculation()
+    {
+        return $this->installmentCalculation;
+    }
+
+    /**
+     * @param InstallmentCalculation $installmentCalculation
+     * 
      * @return $this
      */
-    public function setCustomer(Customer $customer)
+    public function setInstallmentCalculation($installmentCalculation)
     {
-        $this->customer = $customer;
+        $this->installmentCalculation = $installmentCalculation;
+        
         return $this;
     }
 
-    /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer
-     */
-    public function getCustomer()
-    {
-        return $this->customer;
-    }
-
-    /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket $basket
-     *
-     * @return $this
-     */
-    public function setShoppingBasket(ShoppingBasket $basket)
-    {
-        $this->basket = $basket;
-        return $this;
-    }
-
-    /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket
-     */
-    public function getShoppingBasket()
-    {
-        return $this->basket;
-    }
-
-    /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment $payment
-     *
-     * @return $this
-     */
-    public function setPayment(Payment $payment)
-    {
-        $this->payment = $payment;
-        return $this;
-    }
-
-    /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment
-     */
-    public function getPayment()
-    {
-        return $this->payment;
-    }
-
+    
 }

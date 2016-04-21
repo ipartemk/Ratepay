@@ -71,4 +71,11 @@ interface MethodInterface
      */
     public function configurationRequest(QuoteTransfer $quoteTransfer);
 
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
+     */
+    public function calculationRequest(QuoteTransfer $quoteTransfer);
+
 }

@@ -81,16 +81,14 @@
         <property name="debitPayType" type="int"/>
         <property name="debitPayTypeIndex" type="int"/>
 
-        <property name="installmentTotalAmount" type="int"/> <!-- Installment total payment amount -->
-        <property name="installmentLastAmount" type="int"/> <!-- Installment last payment amount -->
-        <property name="installmentAmount" type="int"/> <!-- Installment rate amount -->
-        <property name="installmentInterestRate" type="int"/> <!-- Installment interest rate -->
+        <property name="installmentSubType" type="string"/> <!-- Time | Rate -->
+        <property name="installmentAmount" type="float"/> <!-- Installment rate amount -->
+        <property name="installmentRate" type="float"/> <!-- Installment interest rate -->
+        <property name="installmentMonth" type="int"/> <!--Installment number of months -->
         <property name="installmentPaymentFirstDay" type="int"/> <!-- Installment first day of payment -->
+        <property name="installmentCalculationStart" type="string"/> <!-- Installment calculation start -->
 
-        <property name="installmentMonthAllowed" type="int"/> <!--Installment number of months -->
         <property name="installmentMonthAllowedIndex" type="int"/> <!-- Installment number of months index -->
-
-        <property name="installmentCalculationType" type="int"/> <!-- Installment calculation type -->
         <property name="installmentCalculationTypeIndex" type="int"/> <!-- Installment calculation type index -->
 
         <property name="recalculated" type="bool" />
