@@ -16,6 +16,8 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
+use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation;
+use Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
 
@@ -90,10 +92,11 @@ interface ConverterInterface
     public function responseToInstallmentConfigurationResponseObject(ConfigurationResponse $response);
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse $response
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation $request
      *
      * @return \Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer
      */
-    public function responseToInstallmentCalculationResponseObject(ResponseInterface $response);
+    public function responseToInstallmentCalculationResponseObject(CalculationResponse $response, Calculation $request);
 
 }

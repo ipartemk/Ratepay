@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
@@ -33,8 +32,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
             ->createPaymentTransactionHandler()
             ->prepareMethodMapper($quoteTransfer);
 
-        $this
-             ->getFactory()
+        $this->getFactory()
              ->createOrderSaver()
              ->saveOrderPayment($quoteTransfer, $checkoutResponseTransfer, $paymentMapper);
     }
@@ -50,8 +48,8 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createPaymentTransactionHandler()
-            ->initPayment($quoteTransfer);
+            ->createInitPaymentTransactionHandler()
+            ->request($quoteTransfer);
     }
 
     /**
@@ -65,8 +63,8 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createPaymentTransactionHandler()
-            ->preCheckPayment($quoteTransfer);
+            ->createPreCheckPaymentTransactionHandler()
+            ->request($quoteTransfer);
     }
 
     /**
@@ -80,8 +78,8 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createPaymentTransactionHandler()
-            ->preAuthorizePayment($orderTransfer);
+            ->createPreAuthorizePaymentTransactionHandler()
+            ->request($orderTransfer);
     }
 
     /**
@@ -95,8 +93,8 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createPaymentTransactionHandler()
-            ->capturePayment($orderTransfer);
+            ->createCapturePaymentTransactionHandler()
+            ->request($orderTransfer);
     }
 
     /**
@@ -110,8 +108,8 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createPaymentTransactionHandler()
-            ->cancelPayment($orderTransfer);
+            ->createCancelPaymentTransactionHandler()
+            ->request($orderTransfer);
     }
 
     /**
@@ -125,8 +123,8 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createPaymentTransactionHandler()
-            ->refundPayment($orderTransfer);
+            ->createRefundPaymentTransactionHandler()
+            ->request($orderTransfer);
     }
 
     /**
@@ -140,8 +138,8 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createPaymentTransactionHandler()
-            ->installmentConfiguration($quoteTransfer);
+            ->createInstallmentConfigurationTransactionHandler()
+            ->request($quoteTransfer);
     }
 
     /**
@@ -155,8 +153,8 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     {
         return $this
             ->getFactory()
-            ->createPaymentTransactionHandler()
-            ->installmentCalculation($quoteTransfer);
+            ->createInstallmentCalculationTransactionHandler()
+            ->request($quoteTransfer);
     }
 
     /**

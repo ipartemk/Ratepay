@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
@@ -12,11 +11,10 @@ use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
 use Spryker\Shared\Ratepay\RatepayConstants;
 use Spryker\Zed\Ratepay\Business\Api\Constants;
 use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
-use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction;
 use Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
 use Unit\Spryker\Zed\Ratepay\Business\Api\Response\Response;
 
-class TransactionTest extends \PHPUnit_Framework_TestCase
+class BaseTransactionTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -34,62 +32,12 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $this->mockery = new \Mockery();
     }
 
-    public function testPreAuthorizationApproved()
-    {
-        $transactionHandler = $this->getTransactionHandlerObject();
-
-        $this->assertInstanceOf('\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction', $transactionHandler);
-    }
-
-    public function testInitPayment()
-    {
-        $transactionHandler = $this->getTransactionHandlerObject();
-        $transactionHandler->registerMethodMapper($this->mockMethodInvoice());
-
-        $ratepayResponseTransfer = $transactionHandler->initPayment($this->mockQuoteTransfer());
-
-        $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayResponseTransfer', $ratepayResponseTransfer);
-
-        $this->assertEquals(
-            'Die Prüfung war erfolgreich. Vielen Dank, dass Sie die Zahlart Rechnung gewählt haben.',
-            $ratepayResponseTransfer->getCustomerMessage()
-        );
-    }
-
-    public function testPreCheckPayment()
-    {
-        $transactionHandler = $this->getTransactionHandlerObject();
-        $transactionHandler->registerMethodMapper($this->mockMethodInvoice());
-
-        $ratepayResponseTransfer = $transactionHandler->preCheckPayment($this->mockQuoteTransfer());
-
-        $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayResponseTransfer', $ratepayResponseTransfer);
-
-        $this->assertEquals(
-            'Die Prüfung war erfolgreich. Vielen Dank, dass Sie die Zahlart Rechnung gewählt haben.',
-            $ratepayResponseTransfer->getCustomerMessage()
-        );
-    }
-
-    public function testPreAuthorizePayment()
-    {
-        $transactionHandler = $this->getTransactionHandlerObject();
-        $transactionHandler->registerMethodMapper($this->mockMethodInvoice());
-
-        $responseTransfer = $transactionHandler->preAuthorizePayment($this->mockOrderTransfer());
-
-        $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayResponseTransfer', $responseTransfer);
-
-        $this->assertEquals(
-            'Die Prüfung war erfolgreich. Vielen Dank, dass Sie die Zahlart Rechnung gewählt haben.',
-            $responseTransfer->getCustomerMessage()
-        );
-    }
-
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction
+     * @param string $className
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CheckoutTransactionInterface
      */
-    private function getTransactionHandlerObject()
+    protected function getTransactionHandlerObject($className)
     {
         $executionAdapter = $this->getMockBuilder('\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle')
             ->disableOriginalConstructor()
@@ -103,7 +51,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $paymentLogger->shouldReceive('info')
             ->andReturn(null);
 
-        return new Transaction(
+        return new $className(
             $executionAdapter,
             $converter,
             $paymentLogger,
@@ -147,7 +95,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
-    private function mockQuoteTransfer()
+    protected function mockQuoteTransfer()
     {
         $quoteTransfer = $this->mockery->mock('\Generated\Shared\Transfer\QuoteTransfer');
         $quoteTransfer->shouldReceive('requirePayment')
@@ -165,7 +113,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Invoice
      */
-    private function mockMethodInvoice()
+    protected function mockMethodInvoice()
     {
         $modelPartHead = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head');
         $modelPartHead->shouldReceive('getOrderId')
@@ -201,7 +149,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    private function mockOrderTransfer()
+    protected function mockOrderTransfer()
     {
         $orderTransfer = $this->mockery->mock('\Generated\Shared\Transfer\OrderTransfer');
         $orderTransfer->shouldReceive('requireIdSalesOrder')

@@ -21,6 +21,8 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
+use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation;
+use Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
 
@@ -29,7 +31,7 @@ class Converter implements ConverterInterface
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Spryker\Shared\Transfer\AbstractTransfer $ratepayPaymentTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentElvTransfer $ratepayPaymentTransfer
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer $customer
      *
      * @return void
@@ -121,7 +123,7 @@ class Converter implements ConverterInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\OrderTransfer|\Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Spryker\Shared\Transfer\TransferInterface $ratepayPaymentTransfer
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket $basket
      *
@@ -190,7 +192,8 @@ class Converter implements ConverterInterface
             ->setResultCode($response->getResultCode())
             ->setResultText($response->getResultText())
             ->setCustomerMessage($response->getCustomerMessage())
-            ->setPaymentMethod($response->getPaymentMethod());
+            ->setPaymentMethod($response->getPaymentMethod())
+        ;
 
         return $responseTransfer;
     }
@@ -231,36 +234,38 @@ class Converter implements ConverterInterface
             ->setRateMinLongrun($response->getRateMinLongrun())
             ->setServiceCharge($response->getServiceCharge())
             ->setMinDifferenceDueday($response->getMinDifferenceDueday())
-            ;
+        ;
 
         return $responseTransfer;
     }
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse $response
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation $request
      *
      * @return \Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer
      */
-    public function responseToInstallmentCalculationResponseObject(ResponseInterface $response)
+    public function responseToInstallmentCalculationResponseObject(CalculationResponse $response, Calculation $request)
     {
-        //todo remove temporaty data.
         $responseTransfer = new RatepayInstallmentCalculationResponseTransfer();
         $responseTransfer
-//            ->setBaseResponse($this->responseToTransferObject($response))
-            ->setTotalAmount(244.67)
-            ->setAmount(230)
-            ->setInterestAmount(10.72)
-            ->setServiceCharge(3.95)
-            ->setInterestRate(13.7)
-            ->setAnnualPercentageRate(19.36)
-            ->setMonthlyDebitInterest(1.08)
-            ->setRate(40.79)
-            ->setNumberOfRates(6)
-            ->setLastRate(40.72)
-            ->setPaymentFirstDay(28);
+            ->setBaseResponse($this->responseToTransferObject($response))
+            ->setSubtype($request->getInstallmentCalculation()->getSubType())
+            
+            ->setTotalAmount($response->getTotalAmount())
+            ->setAmount($response->getAmount())
+            ->setInterestAmount($response->getInterestAmount())
+            ->setServiceCharge($response->getServiceCharge())
+            ->setInterestRate($response->getInterestRate())
+            ->setAnnualPercentageRate($response->getAnnualPercentageRate())
+            ->setMonthlyDebitInterest($response->getMonthlyDebitInterest())
+            ->setRate($response->getRate())
+            ->setNumberOfRates($response->getNumberOfRates())
+            ->setLastRate($response->getLastRate())
+            ->setPaymentFirstDay($response->getPaymentFirstday())
+        ;
 
         return $responseTransfer;
-
     }
 
     /**

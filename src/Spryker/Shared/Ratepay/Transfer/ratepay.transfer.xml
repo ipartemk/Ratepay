@@ -147,6 +147,7 @@
     <transfer name="RatepayInstallmentCalculationResponse">
         <property name="baseResponse" type="RatepayResponse"/>
 
+        <property name="subtype" type="string" />
         <property name="totalAmount" type="float" />
         <property name="amount" type="float" />
         <property name="interestAmount" type="float" />

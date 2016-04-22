@@ -13,7 +13,16 @@ use Spryker\Zed\Ratepay\Business\Api\ApiFactory;
 use Spryker\Zed\Ratepay\Business\Api\Converter\Converter as Converter;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory;
 use Spryker\Zed\Ratepay\Business\Order\Saver as Saver;
-use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\Transaction;
+use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CancelPaymentTransaction;
+use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CapturePaymentTransaction;
+use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CheckoutTransactionInterface;
+use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\InitPaymentTransaction;
+use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\InstallmentCalculationTransaction;
+use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\InstallmentConfigurationTransaction;
+use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\OrderTransactionInterface;
+use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\PreAuthorizePaymentTransaction;
+use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\PreCheckPaymentTransaction;
+use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\RefundPaymentTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Elv as Elv;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Installment;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice as Invoice;
@@ -39,23 +48,150 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\TransactionInterface
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\InitPaymentTransaction
      */
-    public function createPaymentTransactionHandler()
+    public function createInitPaymentTransactionHandler()
     {
-        $paymentTransactionHandler = new Transaction(
+        $transactionHandler = new InitPaymentTransaction(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
             $this->createConverter(),
             $this->createPaymentLogger(),
             $this->getQueryContainer()
         );
 
-        $paymentTransactionHandler->registerMethodMapper($this->createInvoice());
-        $paymentTransactionHandler->registerMethodMapper($this->createElv());
-        $paymentTransactionHandler->registerMethodMapper($this->createPrepayment());
-        $paymentTransactionHandler->registerMethodMapper($this->createInstallment());
+        $this->registerAllMethodMappers($transactionHandler);
+        
+        return $transactionHandler;
+    }
 
-        return $paymentTransactionHandler;
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\PreCheckPaymentTransaction
+     */
+    public function createPreCheckPaymentTransactionHandler()
+    {
+        $transactionHandler = new PreCheckPaymentTransaction(
+            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
+            $this->createConverter(),
+            $this->createPaymentLogger(),
+            $this->getQueryContainer()
+        );
+
+        $this->registerAllMethodMappers($transactionHandler);
+
+        return $transactionHandler;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CapturePaymentTransaction
+     */
+    public function createPreAuthorizePaymentTransactionHandler()
+    {
+        $transactionHandler = new PreAuthorizePaymentTransaction(
+            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
+            $this->createConverter(),
+            $this->createPaymentLogger(),
+            $this->getQueryContainer()
+        );
+
+        $this->registerAllMethodMappers($transactionHandler);
+
+        return $transactionHandler;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CapturePaymentTransaction
+     */
+    public function createCapturePaymentTransactionHandler()
+    {
+        $transactionHandler = new CapturePaymentTransaction(
+            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
+            $this->createConverter(),
+            $this->createPaymentLogger(),
+            $this->getQueryContainer()
+        );
+
+        $this->registerAllMethodMappers($transactionHandler);
+
+        return $transactionHandler;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CancelPaymentTransaction
+     */
+    public function createCancelPaymentTransactionHandler()
+    {
+        $transactionHandler = new CancelPaymentTransaction(
+            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
+            $this->createConverter(),
+            $this->createPaymentLogger(),
+            $this->getQueryContainer()
+        );
+
+        $this->registerAllMethodMappers($transactionHandler);
+
+        return $transactionHandler;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\RefundPaymentTransaction
+     */
+    public function createRefundPaymentTransactionHandler()
+    {
+        $transactionHandler = new RefundPaymentTransaction(
+            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
+            $this->createConverter(),
+            $this->createPaymentLogger(),
+            $this->getQueryContainer()
+        );
+
+        $this->registerAllMethodMappers($transactionHandler);
+
+        return $transactionHandler;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\InstallmentConfigurationTransaction
+     */
+    public function createInstallmentConfigurationTransactionHandler()
+    {
+        $transactionHandler = new InstallmentConfigurationTransaction(
+            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
+            $this->createConverter(),
+            $this->createPaymentLogger(),
+            $this->getQueryContainer()
+        );
+
+        $transactionHandler->registerMethodMapper($this->createInstallment());
+
+        return $transactionHandler;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\InstallmentCalculationTransaction
+     */
+    public function createInstallmentCalculationTransactionHandler()
+    {
+        $transactionHandler = new InstallmentCalculationTransaction(
+            $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
+            $this->createConverter(),
+            $this->createPaymentLogger(),
+            $this->getQueryContainer()
+        );
+
+        $transactionHandler->registerMethodMapper($this->createInstallment());
+
+        return $transactionHandler;
+    }
+
+    /**
+     * @param CheckoutTransactionInterface|OrderTransactionInterface $transactionHandler
+     */
+    private function registerAllMethodMappers($transactionHandler)
+    {
+        $transactionHandler->registerMethodMapper($this->createInvoice());
+        $transactionHandler->registerMethodMapper($this->createElv());
+        $transactionHandler->registerMethodMapper($this->createPrepayment());
+        $transactionHandler->registerMethodMapper($this->createInstallment());
     }
 
     /**

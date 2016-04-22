@@ -1,9 +1,9 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
+
 namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
 use Generated\Shared\Transfer\OrderTransfer;
@@ -38,7 +38,6 @@ abstract class AbstractMethod implements MethodInterface
 
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactoryInterface $modelFactory
-     * @param \Psr\Log\LoggerInterface $logger
      * @param \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface $converter
      * @param \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface $queryContainer
      *

@@ -12,123 +12,25 @@ class CalculationResponse extends BaseResponse
     /**
      * @return float
      */
-    public function getInterestrateMin()
+    public function getTotalAmount()
     {
-        return floatval($this->xmlObject->content->{'installment-configuration-result'}->{'interestrate-min'});
+        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'total-amount'});
     }
 
     /**
      * @return float
      */
-    public function getInterestrateDefault()
+    public function getAmount()
     {
-        return floatval($this->xmlObject->content->{'installment-configuration-result'}->{'interestrate-default'});
+        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'amount'});
     }
 
     /**
      * @return float
      */
-    public function getInterestrateMax()
+    public function getInterestAmount()
     {
-        return floatval($this->xmlObject->content->{'installment-configuration-result'}->{'interestrate-max'});
-    }
-
-    /**
-     * @return float
-     */
-    public function getInterestRateMerchantTowardsBank()
-    {
-        return floatval($this->xmlObject->content->{'installment-configuration-result'}->{'interest-rate-merchant-towards-bank'});
-    }
-
-    /**
-     * @return int
-     */
-    public function getMonthNumberMin()
-    {
-        return (int)$this->xmlObject->content->{'installment-configuration-result'}->{'month-number-min'};
-    }
-
-    /**
-     * @return int
-     */
-    public function getMonthNumberMax()
-    {
-        return (int)$this->xmlObject->content->{'installment-configuration-result'}->{'month-number-max'};
-    }
-
-    /**
-     * @return int
-     */
-    public function getMonthLongrun()
-    {
-        return (int)$this->xmlObject->content->{'installment-configuration-result'}->{'month-longrun'};
-    }
-
-    /**
-     * @return int
-     */
-    public function getAmountMinLongrun()
-    {
-        return (int)$this->xmlObject->content->{'installment-configuration-result'}->{'amount-min-longrun'};
-    }
-
-    /**
-     * @return array
-     */
-    public function getMonthAllowed()
-    {
-        $monthAllowed = (string)$this->xmlObject->content->{'installment-configuration-result'}->{'month-allowed'};
-
-        return explode(',', $monthAllowed);
-    }
-    
-    /**
-     * @return int
-     */
-    public function getValidPaymentFirstdays()
-    {
-        return (int)$this->xmlObject->content->{'installment-configuration-result'}->{'valid-payment-firstdays'};
-    }
-
-    /**
-     * @return int
-     */
-    public function getPaymentFirstday()
-    {
-        return (int)$this->xmlObject->content->{'installment-configuration-result'}->{'payment-firstday'};
-    }
-
-    /**
-     * @return int
-     */
-    public function getPaymentAmount()
-    {
-        return (int)$this->xmlObject->content->{'installment-configuration-result'}->{'payment-amount'};
-    }
-
-    /**
-     * @return int
-     */
-    public function getPaymentLastrate()
-    {
-        return (int)$this->xmlObject->content->{'installment-configuration-result'}->{'payment-lastrate'};
-    }
-
-    /**
-     * @return int
-     */
-    public function getRateMinNormal()
-    {
-        return (int)$this->xmlObject->content->{'installment-configuration-result'}->{'rate-min-normal'};
-    }
-
-    /**
-     * @return int
-     */
-    public function getRateMinLongrun()
-    {
-        return (int)$this->xmlObject->content->{'installment-configuration-result'}->{'rate-min-longrun'};
+        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'interest-amount'});
     }
 
     /**
@@ -136,15 +38,63 @@ class CalculationResponse extends BaseResponse
      */
     public function getServiceCharge()
     {
-        return floatval($this->xmlObject->content->{'installment-configuration-result'}->{'service-charge'});
+        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'service-charge'});
+    }
+
+    /**
+     * @return float
+     */
+    public function getInterestRate()
+    {
+        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'interest-rate'});
+    }
+
+    /**
+     * @return float
+     */
+    public function getAnnualPercentageRate()
+    {
+        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'annual-percentage-rate'});
+    }
+
+    /**
+     * @return float
+     */
+    public function getMonthlyDebitInterest()
+    {
+        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'monthly-debit-interest'});
+    }
+
+    /**
+     * @return float
+     */
+    public function getRate()
+    {
+        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'rate'});
+    }
+
+    /**
+     * @return float
+     */
+    public function getLastRate()
+    {
+        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'last-rate'});
     }
 
     /**
      * @return int
      */
-    public function getMinDifferenceDueday()
+    public function getNumberOfRates()
     {
-        return (int)$this->xmlObject->content->{'installment-configuration-result'}->{'min-difference-dueday'};
+        return (int)$this->xmlObject->content->{'installment-calculation-result'}->{'number-of-rates'};
+    }
+
+    /**
+     * @return int
+     */
+    public function getPaymentFirstday()
+    {
+        return (int)$this->xmlObject->content->{'installment-calculation-result'}->{'payment-firstday'};
     }
 
 }

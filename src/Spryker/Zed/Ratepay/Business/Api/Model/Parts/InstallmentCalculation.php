@@ -25,7 +25,7 @@ class InstallmentCalculation extends AbstractRequest
     ];
 
     /**
-     * @var float
+     * @var string
      */
     protected $subType;
 
@@ -92,7 +92,7 @@ class InstallmentCalculation extends AbstractRequest
     }
 
     /**
-     * @return float
+     * @return string
      */
     public function getSubType()
     {
@@ -100,7 +100,7 @@ class InstallmentCalculation extends AbstractRequest
     }
 
     /**
-     * @param float $subType
+     * @param string $subType
      *
      * @return $this
      */
