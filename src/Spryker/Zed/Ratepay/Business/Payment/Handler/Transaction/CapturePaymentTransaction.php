@@ -11,7 +11,7 @@ use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 
 class CapturePaymentTransaction extends BaseTransaction implements OrderTransactionInterface
 {
-    
+
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
@@ -33,6 +33,5 @@ class CapturePaymentTransaction extends BaseTransaction implements OrderTransact
 
         return $this->converter->responseToTransferObject($response);
     }
-
 
 }

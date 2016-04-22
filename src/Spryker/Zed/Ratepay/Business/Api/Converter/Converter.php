@@ -192,8 +192,7 @@ class Converter implements ConverterInterface
             ->setResultCode($response->getResultCode())
             ->setResultText($response->getResultText())
             ->setCustomerMessage($response->getCustomerMessage())
-            ->setPaymentMethod($response->getPaymentMethod())
-        ;
+            ->setPaymentMethod($response->getPaymentMethod());
 
         return $responseTransfer;
     }
@@ -233,8 +232,7 @@ class Converter implements ConverterInterface
             ->setRateMinNormal($response->getRateMinNormal())
             ->setRateMinLongrun($response->getRateMinLongrun())
             ->setServiceCharge($response->getServiceCharge())
-            ->setMinDifferenceDueday($response->getMinDifferenceDueday())
-        ;
+            ->setMinDifferenceDueday($response->getMinDifferenceDueday());
 
         return $responseTransfer;
     }
@@ -251,7 +249,7 @@ class Converter implements ConverterInterface
         $responseTransfer
             ->setBaseResponse($this->responseToTransferObject($response))
             ->setSubtype($request->getInstallmentCalculation()->getSubType())
-            
+
             ->setTotalAmount($response->getTotalAmount())
             ->setAmount($response->getAmount())
             ->setInterestAmount($response->getInterestAmount())
@@ -262,8 +260,7 @@ class Converter implements ConverterInterface
             ->setRate($response->getRate())
             ->setNumberOfRates($response->getNumberOfRates())
             ->setLastRate($response->getLastRate())
-            ->setPaymentFirstDay($response->getPaymentFirstday())
-        ;
+            ->setPaymentFirstDay($response->getPaymentFirstday());
 
         return $responseTransfer;
     }

@@ -8,11 +8,11 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
-use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse;
 
 class InstallmentCalculationTransaction extends BaseTransaction implements CheckoutTransactionInterface
 {
+
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -27,7 +27,7 @@ class InstallmentCalculationTransaction extends BaseTransaction implements Check
             ->requirePaymentMethod()
             ->getPaymentMethod();
 
-        /** @var Calculation $request */
+        /** @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation $request */
         $request = $this->getMethodMapper($paymentMethod)
             ->calculationRequest($quoteTransfer);
         $response = $this->sendRequest((string)$request);
@@ -37,7 +37,7 @@ class InstallmentCalculationTransaction extends BaseTransaction implements Check
 
         return $responseTransfer;
     }
-    
+
     /**
      * @param string $xmlRequest
      *

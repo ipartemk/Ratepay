@@ -68,5 +68,5 @@ interface ResponseInterface
      * @return string
      */
     public function getPaymentMethod();
-    
+
 }

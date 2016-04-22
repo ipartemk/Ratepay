@@ -15,11 +15,9 @@ use Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory;
 use Spryker\Zed\Ratepay\Business\Order\Saver as Saver;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CancelPaymentTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CapturePaymentTransaction;
-use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CheckoutTransactionInterface;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\InitPaymentTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\InstallmentCalculationTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\InstallmentConfigurationTransaction;
-use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\OrderTransactionInterface;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\PreAuthorizePaymentTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\PreCheckPaymentTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\RefundPaymentTransaction;
@@ -60,7 +58,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         );
 
         $this->registerAllMethodMappers($transactionHandler);
-        
+
         return $transactionHandler;
     }
 
@@ -184,9 +182,10 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @param CheckoutTransactionInterface|OrderTransactionInterface $transactionHandler
+     * @param \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CheckoutTransactionInterface|\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\OrderTransactionInterface $transactionHandler
+     * @return void
      */
-    private function registerAllMethodMappers($transactionHandler)
+    protected function registerAllMethodMappers($transactionHandler)
     {
         $transactionHandler->registerMethodMapper($this->createInvoice());
         $transactionHandler->registerMethodMapper($this->createElv());

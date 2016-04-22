@@ -19,7 +19,7 @@ use Spryker\Zed\Ratepay\Business\Exception\NoMethodMapperException;
 use Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface;
 use Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
 
-class BaseTransaction 
+class BaseTransaction
 {
 
     /**

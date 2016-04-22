@@ -44,7 +44,7 @@ class Calculation extends Base
     }
 
     /**
-     * @return InstallmentCalculation
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation
      */
     public function getInstallmentCalculation()
     {
@@ -52,16 +52,15 @@ class Calculation extends Base
     }
 
     /**
-     * @param InstallmentCalculation $installmentCalculation
-     * 
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation $installmentCalculation
+     *
      * @return $this
      */
     public function setInstallmentCalculation($installmentCalculation)
     {
         $this->installmentCalculation = $installmentCalculation;
-        
+
         return $this;
     }
 
-    
 }

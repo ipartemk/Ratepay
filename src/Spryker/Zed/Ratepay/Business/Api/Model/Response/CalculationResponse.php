@@ -14,7 +14,7 @@ class CalculationResponse extends BaseResponse
      */
     public function getTotalAmount()
     {
-        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'total-amount'});
+        return (float)($this->xmlObject->content->{'installment-calculation-result'}->{'total-amount'});
     }
 
     /**
@@ -22,7 +22,7 @@ class CalculationResponse extends BaseResponse
      */
     public function getAmount()
     {
-        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'amount'});
+        return (float)($this->xmlObject->content->{'installment-calculation-result'}->{'amount'});
     }
 
     /**
@@ -30,7 +30,7 @@ class CalculationResponse extends BaseResponse
      */
     public function getInterestAmount()
     {
-        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'interest-amount'});
+        return (float)($this->xmlObject->content->{'installment-calculation-result'}->{'interest-amount'});
     }
 
     /**
@@ -38,7 +38,7 @@ class CalculationResponse extends BaseResponse
      */
     public function getServiceCharge()
     {
-        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'service-charge'});
+        return (float)($this->xmlObject->content->{'installment-calculation-result'}->{'service-charge'});
     }
 
     /**
@@ -46,7 +46,7 @@ class CalculationResponse extends BaseResponse
      */
     public function getInterestRate()
     {
-        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'interest-rate'});
+        return (float)($this->xmlObject->content->{'installment-calculation-result'}->{'interest-rate'});
     }
 
     /**
@@ -54,7 +54,7 @@ class CalculationResponse extends BaseResponse
      */
     public function getAnnualPercentageRate()
     {
-        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'annual-percentage-rate'});
+        return (float)($this->xmlObject->content->{'installment-calculation-result'}->{'annual-percentage-rate'});
     }
 
     /**
@@ -62,7 +62,7 @@ class CalculationResponse extends BaseResponse
      */
     public function getMonthlyDebitInterest()
     {
-        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'monthly-debit-interest'});
+        return (float)($this->xmlObject->content->{'installment-calculation-result'}->{'monthly-debit-interest'});
     }
 
     /**
@@ -70,7 +70,7 @@ class CalculationResponse extends BaseResponse
      */
     public function getRate()
     {
-        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'rate'});
+        return (float)($this->xmlObject->content->{'installment-calculation-result'}->{'rate'});
     }
 
     /**
@@ -78,7 +78,7 @@ class CalculationResponse extends BaseResponse
      */
     public function getLastRate()
     {
-        return floatval($this->xmlObject->content->{'installment-calculation-result'}->{'last-rate'});
+        return (float)($this->xmlObject->content->{'installment-calculation-result'}->{'last-rate'});
     }
 
     /**

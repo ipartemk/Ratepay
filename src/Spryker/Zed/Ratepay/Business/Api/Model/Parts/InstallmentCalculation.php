@@ -212,7 +212,5 @@ class InstallmentCalculation extends AbstractRequest
 
         return $this;
     }
-    
-    
 
 }

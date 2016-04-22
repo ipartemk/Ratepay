@@ -14,7 +14,7 @@ class ConfigurationResponse extends BaseResponse
      */
     public function getInterestrateMin()
     {
-        return floatval($this->xmlObject->content->{'installment-configuration-result'}->{'interestrate-min'});
+        return (float)($this->xmlObject->content->{'installment-configuration-result'}->{'interestrate-min'});
     }
 
     /**
@@ -22,7 +22,7 @@ class ConfigurationResponse extends BaseResponse
      */
     public function getInterestrateDefault()
     {
-        return floatval($this->xmlObject->content->{'installment-configuration-result'}->{'interestrate-default'});
+        return (float)($this->xmlObject->content->{'installment-configuration-result'}->{'interestrate-default'});
     }
 
     /**
@@ -30,7 +30,7 @@ class ConfigurationResponse extends BaseResponse
      */
     public function getInterestrateMax()
     {
-        return floatval($this->xmlObject->content->{'installment-configuration-result'}->{'interestrate-max'});
+        return (float)($this->xmlObject->content->{'installment-configuration-result'}->{'interestrate-max'});
     }
 
     /**
@@ -38,7 +38,7 @@ class ConfigurationResponse extends BaseResponse
      */
     public function getInterestRateMerchantTowardsBank()
     {
-        return floatval($this->xmlObject->content->{'installment-configuration-result'}->{'interest-rate-merchant-towards-bank'});
+        return (float)($this->xmlObject->content->{'installment-configuration-result'}->{'interest-rate-merchant-towards-bank'});
     }
 
     /**
@@ -82,7 +82,7 @@ class ConfigurationResponse extends BaseResponse
 
         return explode(',', $monthAllowed);
     }
-    
+
     /**
      * @return int
      */
@@ -136,7 +136,7 @@ class ConfigurationResponse extends BaseResponse
      */
     public function getServiceCharge()
     {
-        return floatval($this->xmlObject->content->{'installment-configuration-result'}->{'service-charge'});
+        return (float)($this->xmlObject->content->{'installment-configuration-result'}->{'service-charge'});
     }
 
     /**
