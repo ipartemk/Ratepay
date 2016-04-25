@@ -52,8 +52,8 @@ interface RatepayConstants
     /**
      * Installment calculator types.
      */
-    const INSTALLMENT_CALCULATION_TIME = 'Time';
-    const INSTALLMENT_CALCULATION_RATE = 'Rate';
+    const INSTALLMENT_CALCULATION_TIME = 'calculation-by-time';
+    const INSTALLMENT_CALCULATION_RATE = 'calculation-by-rate';
     const INSTALLMENT_CALCULATION_TYPES = [
         self::INSTALLMENT_CALCULATION_TIME,
         self::INSTALLMENT_CALCULATION_RATE,

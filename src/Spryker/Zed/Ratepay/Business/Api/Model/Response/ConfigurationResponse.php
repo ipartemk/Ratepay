@@ -79,8 +79,9 @@ class ConfigurationResponse extends BaseResponse
     public function getMonthAllowed()
     {
         $monthAllowed = (string)$this->xmlObject->content->{'installment-configuration-result'}->{'month-allowed'};
+        $monthAllowed = array_values(explode(',', $monthAllowed));
 
-        return explode(',', $monthAllowed);
+        return array_combine($monthAllowed, $monthAllowed);
     }
 
     /**

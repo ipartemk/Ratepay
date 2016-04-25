@@ -78,8 +78,7 @@
         <property name="dateOfBirth" type="string"/>
         <property name="customerAllowCreditInquiry" type="int" />
 
-        <property name="debitPayType" type="int"/>
-        <property name="debitPayTypeIndex" type="int"/>
+        <property name="debitPayType" type="string"/>
 
         <property name="installmentSubType" type="string"/> <!-- Time | Rate -->
         <property name="installmentAmount" type="float"/> <!-- Installment rate amount -->
@@ -88,10 +87,8 @@
         <property name="installmentPaymentFirstDay" type="int"/> <!-- Installment first day of payment -->
         <property name="installmentCalculationStart" type="string"/> <!-- Installment calculation start -->
 
-        <property name="installmentMonthAllowedIndex" type="int"/> <!-- Installment number of months index -->
-        <property name="installmentCalculationTypeIndex" type="int"/> <!-- Installment calculation type index -->
-
-        <property name="recalculated" type="bool" />
+        <property name="installmentMonthAllowed" type="int"/> <!-- Installment number of months index -->
+        <property name="installmentCalculationType" type="int"/> <!-- Installment calculation type index -->
 
         <property name="bankAccountHolder" type="string"/>
         <property name="bankAccountBic" type="string"/>
@@ -162,6 +159,7 @@
     </transfer>
 
     <transfer name="Payment">
+        <property name="paymentSelection" type="string"/>
         <property name="ratepayInvoice" type="RatepayPaymentInvoice"/>
         <property name="ratepayElv" type="RatepayPaymentElv"/>
         <property name="ratepayInstallment" type="RatepayPaymentInstallment"/>

@@ -106,15 +106,9 @@ class Installment extends AbstractMethod
         $request->getHead()
             ->setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId())
             ->setCustomerId($quoteTransfer->getCustomer()->getIdCustomer())
-            ->setOperationSubstring($paymentData->getInstallmentSubType());
+            ->setOperationSubstring($paymentData->getInstallmentCalculationType());
 
-        $request->getInstallmentCalculation()
-            ->setSubType($paymentData->getInstallmentSubType())
-            ->setAmount($paymentData->getInstallmentAmount())
-            ->setCalculationRate($paymentData->getInstallmentRate())
-            ->setMonth($paymentData->getInstallmentMonth())
-            ->setPaymentFirstday($paymentData->getInstallmentPaymentFirstDay())
-            ->setCalculationStart($paymentData->getInstallmentCalculationStart());
+        $this->converter->mapInstallmentCalculation($quoteTransfer, $paymentData, $request->getInstallmentCalculation());
     }
 
     /**

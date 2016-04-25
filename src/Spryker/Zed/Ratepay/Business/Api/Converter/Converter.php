@@ -17,6 +17,7 @@ use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 
@@ -171,6 +172,25 @@ class Converter implements ConverterInterface
         foreach ($itemTransfer->getProductOptions() as $productOption) {
             $basketItem->addProductOption($productOption->getLabelOptionValue());
         }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation $calculation
+     *
+     * @return void
+     */
+    public function mapInstallmentCalculation(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, InstallmentCalculation $calculation)
+    {
+        $grandTotal = $this->centsToDecimal($quoteTransfer->requireTotals()->getTotals()->requireGrandTotal()->getGrandTotal());
+        $calculation
+            ->setSubType($ratepayPaymentTransfer->getInstallmentCalculationType())
+            ->setAmount($grandTotal)
+            ->setCalculationRate($ratepayPaymentTransfer->getInstallmentRate())
+            ->setMonth($ratepayPaymentTransfer->getInstallmentMonth())
+            ->setPaymentFirstday($ratepayPaymentTransfer->getInstallmentPaymentFirstDay())
+            ->setCalculationStart($ratepayPaymentTransfer->getInstallmentCalculationStart());
     }
 
     /**

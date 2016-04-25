@@ -19,7 +19,7 @@ class InstallmentCalculation extends AbstractRequest
     /**
      * @var array
      */
-    protected $avalableSubtypes = [
+    protected $availableSubtypes = [
         self::SUBTYPE_RATE,
         self::SUBTYPE_TIME,
     ];
@@ -106,7 +106,7 @@ class InstallmentCalculation extends AbstractRequest
      */
     public function setSubType($subType)
     {
-        if (in_array($subType, $this->avalableSubtypes)) {
+        if (in_array($subType, $this->availableSubtypes)) {
             $this->subType = $subType;
         }
 

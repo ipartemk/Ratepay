@@ -27,12 +27,16 @@ class InstallmentCalculationTransaction extends BaseTransaction implements Check
             ->requirePaymentMethod()
             ->getPaymentMethod();
 
+        $paymentMethod = $this->getMethodMapper($paymentMethod);
         /** @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation $request */
-        $request = $this->getMethodMapper($paymentMethod)
+        $request = $paymentMethod
             ->calculationRequest($quoteTransfer);
         $response = $this->sendRequest((string)$request);
         $this->logInfo(ApiConstants::REQUEST_MODEL_CALCULATION_REQUEST, $request, $response);
 
+        if ($response->isSuccessful()) {
+            //todo
+        }
         $responseTransfer = $this->converter->responseToInstallmentCalculationResponseObject($response, $request);
 
         return $responseTransfer;
