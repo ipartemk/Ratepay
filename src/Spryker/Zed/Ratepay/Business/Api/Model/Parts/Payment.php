@@ -29,7 +29,7 @@ class Payment extends AbstractRequest
     protected $amount;
 
     /**
-     * @var
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail
      */
     protected $installmentDetails;
 
@@ -47,10 +47,12 @@ class Payment extends AbstractRequest
             '@method' => $this->getMethod(),
             '@currency' => $this->getCurrency(),
             'amount' => $this->getAmount(),
-            'installment-details' => $this->getInstallmentDetails(),
             'debit-pay-type' => $this->getDebitPayType(),
         ];
 
+        if ($this->getInstallmentDetails()) {
+            $return['installment-details'] = $this->getInstallmentDetails();
+        }
         return $return;
     }
 
@@ -123,7 +125,7 @@ class Payment extends AbstractRequest
     }
 
     /**
-     * @return mixed
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail
      */
     public function getInstallmentDetails()
     {
