@@ -4,12 +4,11 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Unit\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
+namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
-use Unit\Spryker\Zed\Ratepay\Business\Payment\BasePaymentTest;
-
-class BaseTransactionTest extends BasePaymentTest
+interface MapperInterface
 {
-
+    
+    public function map();
 
 }

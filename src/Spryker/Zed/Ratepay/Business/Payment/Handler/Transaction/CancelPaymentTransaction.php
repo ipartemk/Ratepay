@@ -31,7 +31,9 @@ class CancelPaymentTransaction extends BaseTransaction implements OrderTransacti
             $paymentMethod->setResultCode($response->getResultCode())->save();
         }
 
-        return $this->converter->responseToTransferObject($response);
+        return $this->converterFactory
+            ->getTransferObjectConverter($response)
+            ->convert();
     }
 
 }

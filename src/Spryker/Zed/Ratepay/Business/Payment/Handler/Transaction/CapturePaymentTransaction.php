@@ -31,7 +31,9 @@ class CapturePaymentTransaction extends BaseTransaction implements OrderTransact
             $paymentMethod->setResultCode($response->getResultCode())->save();
         }
 
-        return $this->converter->responseToTransferObject($response);
+        return $this->converterFactory
+            ->getTransferObjectConverter($response)
+            ->convert();
     }
 
 }

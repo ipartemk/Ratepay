@@ -21,7 +21,7 @@ class ElvTest extends AbstractMethodMapperTest
     {
         return new Elv(
             $this->createApiRequestFactory(),
-            $this->createConverter(),
+            $this->createMapperFactory(),
             $this->getQueryContainerMock()
         );
     }

@@ -21,7 +21,7 @@ class InvoiceTest extends AbstractMethodMapperTest
     {
         return new Invoice(
             $this->createApiRequestFactory(),
-            $this->createConverter(),
+            $this->createMapperFactory(),
             $this->getQueryContainerMock()
         );
     }

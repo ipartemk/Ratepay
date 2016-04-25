@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
@@ -7,38 +6,44 @@
 
 namespace Unit\Spryker\Zed\Ratepay\Business\Payment\MethodMapper;
 
-use Codeception\TestCase\Test;
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-
 use Generated\Shared\Transfer\TotalsTransfer;
 use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay;
 use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
 use Spryker\Zed\Ratepay\Business\Api\ApiFactory;
 use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
-
+use Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory;
 use Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
+use Unit\Spryker\Zed\Ratepay\Business\Payment\BasePaymentTest;
 
-abstract class AbstractMethodMapperTest extends Test
+abstract class AbstractMethodMapperTest extends BasePaymentTest
 {
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Converter\Converter
+     * @var \Mockery;
      */
-    protected function createConverter()
+    protected $mockery;
+
+    /**
+     * @return void
+     */
+    public function setUp()
     {
-        return new Converter();
+        parent::setUp();
+
+        $this->mockery = new \Mockery();
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface
+     * @return \Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory
      */
-    protected function createQueryContainer()
+    protected function createMapperFactory()
     {
-        return new Converter();
+        return new MapperFactory();
     }
 
     /**
@@ -313,7 +318,7 @@ abstract class AbstractMethodMapperTest extends Test
     }
 
     /**
-     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay
+     * @return \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface
      */
     protected function getQueryContainerMock()
     {
@@ -384,5 +389,11 @@ abstract class AbstractMethodMapperTest extends Test
      * @return void
      */
     abstract protected function setRatepayPaymentEntityData($ratepayPaymentEntity);
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+        $this->mockery->close();
+    }
 
 }

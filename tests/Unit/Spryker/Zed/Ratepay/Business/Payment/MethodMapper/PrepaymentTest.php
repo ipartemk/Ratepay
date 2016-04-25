@@ -21,7 +21,7 @@ class PrepaymentTest extends AbstractMethodMapperTest
     {
         return new Prepayment(
             $this->createApiRequestFactory(),
-            $this->createConverter(),
+            $this->createMapperFactory(),
             $this->getQueryContainerMock()
         );
     }

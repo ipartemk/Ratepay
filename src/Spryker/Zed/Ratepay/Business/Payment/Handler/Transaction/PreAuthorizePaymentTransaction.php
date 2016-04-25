@@ -30,7 +30,9 @@ class PreAuthorizePaymentTransaction extends BaseTransaction implements OrderTra
         if ($response->isSuccessful()) {
             $paymentMethod->setResultCode($response->getResultCode())->save();
         }
-        return $this->converter->responseToTransferObject($response);
+        return $this->converterFactory
+            ->getTransferObjectConverter($response)
+            ->convert();
     }
 
 }

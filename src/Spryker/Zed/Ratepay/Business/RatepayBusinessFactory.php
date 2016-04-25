@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
@@ -10,7 +9,8 @@ namespace Spryker\Zed\Ratepay\Business;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
 use Spryker\Zed\Ratepay\Business\Api\ApiFactory;
-use Spryker\Zed\Ratepay\Business\Api\Converter\Converter as Converter;
+use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
+use Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory;
 use Spryker\Zed\Ratepay\Business\Order\Saver as Saver;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CancelPaymentTransaction;
@@ -52,7 +52,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         $transactionHandler = new InitPaymentTransaction(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
-            $this->createConverter(),
+            $this->createConverterFactory(),
             $this->createPaymentLogger(),
             $this->getQueryContainer()
         );
@@ -69,7 +69,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         $transactionHandler = new PreCheckPaymentTransaction(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
-            $this->createConverter(),
+            $this->createConverterFactory(),
             $this->createPaymentLogger(),
             $this->getQueryContainer()
         );
@@ -86,7 +86,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         $transactionHandler = new PreAuthorizePaymentTransaction(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
-            $this->createConverter(),
+            $this->createConverterFactory(),
             $this->createPaymentLogger(),
             $this->getQueryContainer()
         );
@@ -103,7 +103,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         $transactionHandler = new CapturePaymentTransaction(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
-            $this->createConverter(),
+            $this->createConverterFactory(),
             $this->createPaymentLogger(),
             $this->getQueryContainer()
         );
@@ -120,7 +120,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         $transactionHandler = new CancelPaymentTransaction(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
-            $this->createConverter(),
+            $this->createConverterFactory(),
             $this->createPaymentLogger(),
             $this->getQueryContainer()
         );
@@ -137,7 +137,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         $transactionHandler = new RefundPaymentTransaction(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
-            $this->createConverter(),
+            $this->createConverterFactory(),
             $this->createPaymentLogger(),
             $this->getQueryContainer()
         );
@@ -154,7 +154,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         $transactionHandler = new InstallmentConfigurationTransaction(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
-            $this->createConverter(),
+            $this->createConverterFactory(),
             $this->createPaymentLogger(),
             $this->getQueryContainer()
         );
@@ -171,7 +171,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         $transactionHandler = new InstallmentCalculationTransaction(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
-            $this->createConverter(),
+            $this->createConverterFactory(),
             $this->createPaymentLogger(),
             $this->getQueryContainer()
         );
@@ -238,11 +238,19 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Converter\Converter
+     * @return \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory
      */
-    protected function createConverter()
+    protected function createConverterFactory()
     {
-        return new Converter();
+        return new ConverterFactory();
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory
+     */
+    protected function createMapperFactory()
+    {
+        return new MapperFactory();
     }
 
     /**
@@ -252,7 +260,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         return new Invoice(
             $this->createApiRequestFactory(),
-            $this->createConverter(),
+            $this->createMapperFactory(),
             $this->getQueryContainer()
         );
     }
@@ -264,7 +272,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         return new Elv(
             $this->createApiRequestFactory(),
-            $this->createConverter(),
+            $this->createMapperFactory(),
             $this->getQueryContainer()
         );
     }
@@ -276,7 +284,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         return new Prepayment(
             $this->createApiRequestFactory(),
-            $this->createConverter(),
+            $this->createMapperFactory(),
             $this->getQueryContainer()
         );
     }
@@ -288,7 +296,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     {
         return new Installment(
             $this->createApiRequestFactory(),
-            $this->createConverter(),
+            $this->createMapperFactory(),
             $this->getQueryContainer()
         );
     }

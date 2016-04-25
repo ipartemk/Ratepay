@@ -34,7 +34,9 @@ class PreCheckPaymentTransaction extends BaseTransaction implements CheckoutTran
         $response = $this->sendRequest((string)$request);
         $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST, $request, $response);
 
-        $responseTransfer = $this->converter->responseToTransferObject($response);
+        $responseTransfer = $this->converterFactory
+            ->getTransferObjectConverter($response)
+            ->convert();
         $this->fixResponseTransferTransactionId($responseTransfer, $responseTransfer->getTransactionId(), $responseTransfer->getTransactionShortId());
 
         return $responseTransfer;

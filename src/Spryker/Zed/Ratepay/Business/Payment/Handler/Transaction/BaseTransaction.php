@@ -12,7 +12,7 @@ use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Psr\Log\LoggerInterface;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
-use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface;
+use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PyamentRequest;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;
 use Spryker\Zed\Ratepay\Business\Exception\NoMethodMapperException;
@@ -28,9 +28,9 @@ class BaseTransaction
     protected $executionAdapter;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface
+     * @var \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory
      */
-    protected $converter;
+    protected $converterFactory;
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -49,18 +49,18 @@ class BaseTransaction
 
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface $executionAdapter
-     * @param \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterInterface $converter
+     * @param \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory $converterFactory
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface $queryContainer
      */
     public function __construct(
         AdapterInterface $executionAdapter,
-        ConverterInterface $converter,
+        ConverterFactory $converterFactory,
         LoggerInterface $logger,
         RatepayQueryContainerInterface $queryContainer
     ) {
         $this->executionAdapter = $executionAdapter;
-        $this->converter = $converter;
+        $this->converterFactory = $converterFactory;
         $this->logger = $logger;
         $this->queryContainer = $queryContainer;
     }
@@ -85,7 +85,9 @@ class BaseTransaction
         $response = $this->sendRequest((string)$request);
         $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_INIT, $request, $response);
 
-        $initResponseTransfer = $this->converter->responseToTransferObject($response);
+        $initResponseTransfer = $this->converterFactory
+            ->getTransferObjectConverter($response)
+            ->convert();
         if ($initResponseTransfer->getSuccessful()) {
             $paymentMethod
                 ->getPaymentData($quoteTransfer)
@@ -94,7 +96,9 @@ class BaseTransaction
                 ->setResultCode($initResponseTransfer->requireResultCode()->getResultCode());
         }
 
-        return $this->converter->responseToTransferObject($response);
+        return $this->converterFactory
+            ->getTransferObjectConverter($response)
+            ->convert();
     }
 
     /**

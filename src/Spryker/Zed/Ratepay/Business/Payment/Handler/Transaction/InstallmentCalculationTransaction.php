@@ -33,7 +33,9 @@ class InstallmentCalculationTransaction extends BaseTransaction implements Check
         $response = $this->sendRequest((string)$request);
         $this->logInfo(ApiConstants::REQUEST_MODEL_CALCULATION_REQUEST, $request, $response);
 
-        $responseTransfer = $this->converter->responseToInstallmentCalculationResponseObject($response, $request);
+        $responseTransfer = $this->converterFactory
+            ->getInstallmentCalculationResponseConverter($response, $request)
+            ->convert();
 
         return $responseTransfer;
     }
