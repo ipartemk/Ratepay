@@ -83,9 +83,14 @@
         <property name="installmentSubType" type="string"/> <!-- Time | Rate -->
         <property name="installmentAmount" type="float"/> <!-- Installment rate amount -->
         <property name="installmentRate" type="float"/> <!-- Installment interest rate -->
+        <property name="installmentLastRate" type="float"/> <!-- Installment last rate -->
         <property name="installmentMonth" type="int"/> <!--Installment number of months -->
+        <property name="installmentNumberRates" type="int"/> <!--Installment number of months -->
         <property name="installmentPaymentFirstDay" type="int"/> <!-- Installment first day of payment -->
         <property name="installmentCalculationStart" type="string"/> <!-- Installment calculation start -->
+
+        <property name="installmentServiceCharge" type="float"/> <!-- Installment service charge -->
+        <property name="installmentAnnualPercentageRate" type="float"/> <!-- Installment annual percentage rate -->
 
         <property name="installmentMonthAllowed" type="int"/> <!-- Installment number of months index -->
         <property name="installmentCalculationType" type="int"/> <!-- Installment calculation type index -->

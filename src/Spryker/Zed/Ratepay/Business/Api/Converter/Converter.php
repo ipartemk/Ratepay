@@ -270,16 +270,16 @@ class Converter implements ConverterInterface
             ->setBaseResponse($this->responseToTransferObject($response))
             ->setSubtype($request->getInstallmentCalculation()->getSubType())
 
-            ->setTotalAmount($response->getTotalAmount())
-            ->setAmount($response->getAmount())
-            ->setInterestAmount($response->getInterestAmount())
-            ->setServiceCharge($response->getServiceCharge())
-            ->setInterestRate($response->getInterestRate())
+            ->setTotalAmount($this->decimalToCents($response->getTotalAmount()))
+            ->setAmount($this->decimalToCents($response->getAmount()))
+            ->setInterestAmount($this->decimalToCents($response->getInterestAmount()))
+            ->setServiceCharge($this->decimalToCents($response->getServiceCharge()))
+            ->setInterestRate($this->decimalToCents($response->getInterestRate()))
             ->setAnnualPercentageRate($response->getAnnualPercentageRate())
-            ->setMonthlyDebitInterest($response->getMonthlyDebitInterest())
-            ->setRate($response->getRate())
+            ->setMonthlyDebitInterest($this->decimalToCents($response->getMonthlyDebitInterest()))
+            ->setRate($this->decimalToCents($response->getRate()))
             ->setNumberOfRates($response->getNumberOfRates())
-            ->setLastRate($response->getLastRate())
+            ->setLastRate($this->decimalToCents($response->getLastRate()))
             ->setPaymentFirstDay($response->getPaymentFirstday());
 
         return $responseTransfer;
@@ -293,6 +293,16 @@ class Converter implements ConverterInterface
     protected function centsToDecimal($amount)
     {
         return CurrencyManager::getInstance()->convertCentToDecimal($amount);
+    }
+
+    /**
+     * @param float $amount
+     *
+     * @return int
+     */
+    protected function decimalToCents($amount)
+    {
+        return CurrencyManager::getInstance()->convertDecimalToCent($amount);
     }
 
 }
