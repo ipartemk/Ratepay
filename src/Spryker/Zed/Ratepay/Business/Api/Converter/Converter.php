@@ -187,7 +187,7 @@ class Converter implements ConverterInterface
         $calculation
             ->setSubType($ratepayPaymentTransfer->getInstallmentCalculationType())
             ->setAmount($grandTotal)
-            ->setCalculationRate($ratepayPaymentTransfer->getInstallmentRate())
+            ->setCalculationRate($ratepayPaymentTransfer->getInstallmentInterestRate())
             ->setMonth($ratepayPaymentTransfer->getInstallmentMonth())
             ->setPaymentFirstday($ratepayPaymentTransfer->getInstallmentPaymentFirstDay())
             ->setCalculationStart($ratepayPaymentTransfer->getInstallmentCalculationStart());
