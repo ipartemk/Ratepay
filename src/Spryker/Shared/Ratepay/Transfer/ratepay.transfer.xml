@@ -80,10 +80,12 @@
 
         <property name="debitPayType" type="string"/>
 
+        <property name="installmentGrandTotalAmount" type="int"/> <!-- Installment Grand Total -->
+        <property name="installmentInterestAmount" type="int"/> <!-- Installment interest amount -->
         <property name="installmentSubType" type="string"/> <!-- Time | Rate -->
         <property name="installmentRate" type="float"/> <!-- Installment rate amount -->
-        <property name="installmentInterestAmount" type="float"/> <!-- Installment interest amount -->
         <property name="installmentInterestRate" type="float"/> <!-- Installment interest rate -->
+
         <property name="installmentLastRate" type="float"/> <!-- Installment last rate -->
         <property name="installmentMonth" type="int"/> <!--Installment number of months -->
         <property name="installmentNumberRates" type="int"/> <!--Installment number of months -->
@@ -151,9 +153,9 @@
         <property name="baseResponse" type="RatepayResponse"/>
 
         <property name="subtype" type="string" />
-        <property name="totalAmount" type="float" />
-        <property name="amount" type="float" />
-        <property name="interestAmount" type="float" />
+        <property name="totalAmount" type="int" />
+        <property name="amount" type="int" />
+        <property name="interestAmount" type="int" />
         <property name="serviceCharge" type="float" />
         <property name="interestRate" type="float" />
         <property name="annualPercentageRate" type="float" />

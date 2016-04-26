@@ -14,6 +14,7 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
@@ -86,6 +87,24 @@ interface ConverterInterface
      * @return void
      */
     public function mapInstallmentCalculation(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, InstallmentCalculation $calculation);
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail $installmentDetail
+     *
+     * @return void
+     */
+    public function mapInstallmentDetail(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, InstallmentDetail $installmentDetail);
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quote
+     * @param \Spryker\Shared\Transfer\TransferInterface $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment $payment
+     *
+     * @return void
+     */
+    public function mapInstallmentPayment(QuoteTransfer $quote, $ratepayPaymentTransfer, Payment $payment);
 
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response

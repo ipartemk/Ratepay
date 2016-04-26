@@ -34,6 +34,11 @@ class InstallmentDetail extends AbstractRequest
     protected $interestRate;
 
     /**
+     * @var int
+     */
+    protected $paymentFirstday;
+
+    /**
      * @return array
      */
     protected function buildData()
@@ -43,6 +48,7 @@ class InstallmentDetail extends AbstractRequest
             'installment-amount' => $this->getAmount(),
             'last-installment-amount' => $this->getLastAmount(),
             'interest-rate' => $this->getInterestRate(),
+            'payment-firstday' => $this->getPaymentFirstday(),
         ];
 
         return $return;
@@ -132,6 +138,26 @@ class InstallmentDetail extends AbstractRequest
     public function setInterestRate($interestRate)
     {
         $this->interestRate = $interestRate;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPaymentFirstday()
+    {
+        return $this->paymentFirstday;
+    }
+
+    /**
+     * @param int $paymentFirstday
+     *
+     * @return $this
+     */
+    public function setPaymentFirstday($paymentFirstday)
+    {
+        $this->paymentFirstday = $paymentFirstday;
 
         return $this;
     }

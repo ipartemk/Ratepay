@@ -25,11 +25,17 @@
         <column name="debit_pay_type" type="ENUM" valueSet="DIRECT-DEBIT, BANK-TRANSFER"/>
 
         <column name="installment_total_amount" type="INTEGER"/> <!-- Installment total payment amount -->
-        <column name="installment_last_amount" type="INTEGER"/> <!-- Installment last payment amount -->
-        <column name="installment_amount" type="INTEGER"/> <!-- Installment rate amount -->
-        <column name="installment_number" type="INTEGER"/> <!-- Number of months -->
-        <column name="installment_interest_rate" type="INTEGER"/> <!-- Installment interest rate -->
+        <column name="installment_interest_amount" type="INTEGER"/> <!-- Installment interest rate -->
+        <column name="installment_interest_rate" type="FLOAT"/> <!-- Installment interest rate -->
+        <column name="installment_last_rate" type="FLOAT"/> <!-- Installment last payment amount -->
+        <column name="installment_rate" type="FLOAT"/> <!-- Installment rate -->
         <column name="installment_payment_first_day" type="INTEGER"/> <!-- Installment first day of payment -->
+        <column name="installment_month" type="INTEGER"/> <!-- Installment month -->
+        <column name="installment_number_rates" type="INTEGER"/> <!-- Installment -->
+        <column name="installment_calculation_start" type="VARCHAR" size="50"/> <!-- Installment -->
+        <column name="installment_service_charge" type="FLOAT"/> <!-- Installment -->
+        <column name="installment_annual_percentage_rate" type="FLOAT"/> <!-- Installment -->
+        <column name="installment_month_allowed" type="INTEGER"/> <!-- Installment -->
 
         <column name="bank_account_holder" type="VARCHAR"/>
         <column name="bank_account_bic" type="VARCHAR" size="100"/>

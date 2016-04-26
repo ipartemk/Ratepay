@@ -1,9 +1,9 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
+
 namespace Spryker\Zed\Ratepay\Business\Order\MethodMapper;
 
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -55,11 +55,19 @@ class Installment extends AbstractMapper
 
             ->setDebitPayType($paymentTransfer->requireDebitPayType()->getDebitPayType())
 
-            ->setInstallmentAmount($paymentTransfer->requireInstallmentAmount()->getInstallmentAmount())
-            ->setInstallmentInterestRate($paymentTransfer->requireInstallmentInterestRate()->getInstallmentInterestRate())
-            ->setInstallmentLastAmount($paymentTransfer->requireInstallmentLastAmount()->getInstallmentLastAmount())
-            ->setInstallmentNumber($paymentTransfer->requireInstallmentNumber()->getInstallmentNumber())
-            ->setInstallmentPaymentFirstDay($paymentTransfer->requireInstallmentPaymentFirstDay()->getInstallmentPaymentFirstDay());
+            ->setInstallmentTotalAmount($paymentTransfer->getInstallmentGrandTotalAmount())
+            ->setInstallmentInterestAmount($paymentTransfer->getInstallmentInterestAmount())
+            ->setInstallmentInterestRate($paymentTransfer->getInstallmentInterestRate())
+            ->setInstallmentLastRate($paymentTransfer->getInstallmentLastRate())
+            ->setInstallmentRate($paymentTransfer->getInstallmentRate())
+            ->setInstallmentPaymentFirstDay($paymentTransfer->getInstallmentPaymentFirstDay())
+            ->setInstallmentMonth($paymentTransfer->getInstallmentMonth())
+            ->setInstallmentNumberRates($paymentTransfer->getInstallmentNumberRates())
+            ->setInstallmentCalculationStart($paymentTransfer->getInstallmentCalculationStart())
+            ->setInstallmentServiceCharge($paymentTransfer->getInstallmentServiceCharge())
+            ->setInstallmentAnnualPercentageRate($paymentTransfer->getInstallmentAnnualPercentageRate())
+            ->setInstallmentMonthAllowed($paymentTransfer->getInstallmentMonthAllowed())
+        ;
     }
 
 }

@@ -1,9 +1,9 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
+
 namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\AddressTransfer;
@@ -18,6 +18,7 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 
@@ -183,7 +184,12 @@ class Converter implements ConverterInterface
      */
     public function mapInstallmentCalculation(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, InstallmentCalculation $calculation)
     {
-        $grandTotal = $this->centsToDecimal($quoteTransfer->requireTotals()->getTotals()->requireGrandTotal()->getGrandTotal());
+        $grandTotal = $this->centsToDecimal(
+            $quoteTransfer->requireTotals()
+                ->getTotals()
+                ->requireGrandTotal()
+                ->getGrandTotal()
+        );
         $calculation
             ->setSubType($ratepayPaymentTransfer->getInstallmentCalculationType())
             ->setAmount($grandTotal)
@@ -191,6 +197,46 @@ class Converter implements ConverterInterface
             ->setMonth($ratepayPaymentTransfer->getInstallmentMonth())
             ->setPaymentFirstday($ratepayPaymentTransfer->getInstallmentPaymentFirstDay())
             ->setCalculationStart($ratepayPaymentTransfer->getInstallmentCalculationStart());
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail $installmentDetail
+     *
+     * @return void
+     */
+    public function mapInstallmentDetail(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, InstallmentDetail $installmentDetail)
+    {
+        $installmentDetail
+            ->setMonthNumber($ratepayPaymentTransfer->getInstallmentMonth())
+            ->setAmount($this->centsToDecimal($ratepayPaymentTransfer->getInstallmentRate()))
+            ->setLastAmount($this->centsToDecimal($ratepayPaymentTransfer->getInstallmentLastRate()))
+            ->setInterestRate($ratepayPaymentTransfer->getInstallmentInterestRate())
+            ->setPaymentFirstday($ratepayPaymentTransfer->getInstallmentPaymentFirstDay())
+        ;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment $payment
+     *
+     * @return void
+     */
+    public function mapInstallmentPayment(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, Payment $payment)
+    {
+        $payment
+            ->setDebitPayType($ratepayPaymentTransfer->getDebitPayType())
+            ->setInstallmentDetails(new InstallmentDetail())
+            ->setAmount(
+                $this->centsToDecimal(
+                    $quoteTransfer->getPayment()
+                        ->getRatepayInstallment()
+                        ->getInstallmentGrandTotalAmount()
+                )
+            )
+        ;
     }
 
     /**

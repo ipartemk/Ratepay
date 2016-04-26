@@ -80,7 +80,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CapturePaymentTransaction
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\PreAuthorizePaymentTransaction
      */
     public function createPreAuthorizePaymentTransactionHandler()
     {

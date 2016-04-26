@@ -6,10 +6,12 @@
 
 namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
+use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer;
 use Spryker\Shared\Ratepay\RatepayConstants;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail;
 
 /**
  * Ratepay Elv payment method.
@@ -78,6 +80,24 @@ class Installment extends AbstractMethod
         $this->mapCalculationData($quoteTransfer, $paymentData, $request);
 
         return $request;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $paymentData
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
+     *
+     * @return void
+     */
+    protected function mapPaymentData($quoteTransfer, $paymentData, $request)
+    {
+        parent::mapPaymentData($quoteTransfer, $paymentData, $request);
+        
+        $this->converter->mapInstallmentPayment($quoteTransfer, $paymentData, $request->getPayment());
+        $this->converter->mapInstallmentDetail($quoteTransfer, $paymentData, $request->getPayment()->getInstallmentDetails());
+        if ($paymentData->getDebitPayType() == RatepayConstants::DEBIT_PAY_TYPE_DIRECT_DEBIT) {
+            $this->mapBankAccountData($quoteTransfer, $paymentData, $request);
+        }
     }
 
     /**
