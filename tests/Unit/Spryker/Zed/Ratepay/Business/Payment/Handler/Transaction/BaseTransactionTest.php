@@ -62,7 +62,7 @@ class BaseTransactionTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay
      */
-    private function mockPaymentRatepay()
+    protected function mockPaymentRatepay()
     {
         $spyPaymentRatepay = $this->getMockBuilder('\Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay')
             ->disableOriginalConstructor()
@@ -80,7 +80,7 @@ class BaseTransactionTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface
      */
-    private function mockRatepayQueryContainer()
+    protected function mockRatepayQueryContainer()
     {
         $queryContainer = $this->getMock(RatepayQueryContainerInterface::class);
         $queryPaymentsMock = $this->getMock(SpyPaymentRatepayQuery::class, ['findByFkSalesOrder', 'getFirst']);

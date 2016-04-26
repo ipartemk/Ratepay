@@ -31,7 +31,7 @@ class SimpleXMLElement extends \SimpleXMLElement
      * @param string $str
      * @return string
      */
-    private function removeSpecialChars($str)
+    protected function removeSpecialChars($str)
     {
         $search = array("–", "´", "‹", "›", "‘", "’", "‚", "“", "”", "„", "‟", "•", "‒", "―", "—", "™", "¼", "½", "¾");
         $replace = array("-", "'", "<", ">", "'", "'", ",", '"', '"', '"', '"', "-", "-", "-", "-", "TM", "1/4", "1/2", "3/4");
