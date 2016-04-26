@@ -15,7 +15,7 @@ abstract class AbstractAdapterMock implements AdapterInterface
     /**
      * @var bool
      */
-    private $expectSuccess = true;
+    protected $expectSuccess = true;
 
     /**
      * @var array

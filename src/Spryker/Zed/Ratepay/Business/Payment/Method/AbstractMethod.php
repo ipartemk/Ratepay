@@ -122,7 +122,7 @@ abstract class AbstractMethod implements MethodInterface
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Confirm
      */
     public function paymentConfirm(OrderTransfer $orderTransfer)
     {

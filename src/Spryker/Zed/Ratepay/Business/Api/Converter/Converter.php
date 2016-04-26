@@ -17,6 +17,8 @@ use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
@@ -173,6 +175,70 @@ class Converter implements ConverterInterface
     }
 
     /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation $calculation
+     *
+     * @return void
+     */
+    public function mapInstallmentCalculation(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, InstallmentCalculation $calculation)
+    {
+        $grandTotal = $this->centsToDecimal(
+            $quoteTransfer->requireTotals()
+                ->getTotals()
+                ->requireGrandTotal()
+                ->getGrandTotal()
+        );
+        $calculation
+            ->setSubType($ratepayPaymentTransfer->getInstallmentCalculationType())
+            ->setAmount($grandTotal)
+            ->setCalculationRate($ratepayPaymentTransfer->getInstallmentInterestRate())
+            ->setMonth($ratepayPaymentTransfer->getInstallmentMonth())
+            ->setPaymentFirstday($ratepayPaymentTransfer->getInstallmentPaymentFirstDay())
+            ->setCalculationStart($ratepayPaymentTransfer->getInstallmentCalculationStart());
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail $installmentDetail
+     *
+     * @return void
+     */
+    public function mapInstallmentDetail(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, InstallmentDetail $installmentDetail)
+    {
+        $installmentDetail
+            ->setMonthNumber($ratepayPaymentTransfer->getInstallmentMonth())
+            ->setAmount($this->centsToDecimal($ratepayPaymentTransfer->getInstallmentRate()))
+            ->setLastAmount($this->centsToDecimal($ratepayPaymentTransfer->getInstallmentLastRate()))
+            ->setInterestRate($ratepayPaymentTransfer->getInstallmentInterestRate())
+            ->setPaymentFirstday($ratepayPaymentTransfer->getInstallmentPaymentFirstDay())
+        ;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment $payment
+     *
+     * @return void
+     */
+    public function mapInstallmentPayment(QuoteTransfer $quoteTransfer, $ratepayPaymentTransfer, Payment $payment)
+    {
+        $payment
+            ->setDebitPayType($ratepayPaymentTransfer->getDebitPayType())
+            ->setInstallmentDetails(new InstallmentDetail())
+            ->setAmount(
+                $this->centsToDecimal(
+                    $quoteTransfer->getPayment()
+                        ->getRatepayInstallment()
+                        ->getInstallmentGrandTotalAmount()
+                )
+            )
+        ;
+    }
+
+    /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
@@ -249,16 +315,16 @@ class Converter implements ConverterInterface
             ->setBaseResponse($this->responseToTransferObject($response))
             ->setSubtype($request->getInstallmentCalculation()->getSubType())
 
-            ->setTotalAmount($response->getTotalAmount())
-            ->setAmount($response->getAmount())
-            ->setInterestAmount($response->getInterestAmount())
-            ->setServiceCharge($response->getServiceCharge())
-            ->setInterestRate($response->getInterestRate())
+            ->setTotalAmount($this->decimalToCents($response->getTotalAmount()))
+            ->setAmount($this->decimalToCents($response->getAmount()))
+            ->setInterestAmount($this->decimalToCents($response->getInterestAmount()))
+            ->setServiceCharge($this->decimalToCents($response->getServiceCharge()))
+            ->setInterestRate($this->decimalToCents($response->getInterestRate()))
             ->setAnnualPercentageRate($response->getAnnualPercentageRate())
-            ->setMonthlyDebitInterest($response->getMonthlyDebitInterest())
-            ->setRate($response->getRate())
+            ->setMonthlyDebitInterest($this->decimalToCents($response->getMonthlyDebitInterest()))
+            ->setRate($this->decimalToCents($response->getRate()))
             ->setNumberOfRates($response->getNumberOfRates())
-            ->setLastRate($response->getLastRate())
+            ->setLastRate($this->decimalToCents($response->getLastRate()))
             ->setPaymentFirstDay($response->getPaymentFirstday());
 
         return $responseTransfer;
@@ -272,6 +338,16 @@ class Converter implements ConverterInterface
     protected function centsToDecimal($amount)
     {
         return CurrencyManager::getInstance()->convertCentToDecimal($amount);
+    }
+
+    /**
+     * @param float $amount
+     *
+     * @return int
+     */
+    protected function decimalToCents($amount)
+    {
+        return CurrencyManager::getInstance()->convertDecimalToCent($amount);
     }
 
 }

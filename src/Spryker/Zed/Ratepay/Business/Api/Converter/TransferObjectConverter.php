@@ -9,7 +9,7 @@ namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
 
-class TransferObjectConverter implements ConverterInterface
+class TransferObjectConverter extends BaseConverter
 {
 
     /**

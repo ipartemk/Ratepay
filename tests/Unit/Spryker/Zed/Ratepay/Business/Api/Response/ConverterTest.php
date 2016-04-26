@@ -56,7 +56,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    private function getResponseTransferObject($responseXml)
+    protected function getResponseTransferObject($responseXml)
     {
         $responseObject = new BaseResponse($responseXml);
         $exporter = new Converter();
