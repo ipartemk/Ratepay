@@ -27,7 +27,7 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
 
-class Converter implements ConverterInterface
+class Converter11 implements ConverterInterface
 {
 
     /**

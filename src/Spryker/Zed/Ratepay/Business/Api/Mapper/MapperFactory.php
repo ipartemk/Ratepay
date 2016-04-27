@@ -12,6 +12,8 @@ use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
@@ -130,6 +132,66 @@ class MapperFactory
     )
     {
         return new PaymentMapper(
+            $quoteTransfer,
+            $ratepayPaymentTransfer,
+            $payment
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation $calculation
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Mapper\InstallmentCalculationMapper
+     */
+    public function getInstallmentCalculationMapper(
+        QuoteTransfer $quoteTransfer,
+        $ratepayPaymentTransfer,
+        InstallmentCalculation $calculation
+    )
+    {
+        return new InstallmentCalculationMapper(
+            $quoteTransfer,
+            $ratepayPaymentTransfer,
+            $calculation
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail $installmentDetail
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Mapper\InstallmentDetailMapper
+     */
+    public function getInstallmentDetailMapper(
+        QuoteTransfer $quoteTransfer,
+        $ratepayPaymentTransfer,
+        InstallmentDetail $installmentDetail
+    )
+    {
+        return new InstallmentDetailMapper(
+            $quoteTransfer,
+            $ratepayPaymentTransfer,
+            $installmentDetail
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment $payment
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Mapper\InstallmentPaymentMapper
+     */
+    public function getInstallmentPaymentMapper(
+        QuoteTransfer $quoteTransfer,
+        $ratepayPaymentTransfer,
+        Payment $payment
+    )
+    {
+        return new InstallmentPaymentMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,
             $payment
