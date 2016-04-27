@@ -7,24 +7,39 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer;
-use Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse;
+use Spryker\Shared\Library\Currency\CurrencyManager;
+use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Configuration;
+use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
 
 class InstallmentConfigurationResponseConverter extends BaseConverter
 {
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation
      */
-    protected $response;
+    protected $request;
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse $response
+     * @var \Spryker\Zed\Ratepay\Business\Api\Converter\TransferObjectConverter
+     */
+    protected $responseTransfer;
+
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response
+     * @param \Spryker\Shared\Library\Currency\CurrencyManager $currencyManager
+     * @param \Spryker\Zed\Ratepay\Business\Api\Converter\TransferObjectConverter $responseTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Configuration $request
      */
     public function __construct(
-        ConfigurationResponse $response
+        ResponseInterface $response,
+        CurrencyManager $currencyManager,
+        TransferObjectConverter $responseTransfer,
+        Configuration $request
     ) {
+        parent::__construct($response, $currencyManager);
 
-        $this->response = $response;
+        $this->responseTransfer = $responseTransfer;
+        $this->request = $request;
     }
 
     /**
@@ -34,15 +49,7 @@ class InstallmentConfigurationResponseConverter extends BaseConverter
     {
         $responseTransfer = new RatepayInstallmentConfigurationResponseTransfer();
         $responseTransfer
-            ->setTransactionId($this->response->getTransactionId())
-            ->setTransactionShortId($this->response->getTransactionShortId())
-            ->setSuccessful($this->response->isSuccessful())
-            ->setReasonCode($this->response->getReasonCode())
-            ->setReasonText($this->response->getReasonText())
-            ->setStatusCode($this->response->getStatusCode())
-            ->setStatusText($this->response->getStatusText())
-            ->setResultCode($this->response->getResultCode())
-            ->setResultText($this->response->getResultText())
+            ->setBaseResponse($this->responseTransfer->convert())
 
             ->setInterestrateMin($this->response->getInterestrateMin())
             ->setInterestrateDefault($this->response->getInterestrateDefault())

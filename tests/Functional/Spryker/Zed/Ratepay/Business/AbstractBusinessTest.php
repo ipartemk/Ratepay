@@ -74,10 +74,8 @@ abstract class AbstractBusinessTest extends Test
         $this->checkoutResponseTransfer->getSaveOrder()->setIdSalesOrder($orderEntity->getIdSalesOrder());
 
         $paymentMapper = $this->getPaymentMapper();
-
-        $orderManager = new Saver($this->getRatepayBusinessBusinessFactory());
-
-        $orderManager->saveOrderPayment($this->quoteTransfer, $this->checkoutResponseTransfer, $paymentMapper);
+        $orderManager = new Saver($this->quoteTransfer, $this->checkoutResponseTransfer, $paymentMapper);
+        $orderManager->saveOrderPayment();
 
         $this->paymentEntity = SpyPaymentRatepayQuery::create()->findOneByFkSalesOrder(
             $this->checkoutResponseTransfer->getSaveOrder()->getIdSalesOrder()

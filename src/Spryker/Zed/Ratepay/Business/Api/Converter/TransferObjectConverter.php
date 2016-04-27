@@ -7,25 +7,9 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\RatepayResponseTransfer;
-use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
 
 class TransferObjectConverter extends BaseConverter
 {
-
-    /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface
-     */
-    protected $response;
-
-    /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response
-     */
-    public function __construct(
-        ResponseInterface $response
-    ) {
-
-        $this->response = $response;
-    }
 
     /**
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer

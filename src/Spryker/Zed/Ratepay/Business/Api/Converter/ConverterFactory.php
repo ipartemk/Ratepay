@@ -6,7 +6,9 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
+use Spryker\Shared\Library\Currency\CurrencyManager;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation;
+use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Configuration;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
@@ -22,8 +24,10 @@ class ConverterFactory
     public function getTransferObjectConverter(
         ResponseInterface $response
     ) {
-
-        return new TransferObjectConverter($response);
+        return new TransferObjectConverter(
+            $response,
+            $this->createCurrencyManager()
+        );
     }
 
     /**
@@ -36,20 +40,38 @@ class ConverterFactory
         CalculationResponse $response,
         Calculation $request
     ) {
-
-        return new InstallmentCalculationResponseConverter($response, $request, $this);
+        return new InstallmentCalculationResponseConverter(
+            $response,
+            $this->createCurrencyManager(),
+            $this->getTransferObjectConverter($response),
+            $request
+        );
     }
 
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse $response
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Configuration $request
      *
      * @return \Spryker\Zed\Ratepay\Business\Api\Converter\InstallmentConfigurationResponseConverter
      */
     public function getInstallmentConfigurationResponseConverter(
-        ConfigurationResponse $response
+        ConfigurationResponse $response,
+        Configuration $request
     ) {
+        return new InstallmentConfigurationResponseConverter(
+            $response,
+            $this->createCurrencyManager(),
+            $this->getTransferObjectConverter($response),
+            $request
+        );
+    }
 
-        return new InstallmentConfigurationResponseConverter($response);
+    /**
+     * @return \Spryker\Shared\Library\Currency\CurrencyManager
+     */
+    protected function createCurrencyManager()
+    {
+        return CurrencyManager::getInstance();
     }
 
 }

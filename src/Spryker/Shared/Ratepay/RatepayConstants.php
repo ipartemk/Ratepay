@@ -72,6 +72,12 @@ interface RatepayConstants
     const CLIENT_NAME = 'Spryker Connector';
 
     /**
+     * Ratepay request configuration.
+     */
+    const RATEPAY_REQUEST_VERSION = '1.0';
+    const RATEPAY_REQUEST_XMLNS_URN = 'urn://www.ratepay.com/payment/1_0';
+
+    /**
      * Monolog logger configuration.
      */
     const LOGGER_STREAM_OUTPUT = APPLICATION_ROOT_DIR.'/data/log/ratepay.log';

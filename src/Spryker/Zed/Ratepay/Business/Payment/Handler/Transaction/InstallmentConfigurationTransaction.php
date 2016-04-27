@@ -33,7 +33,7 @@ class InstallmentConfigurationTransaction extends BaseTransaction implements Che
         $this->logInfo(ApiConstants::REQUEST_MODEL_CONFIGURATION_REQUEST, $request, $response);
 
         $responseTransfer = $this->converterFactory
-            ->getInstallmentConfigurationResponseConverter($response)
+            ->getInstallmentConfigurationResponseConverter($response, $request)
             ->convert();
 
         return $responseTransfer;

@@ -7,6 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer;
+use Spryker\Shared\Library\Currency\CurrencyManager;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse;
 
@@ -14,34 +15,31 @@ class InstallmentCalculationResponseConverter extends BaseConverter
 {
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse
-     */
-    protected $response;
-
-    /**
      * @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation
      */
     protected $request;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory
+     * @var \Spryker\Zed\Ratepay\Business\Api\Converter\TransferObjectConverter
      */
-    protected $converterFactory;
+    protected $responseTransfer;
 
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse $response
+     * @param \Spryker\Shared\Library\Currency\CurrencyManager $currencyManager
+     * @param \Spryker\Zed\Ratepay\Business\Api\Converter\TransferObjectConverter $responseTransfer
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation $request
-     * @param \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory $converterFactory
      */
     public function __construct(
         CalculationResponse $response,
-        Calculation $request,
-        ConverterFactory $converterFactory
+        CurrencyManager $currencyManager,
+        TransferObjectConverter $responseTransfer,
+        Calculation $request
     ) {
+        parent::__construct($response, $currencyManager);
 
-        $this->response = $response;
+        $this->responseTransfer = $responseTransfer;
         $this->request = $request;
-        $this->converterFactory = $converterFactory;
     }
 
     /**
@@ -51,11 +49,7 @@ class InstallmentCalculationResponseConverter extends BaseConverter
     {
         $responseTransfer = new RatepayInstallmentCalculationResponseTransfer();
         $responseTransfer
-            ->setBaseResponse(
-                $this->converterFactory
-                    ->getTransferObjectConverter($this->response)
-                    ->convert()
-            )
+            ->setBaseResponse($this->responseTransfer->convert())
             ->setSubtype($this->request->getInstallmentCalculation()->getSubType())
 
             ->setTotalAmount($this->decimalToCents($this->response->getTotalAmount()))

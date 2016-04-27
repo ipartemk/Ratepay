@@ -6,6 +6,7 @@
  */
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Payment;
 
+use Spryker\Shared\Ratepay\RatepayConstants;
 use Spryker\Zed\Ratepay\Business\Api\Model\AbstractRequest;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 
@@ -36,8 +37,8 @@ abstract class Base extends AbstractRequest
     {
         $this->getHead()->setOperation(static::OPERATION);
         return [
-            '@version' => '1.0',
-            '@xmlns' => "urn://www.ratepay.com/payment/1_0",
+            '@version' => RatepayConstants::RATEPAY_REQUEST_VERSION,
+            '@xmlns' => RatepayConstants::RATEPAY_REQUEST_XMLNS_URN,
             $this->getHead()->getRootTag() => $this->getHead(),
         ];
     }

@@ -26,7 +26,7 @@ class Confirm extends Base
      */
     public function __construct(Head $head, ShoppingBasket $shoppingBasket)
     {
-        $this->head = $head;
+        parent::__construct($head);
         $this->basket = $shoppingBasket;
     }
 
@@ -36,14 +36,12 @@ class Confirm extends Base
     protected function buildData()
     {
         $this->getHead()->setOperation(static::OPERATION);
-        return [
-            '@version' => '1.0',
-            '@xmlns' => "urn://www.ratepay.com/payment/1_0",
-            $this->getHead()->getRootTag() => $this->getHead(),
-            'content' => [
-                $this->getShoppingBasket()->getRootTag() => $this->getShoppingBasket(),
-            ],
+        $paymentRequestData = parent::buildData();
+        $paymentRequestData['content'] = [
+            $this->getShoppingBasket()->getRootTag() => $this->getShoppingBasket(),
         ];
+
+        return $paymentRequestData;
     }
 
     /**

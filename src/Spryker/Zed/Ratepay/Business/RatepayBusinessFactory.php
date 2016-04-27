@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
@@ -6,12 +7,15 @@
 
 namespace Spryker\Zed\Ratepay\Business;
 
+use Generated\Shared\Transfer\CheckoutResponseTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
 use Spryker\Zed\Ratepay\Business\Api\ApiFactory;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
 use Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory;
+use Spryker\Zed\Ratepay\Business\Order\MethodMapper\PaymentMethodMapperInterface;
 use Spryker\Zed\Ratepay\Business\Order\Saver as Saver;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CancelPaymentTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CapturePaymentTransaction;
@@ -230,11 +234,23 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
+     * @param \Spryker\Zed\Ratepay\Business\Order\MethodMapper\PaymentMethodMapperInterface $paymentMapper
+     *
      * @return \Spryker\Zed\Ratepay\Business\Order\SaverInterface
      */
-    public function createOrderSaver()
-    {
-        return new Saver();
+    public function createOrderSaver(
+        QuoteTransfer $quoteTransfer,
+        CheckoutResponseTransfer $checkoutResponseTransfer,
+        PaymentMethodMapperInterface $paymentMapper
+    ) {
+
+        return new Saver(
+            $quoteTransfer,
+            $checkoutResponseTransfer,
+            $paymentMapper
+        );
     }
 
     /**

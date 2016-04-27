@@ -80,8 +80,8 @@
 
         <property name="debitPayType" type="string"/>
 
-        <property name="installmentGrandTotalAmount" type="int"/> <!-- Installment Grand Total -->
-        <property name="installmentInterestAmount" type="int"/> <!-- Installment interest amount -->
+        <property name="installmentGrandTotalAmount" type="float"/> <!-- Installment Grand Total -->
+        <property name="installmentInterestAmount" type="float"/> <!-- Installment interest amount -->
         <property name="installmentSubType" type="string"/> <!-- Time | Rate -->
         <property name="installmentRate" type="float"/> <!-- Installment rate amount -->
         <property name="installmentInterestRate" type="float"/> <!-- Installment interest rate -->
@@ -119,16 +119,7 @@
     </transfer>
 
     <transfer name="RatepayInstallmentConfigurationResponse">
-        <property name="transactionId" type="string" />
-        <property name="transactionShortId" type="string" />
-
-        <property name="successful" type="bool" />
-        <property name="statusCode" type="string" />
-        <property name="statusText" type="string" />
-        <property name="reasonCode" type="int" />
-        <property name="reasonText" type="string" />
-        <property name="resultCode" type="int" />
-        <property name="resultText" type="string" />
+        <property name="baseResponse" type="RatepayResponse"/>
 
         <property name="interestrateMin" type="float"/>
         <property name="interestrateDefault" type="float"/>

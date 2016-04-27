@@ -16,7 +16,7 @@ class Cancel extends Base
     /**
      * @const Method operation.
      */
-    const OPERATION = Constants::REQUEST_MODEL_PAYMENT_CANCEL;
+    const OPERATION = Constants::REQUEST_MODEL_PAYMENT_CHANGE;
 
     /**
      * @const Method operation subtype.
@@ -46,7 +46,7 @@ class Cancel extends Base
         $this->getHead()->setOperationSubstring(static::OPERATION_SUBTYPE);
         $paymentRequestData = parent::buildData();
         $paymentRequestData['content'] = [
-            $this->getShoppingBasket()->getRootTag() => $this->basket,
+            $this->getShoppingBasket()->getRootTag() => $this->getShoppingBasket(),
         ];
 
         return $paymentRequestData;
