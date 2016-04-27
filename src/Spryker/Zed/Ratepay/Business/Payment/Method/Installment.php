@@ -6,12 +6,10 @@
 
 namespace Spryker\Zed\Ratepay\Business\Payment\Method;
 
-use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer;
 use Spryker\Shared\Ratepay\RatepayConstants;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail;
 
 /**
  * Ratepay Elv payment method.

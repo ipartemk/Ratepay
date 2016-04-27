@@ -15,28 +15,12 @@ use Generated\Shared\Transfer\TotalsTransfer;
 use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay;
 use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
 use Spryker\Zed\Ratepay\Business\Api\ApiFactory;
-use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
 use Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory;
 use Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
 use Unit\Spryker\Zed\Ratepay\Business\Payment\BasePaymentTest;
 
 abstract class AbstractMethodMapperTest extends BasePaymentTest
 {
-
-    /**
-     * @var \Mockery;
-     */
-    protected $mockery;
-
-    /**
-     * @return void
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->mockery = new \Mockery();
-    }
 
     /**
      * @return \Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory
@@ -389,11 +373,5 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
      * @return void
      */
     abstract protected function setRatepayPaymentEntityData($ratepayPaymentEntity);
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-        $this->mockery->close();
-    }
 
 }

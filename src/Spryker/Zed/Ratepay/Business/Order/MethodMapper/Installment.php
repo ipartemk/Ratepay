@@ -66,8 +66,7 @@ class Installment extends AbstractMapper
             ->setInstallmentCalculationStart($paymentTransfer->getInstallmentCalculationStart())
             ->setInstallmentServiceCharge($paymentTransfer->getInstallmentServiceCharge())
             ->setInstallmentAnnualPercentageRate($paymentTransfer->getInstallmentAnnualPercentageRate())
-            ->setInstallmentMonthAllowed($paymentTransfer->getInstallmentMonthAllowed())
-        ;
+            ->setInstallmentMonthAllowed($paymentTransfer->getInstallmentMonthAllowed());
     }
 
 }

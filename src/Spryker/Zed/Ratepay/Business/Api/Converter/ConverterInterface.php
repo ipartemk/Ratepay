@@ -10,5 +10,5 @@ interface ConverterInterface
 {
 
     public function convert();
-    
+
 }

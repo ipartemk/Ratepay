@@ -8,7 +8,7 @@ namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 interface MapperInterface
 {
-    
+
     public function map();
 
 }

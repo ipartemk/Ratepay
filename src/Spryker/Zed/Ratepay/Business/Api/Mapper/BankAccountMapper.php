@@ -7,25 +7,23 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Generated\Shared\Transfer\RatepayPaymentElvTransfer;
-use Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 
 class BankAccountMapper extends BaseMapper
 {
 
     /**
-     * @var QuoteTransfer
+     * @var \Generated\Shared\Transfer\QuoteTransfer
      */
     protected $quoteTransfer;
 
     /**
-     * @var RatepayPaymentElvTransfer|RatepayPaymentInstallmentTransfer
+     * @var \Generated\Shared\Transfer\RatepayPaymentElvTransfer|\Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer
      */
     protected $ratepayPaymentTransfer;
 
     /**
-     * @var BankAccount
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount
      */
     protected $bankAccount;
 
@@ -38,8 +36,8 @@ class BankAccountMapper extends BaseMapper
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer,
         BankAccount $bankAccount
-    )
-    {
+    ) {
+
         $this->quoteTransfer = $quoteTransfer;
         $this->ratepayPaymentTransfer = $ratepayPaymentTransfer;
         $this->bankAccount = $bankAccount;

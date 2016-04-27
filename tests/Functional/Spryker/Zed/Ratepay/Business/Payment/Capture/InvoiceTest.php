@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
@@ -9,7 +8,6 @@ namespace Functional\Spryker\Zed\Ratepay\Business\Payment\Capture;
 
 use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\CaptureAdapterMock;
 use Functional\Spryker\Zed\Ratepay\Business\Payment\InvoiceAbstractTest;
-use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
 
 class InvoiceTest extends InvoiceAbstractTest
 {
@@ -24,9 +22,7 @@ class InvoiceTest extends InvoiceAbstractTest
         $this->setUpSalesOrderTestData();
         $this->setUpPaymentTestData();
 
-        $this->converter = new Converter();
         $this->orderTransfer->fromArray($this->orderEntity->toArray(), true);
-
     }
 
     /**

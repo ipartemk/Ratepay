@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
@@ -9,7 +8,6 @@ namespace Functional\Spryker\Zed\Ratepay\Business\Payment\Cancel;
 
 use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\CancelAdapterMock;
 use Functional\Spryker\Zed\Ratepay\Business\Payment\PrepaymentAbstractTest;
-use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
 
 class PrepaymentTest extends PrepaymentAbstractTest
 {
@@ -24,9 +22,7 @@ class PrepaymentTest extends PrepaymentAbstractTest
         $this->setUpSalesOrderTestData();
         $this->setUpPaymentTestData();
 
-        $this->converter = new Converter();
         $this->orderTransfer->fromArray($this->orderEntity->toArray(), true);
-
     }
 
     /**

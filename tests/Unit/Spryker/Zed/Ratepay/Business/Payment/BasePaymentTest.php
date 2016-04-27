@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer;
 use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
 use Spryker\Shared\Ratepay\RatepayConstants;
 use Spryker\Zed\Ratepay\Business\Api\Constants;
-use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
+use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
 use Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
 use Unit\Spryker\Zed\Ratepay\Business\Api\Response\Response;
 
@@ -47,14 +47,14 @@ class BasePaymentTest extends Test
         $executionAdapter->method('sendRequest')
             ->willReturn((new Response())->getTestPaymentConfirmResponseData());
 
-        $converter = new Converter();
+        $converterFactory = new ConverterFactory();
         $paymentLogger = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Payment\Model\PaymentLogger');
         $paymentLogger->shouldReceive('info')
             ->andReturn(null);
 
         return new $className(
             $executionAdapter,
-            $converter,
+            $converterFactory,
             $paymentLogger,
             $this->mockRatepayQueryContainer()
         );
@@ -63,7 +63,7 @@ class BasePaymentTest extends Test
     /**
      * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay
      */
-    private function mockPaymentRatepay()
+    protected function mockPaymentRatepay()
     {
         $spyPaymentRatepay = $this->getMockBuilder('\Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay')
             ->disableOriginalConstructor()
@@ -81,7 +81,7 @@ class BasePaymentTest extends Test
     /**
      * @return \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface
      */
-    private function mockRatepayQueryContainer()
+    protected function mockRatepayQueryContainer()
     {
         $queryContainer = $this->getMock(RatepayQueryContainerInterface::class);
         $queryPaymentsMock = $this->getMock(SpyPaymentRatepayQuery::class, ['findByFkSalesOrder', 'getFirst']);

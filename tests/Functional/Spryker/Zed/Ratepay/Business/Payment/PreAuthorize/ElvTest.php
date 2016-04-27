@@ -9,7 +9,6 @@ namespace Functional\Spryker\Zed\Ratepay\Business\Payment\PreAuthorize;
 
 use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\PreAuthorizeAdapterMock;
 use Functional\Spryker\Zed\Ratepay\Business\Payment\ElvAbstractTest;
-use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
 
 class ElvTest extends ElvAbstractTest
 {
@@ -24,9 +23,7 @@ class ElvTest extends ElvAbstractTest
         $this->setUpSalesOrderTestData();
         $this->setUpPaymentTestData();
 
-        $this->converter = new Converter();
         $this->orderTransfer->fromArray($this->orderEntity->toArray(), true);
-
     }
 
     /**

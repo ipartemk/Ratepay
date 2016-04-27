@@ -6,27 +6,23 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
-use Generated\Shared\Transfer\OrderTransfer;
-use Generated\Shared\Transfer\QuoteTransfer;
-use Generated\Shared\Transfer\RatepayPaymentElvTransfer;
-use Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 
 class BasketMapper extends BaseMapper
 {
 
     /**
-     * @var QuoteTransfer|OrderTransfer
+     * @var \Generated\Shared\Transfer\QuoteTransfer|\Generated\Shared\Transfer\OrderTransfer
      */
     protected $quoteTransfer;
 
     /**
-     * @var RatepayPaymentElvTransfer|RatepayPaymentInstallmentTransfer
+     * @var \Generated\Shared\Transfer\RatepayPaymentElvTransfer|\Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer
      */
     protected $ratepayPaymentTransfer;
 
     /**
-     * @var ShoppingBasket
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket
      */
     protected $basket;
 
@@ -39,8 +35,8 @@ class BasketMapper extends BaseMapper
         $quoteTransfer,
         $ratepayPaymentTransfer,
         ShoppingBasket $basket
-    )
-    {
+    ) {
+
         $this->quoteTransfer = $quoteTransfer;
         $this->ratepayPaymentTransfer = $ratepayPaymentTransfer;
         $this->basket = $basket;

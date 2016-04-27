@@ -21,8 +21,8 @@ class ConverterFactory
      */
     public function getTransferObjectConverter(
         ResponseInterface $response
-    )
-    {
+    ) {
+
         return new TransferObjectConverter($response);
     }
 
@@ -35,9 +35,9 @@ class ConverterFactory
     public function getInstallmentCalculationResponseConverter(
         CalculationResponse $response,
         Calculation $request
-    )
-    {
-        return new InstallmentCalculationResponseConverter($response, $request);
+    ) {
+
+        return new InstallmentCalculationResponseConverter($response, $request, $this);
     }
 
     /**
@@ -47,8 +47,8 @@ class ConverterFactory
      */
     public function getInstallmentConfigurationResponseConverter(
         ConfigurationResponse $response
-    )
-    {
+    ) {
+
         return new InstallmentConfigurationResponseConverter($response);
     }
 

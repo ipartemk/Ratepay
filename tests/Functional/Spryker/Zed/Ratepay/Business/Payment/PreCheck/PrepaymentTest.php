@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
@@ -10,7 +9,6 @@ namespace Functional\Spryker\Zed\Ratepay\Business\Payment\PreCheck;
 use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\PreCheckPrepaymentAdapterMock;
 use Functional\Spryker\Zed\Ratepay\Business\Payment\PrepaymentAbstractTest;
 use Spryker\Shared\Ratepay\RatepayConstants;
-use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
 
 class PrepaymentTest extends PrepaymentAbstractTest
 {
@@ -20,8 +18,9 @@ class PrepaymentTest extends PrepaymentAbstractTest
      */
     public function setUp()
     {
+        parent::setUp();
+
         $this->quoteTransfer = $this->getQuoteTransfer();
-        $this->converter = new Converter();
     }
 
     /**

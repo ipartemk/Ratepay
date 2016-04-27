@@ -37,7 +37,7 @@ class InstallmentCalculationTransaction extends BaseTransaction implements Check
         if ($response->isSuccessful()) {
             //todo
         }
-//        $responseTransfer = $this->converter->responseToInstallmentCalculationResponseObject($response, $request);
+
         $responseTransfer = $this->converterFactory
             ->getInstallmentCalculationResponseConverter($response, $request)
             ->convert();

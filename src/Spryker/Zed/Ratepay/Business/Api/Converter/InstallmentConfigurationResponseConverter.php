@@ -13,7 +13,7 @@ class InstallmentConfigurationResponseConverter extends BaseConverter
 {
 
     /**
-     * @var ConfigurationResponse
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse
      */
     protected $response;
 
@@ -22,8 +22,8 @@ class InstallmentConfigurationResponseConverter extends BaseConverter
      */
     public function __construct(
         ConfigurationResponse $response
-    )
-    {
+    ) {
+
         $this->response = $response;
     }
 

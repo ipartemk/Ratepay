@@ -13,7 +13,7 @@ class TransferObjectConverter extends BaseConverter
 {
 
     /**
-     * @var ResponseInterface
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface
      */
     protected $response;
 
@@ -22,8 +22,8 @@ class TransferObjectConverter extends BaseConverter
      */
     public function __construct(
         ResponseInterface $response
-    )
-    {
+    ) {
+
         $this->response = $response;
     }
 

@@ -7,25 +7,23 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Generated\Shared\Transfer\RatepayPaymentElvTransfer;
-use Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail;
 
 class InstallmentDetailMapper extends BaseMapper
 {
 
     /**
-     * @var QuoteTransfer
+     * @var \Generated\Shared\Transfer\QuoteTransfer
      */
     protected $quoteTransfer;
 
     /**
-     * @var RatepayPaymentElvTransfer|RatepayPaymentInstallmentTransfer
+     * @var \Generated\Shared\Transfer\RatepayPaymentElvTransfer|\Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer
      */
     protected $ratepayPaymentTransfer;
 
     /**
-     * @var InstallmentDetail
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail
      */
     protected $installmentDetail;
 
@@ -38,8 +36,8 @@ class InstallmentDetailMapper extends BaseMapper
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer,
         InstallmentDetail $installmentDetail
-    )
-    {
+    ) {
+
         $this->quoteTransfer = $quoteTransfer;
         $this->ratepayPaymentTransfer = $ratepayPaymentTransfer;
         $this->installmentDetail = $installmentDetail;
@@ -55,8 +53,7 @@ class InstallmentDetailMapper extends BaseMapper
             ->setAmount($this->centsToDecimal($this->ratepayPaymentTransfer->getInstallmentRate()))
             ->setLastAmount($this->centsToDecimal($this->ratepayPaymentTransfer->getInstallmentLastRate()))
             ->setInterestRate($this->ratepayPaymentTransfer->getInstallmentInterestRate())
-            ->setPaymentFirstday($this->ratepayPaymentTransfer->getInstallmentPaymentFirstDay())
-        ;
+            ->setPaymentFirstday($this->ratepayPaymentTransfer->getInstallmentPaymentFirstDay());
     }
 
 }

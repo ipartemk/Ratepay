@@ -14,7 +14,7 @@ class AddressMapper extends BaseMapper
 {
 
     /**
-     * @var AddressTransfer
+     * @var \Generated\Shared\Transfer\AddressTransfer
      */
     protected $addressTransfer;
 
@@ -24,7 +24,7 @@ class AddressMapper extends BaseMapper
     protected $type;
 
     /**
-     * @var Address
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address
      */
     protected $address;
 

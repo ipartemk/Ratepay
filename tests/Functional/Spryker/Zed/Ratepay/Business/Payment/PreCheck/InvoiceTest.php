@@ -10,7 +10,6 @@ namespace Functional\Spryker\Zed\Ratepay\Business\Payment\PreCheck;
 use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\PreCheckInvoiceAdapterMock;
 use Functional\Spryker\Zed\Ratepay\Business\Payment\InvoiceAbstractTest;
 use Spryker\Shared\Ratepay\RatepayConstants;
-use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
 
 class InvoiceTest extends InvoiceAbstractTest
 {
@@ -20,8 +19,9 @@ class InvoiceTest extends InvoiceAbstractTest
      */
     public function setUp()
     {
+        parent::setUp();
+
         $this->quoteTransfer = $this->getQuoteTransfer();
-        $this->converter = new Converter();
     }
 
     /**

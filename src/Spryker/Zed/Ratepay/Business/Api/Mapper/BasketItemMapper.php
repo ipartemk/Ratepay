@@ -13,12 +13,12 @@ class BasketItemMapper extends BaseMapper
 {
 
     /**
-     * @var ItemTransfer
+     * @var \Generated\Shared\Transfer\ItemTransfer
      */
     protected $itemTransfer;
 
     /**
-     * @var ShoppingBasketItem
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem
      */
     protected $basketItem;
 
@@ -29,8 +29,8 @@ class BasketItemMapper extends BaseMapper
     public function __construct(
         ItemTransfer $itemTransfer,
         ShoppingBasketItem $basketItem
-    )
-    {
+    ) {
+
         $this->itemTransfer = $itemTransfer;
         $this->basketItem = $basketItem;
     }

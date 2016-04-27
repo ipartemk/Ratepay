@@ -9,32 +9,39 @@ namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 use Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse;
-use Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse;
 
 class InstallmentCalculationResponseConverter extends BaseConverter
 {
 
     /**
-     * @var ConfigurationResponse
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse
      */
     protected $response;
 
     /**
-     * @var Calculation
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation
      */
     protected $request;
 
     /**
+     * @var \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory
+     */
+    protected $converterFactory;
+
+    /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse $response
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation $request
+     * @param \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory $converterFactory
      */
     public function __construct(
         CalculationResponse $response,
-        Calculation $request
-    )
-    {
+        Calculation $request,
+        ConverterFactory $converterFactory
+    ) {
+
         $this->response = $response;
         $this->request = $request;
+        $this->converterFactory = $converterFactory;
     }
 
     /**
@@ -42,11 +49,13 @@ class InstallmentCalculationResponseConverter extends BaseConverter
      */
     public function convert()
     {
-        $transferObjectConverter =  new TransferObjectConverter($this->response);
-
         $responseTransfer = new RatepayInstallmentCalculationResponseTransfer();
         $responseTransfer
-            ->setBaseResponse($transferObjectConverter->convert())
+            ->setBaseResponse(
+                $this->converterFactory
+                    ->getTransferObjectConverter($this->response)
+                    ->convert()
+            )
             ->setSubtype($this->request->getInstallmentCalculation()->getSubType())
 
             ->setTotalAmount($this->decimalToCents($this->response->getTotalAmount()))
@@ -59,8 +68,7 @@ class InstallmentCalculationResponseConverter extends BaseConverter
             ->setRate($this->decimalToCents($this->response->getRate()))
             ->setNumberOfRates($this->response->getNumberOfRates())
             ->setLastRate($this->decimalToCents($this->response->getLastRate()))
-            ->setPaymentFirstDay($this->response->getPaymentFirstday())
-        ;
+            ->setPaymentFirstDay($this->response->getPaymentFirstday());
 
         return $responseTransfer;
     }

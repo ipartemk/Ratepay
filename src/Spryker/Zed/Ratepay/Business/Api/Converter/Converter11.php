@@ -212,8 +212,7 @@ class Converter11 implements ConverterInterface
             ->setAmount($this->centsToDecimal($ratepayPaymentTransfer->getInstallmentRate()))
             ->setLastAmount($this->centsToDecimal($ratepayPaymentTransfer->getInstallmentLastRate()))
             ->setInterestRate($ratepayPaymentTransfer->getInstallmentInterestRate())
-            ->setPaymentFirstday($ratepayPaymentTransfer->getInstallmentPaymentFirstDay())
-        ;
+            ->setPaymentFirstday($ratepayPaymentTransfer->getInstallmentPaymentFirstDay());
     }
 
     /**
@@ -234,8 +233,7 @@ class Converter11 implements ConverterInterface
                         ->getRatepayInstallment()
                         ->getInstallmentGrandTotalAmount()
                 )
-            )
-        ;
+            );
     }
 
     /**

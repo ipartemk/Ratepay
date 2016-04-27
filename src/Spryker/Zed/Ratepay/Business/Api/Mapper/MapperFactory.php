@@ -32,8 +32,8 @@ class MapperFactory
         AddressTransfer $addressTransfer,
         $type,
         Address $address
-    )
-    {
+    ) {
+
         return new AddressMapper(
             $addressTransfer,
             $type,
@@ -52,8 +52,8 @@ class MapperFactory
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer,
         BankAccount $bankAccount
-    )
-    {
+    ) {
+
         return new BankAccountMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,
@@ -70,8 +70,8 @@ class MapperFactory
     public function getBasketItemMapper(
         ItemTransfer $itemTransfer,
         ShoppingBasketItem $basketItem
-    )
-    {
+    ) {
+
         return new BasketItemMapper(
             $itemTransfer,
             $basketItem
@@ -89,8 +89,8 @@ class MapperFactory
         $quoteTransfer,
         $ratepayPaymentTransfer,
         ShoppingBasket $basket
-    )
-    {
+    ) {
+
         return new BasketMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,
@@ -109,8 +109,8 @@ class MapperFactory
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer,
         Customer $customer
-    )
-    {
+    ) {
+
         return new CustomerMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,
@@ -129,8 +129,8 @@ class MapperFactory
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer,
         Payment $payment
-    )
-    {
+    ) {
+
         return new PaymentMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,
@@ -149,8 +149,8 @@ class MapperFactory
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer,
         InstallmentCalculation $calculation
-    )
-    {
+    ) {
+
         return new InstallmentCalculationMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,
@@ -169,8 +169,8 @@ class MapperFactory
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer,
         InstallmentDetail $installmentDetail
-    )
-    {
+    ) {
+
         return new InstallmentDetailMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,
@@ -189,8 +189,8 @@ class MapperFactory
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer,
         Payment $payment
-    )
-    {
+    ) {
+
         return new InstallmentPaymentMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
@@ -7,7 +6,7 @@
 
 namespace Unit\Spryker\Zed\Ratepay\Business\Api\Response;
 
-use Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
+use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;
 
 class ConverterTest extends \PHPUnit_Framework_TestCase
@@ -59,8 +58,10 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
     protected function getResponseTransferObject($responseXml)
     {
         $responseObject = new BaseResponse($responseXml);
-        $exporter = new Converter();
-        return $exporter->responseToTransferObject($responseObject);
+        $converterFactory = new ConverterFactory();
+        return $converterFactory
+            ->getTransferObjectConverter($responseObject)
+            ->convert();
     }
 
 }

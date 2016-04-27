@@ -7,8 +7,6 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Generated\Shared\Transfer\RatepayPaymentElvTransfer;
-use Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 
@@ -16,17 +14,17 @@ class CustomerMapper extends BaseMapper
 {
 
     /**
-     * @var QuoteTransfer
+     * @var \Generated\Shared\Transfer\QuoteTransfer
      */
     protected $quoteTransfer;
 
     /**
-     * @var RatepayPaymentElvTransfer|RatepayPaymentInstallmentTransfer
+     * @var \Generated\Shared\Transfer\RatepayPaymentElvTransfer|\Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer
      */
     protected $ratepayPaymentTransfer;
 
     /**
-     * @var Customer
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer
      */
     protected $customer;
 
@@ -39,8 +37,8 @@ class CustomerMapper extends BaseMapper
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer,
         Customer $customer
-    )
-    {
+    ) {
+
         $this->quoteTransfer = $quoteTransfer;
         $this->ratepayPaymentTransfer = $ratepayPaymentTransfer;
         $this->customer = $customer;
@@ -59,9 +57,9 @@ class CustomerMapper extends BaseMapper
         $shippingAddress = $this->quoteTransfer->requireBillingAddress()->getShippingAddress();
 
         $this->customer->setAllowCreditInquiry(
-                $this->ratepayPaymentTransfer->requireCustomerAllowCreditInquiry()->getCustomerAllowCreditInquiry() ?
+            $this->ratepayPaymentTransfer->requireCustomerAllowCreditInquiry()->getCustomerAllowCreditInquiry() ?
                     Customer::ALLOW_CREDIT_INQUIRY_YES : Customer::ALLOW_CREDIT_INQUIRY_NO
-            )
+        )
             ->setGender($this->ratepayPaymentTransfer->requireGender()->getGender())
             ->setDob($this->ratepayPaymentTransfer->requireDateOfBirth()->getDateOfBirth())
             ->setIpAddress($this->ratepayPaymentTransfer->requireIpAddress()->getIpAddress())

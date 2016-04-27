@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
@@ -15,16 +14,16 @@ use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderAddress;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
-
+use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;
 
 abstract class AbstractFacadeTest extends AbstractBusinessTest
 {
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Converter\Converter;
+     * @var \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
      */
-    protected $converter;
+    protected $converterFactory;
 
     /**
      * @var \Orm\Zed\Sales\Persistence\SpySalesOrder
@@ -47,6 +46,8 @@ abstract class AbstractFacadeTest extends AbstractBusinessTest
     public function setUp()
     {
         parent::setUp();
+
+        $this->converterFactory = new ConverterFactory();
     }
 
     /**
@@ -133,7 +134,9 @@ abstract class AbstractFacadeTest extends AbstractBusinessTest
         $this->assertInstanceOf('Generated\Shared\Transfer\RatepayResponseTransfer', $this->responseTransfer);
 
         $expectedResponse = $this->sendRequest($adapterMock, $adapterMock->getSuccessResponse());
-        $this->expectedResponseTransfer = $this->converter->responseToTransferObject($expectedResponse);
+        $this->expectedResponseTransfer = $this->converterFactory
+            ->getTransferObjectConverter($expectedResponse)
+            ->convert();
 
         $this->assertEquals($this->expectedResponseTransfer, $this->responseTransfer);
 
@@ -161,7 +164,9 @@ abstract class AbstractFacadeTest extends AbstractBusinessTest
         $this->assertInstanceOf('Generated\Shared\Transfer\RatepayResponseTransfer', $this->responseTransfer);
 
         $expectedResponse = $this->sendRequest($adapterMock, $adapterMock->getFailureResponse());
-        $this->expectedResponseTransfer = $this->converter->responseToTransferObject($expectedResponse);
+        $this->expectedResponseTransfer = $this->converterFactory
+            ->getTransferObjectConverter($expectedResponse)
+            ->convert();
 
         $this->assertEquals($this->expectedResponseTransfer, $this->responseTransfer);
 
