@@ -8,7 +8,7 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 
-class InitPaymentTransaction extends BaseTransaction implements CheckoutTransactionInterface
+class InitPaymentTransaction extends BaseTransaction implements QuoteTransactionInterface
 {
 
     /**

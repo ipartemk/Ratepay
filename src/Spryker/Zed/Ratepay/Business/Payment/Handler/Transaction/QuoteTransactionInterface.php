@@ -9,7 +9,7 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface;
 
-interface CheckoutTransactionInterface
+interface QuoteTransactionInterface
 {
 
     /**

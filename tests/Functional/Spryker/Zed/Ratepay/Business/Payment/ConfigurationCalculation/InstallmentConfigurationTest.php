@@ -4,7 +4,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Functional\Spryker\Zed\Ratepay\Business\Checkout;
+namespace Functional\Spryker\Zed\Ratepay\Business\Payment\ConfigurationCalculation;
 
 use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\ConfigurationInstallmentAdapterMock;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;

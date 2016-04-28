@@ -49,7 +49,7 @@ class InstallmentTest extends InstallmentAbstractTest
      */
     protected function runFacadeMethod($facade)
     {
-        return $facade->refundPayment($this->orderTransfer);
+        return $facade->refundPayment($this->orderTransfer, $this->orderTransfer->getItems()->getArrayCopy());
     }
 
 }

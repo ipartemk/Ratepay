@@ -36,7 +36,7 @@ class BasePaymentTest extends Test
     /**
      * @param string $className
      *
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CheckoutTransactionInterface
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\QuoteTransactionInterface
      */
     protected function getTransactionHandlerObject($className)
     {

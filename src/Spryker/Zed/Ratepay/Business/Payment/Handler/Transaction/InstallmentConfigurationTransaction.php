@@ -10,7 +10,7 @@ use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse;
 
-class InstallmentConfigurationTransaction extends BaseTransaction implements CheckoutTransactionInterface
+class InstallmentConfigurationTransaction extends BaseTransaction implements QuoteTransactionInterface
 {
 
     /**
