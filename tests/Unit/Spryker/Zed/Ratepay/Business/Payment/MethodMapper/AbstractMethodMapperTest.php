@@ -295,11 +295,11 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
             ->setName($itemPrefix . 'test')
             ->setSku($itemPrefix . '33333')
             ->setGroupKey($itemPrefix . '33333333333')
-            ->setQuantity(1)
+            ->setQuantity(3)
             ->setUnitGrossPrice(1000)
             ->setTaxRate('19')
             ->setUnitTotalDiscountAmountWithProductOption(100)
-            ->setUnitGrossPriceWithProductOptionAndDiscountAmounts(900)
+            ->setSumGrossPriceWithProductOptionAndDiscountAmounts(900)
             ->setUnitGrossPriceWithProductOptions(1000);
 
         return $itemTransfer;
@@ -352,7 +352,7 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
         $this->assertEquals('1test', $firstItem->getItemName());
         $this->assertEquals('133333', $firstItem->getArticleNumber());
         $this->assertEquals('133333333333', $firstItem->getUniqueArticleNumber());
-        $this->assertEquals(1, $firstItem->getQuantity());
+        $this->assertEquals(3, $firstItem->getQuantity());
         $this->assertEquals(10, $firstItem->getUnitPriceGross());
         $this->assertEquals(19, $firstItem->getTaxRate());
         $this->assertEquals(1, $firstItem->getDiscount());
@@ -364,7 +364,7 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
         $this->assertEquals('2test', $secondItem->getItemName());
         $this->assertEquals('233333', $secondItem->getArticleNumber());
         $this->assertEquals('233333333333', $secondItem->getUniqueArticleNumber());
-        $this->assertEquals(1, $secondItem->getQuantity());
+        $this->assertEquals(3, $secondItem->getQuantity());
         $this->assertEquals(10, $secondItem->getUnitPriceGross());
         $this->assertEquals(19, $secondItem->getTaxRate());
         $this->assertEquals(1, $secondItem->getDiscount());
