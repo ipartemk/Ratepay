@@ -8,6 +8,7 @@ namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer;
 use Spryker\Shared\Library\Currency\CurrencyManager;
+use Spryker\Zed\Ratepay\Business\Api\Constants;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse;
 
@@ -47,23 +48,29 @@ class InstallmentCalculationResponseConverter extends BaseConverter
      */
     public function convert()
     {
+        $baseResponse = $this->responseTransfer->convert();
+
         $responseTransfer = new RatepayInstallmentCalculationResponseTransfer();
         $responseTransfer
-            ->setBaseResponse($this->responseTransfer->convert())
-            ->setSubtype($this->request->getInstallmentCalculation()->getSubType())
+            ->setBaseResponse($baseResponse)
+            ->setSubtype($this->request->getInstallmentCalculation()->getSubType());
 
-            ->setTotalAmount($this->decimalToCents($this->response->getTotalAmount()))
-            ->setAmount($this->decimalToCents($this->response->getAmount()))
-            ->setInterestAmount($this->decimalToCents($this->response->getInterestAmount()))
-            ->setServiceCharge($this->decimalToCents($this->response->getServiceCharge()))
-            ->setInterestRate($this->decimalToCents($this->response->getInterestRate()))
-            ->setAnnualPercentageRate($this->response->getAnnualPercentageRate())
-            ->setMonthlyDebitInterest($this->decimalToCents($this->response->getMonthlyDebitInterest()))
-            ->setRate($this->decimalToCents($this->response->getRate()))
-            ->setNumberOfRates($this->response->getNumberOfRates())
-            ->setLastRate($this->decimalToCents($this->response->getLastRate()))
-            ->setPaymentFirstDay($this->response->getPaymentFirstday());
-
+        $successCode = Constants::REQUEST_CODE_SUCCESS_MATRIX[Constants::REQUEST_MODEL_CALCULATION_REQUEST];
+        if ($successCode == $baseResponse->getResultCode()) {
+            $responseTransfer
+                ->setTotalAmount($this->decimalToCents($this->response->getTotalAmount()))
+                ->setAmount($this->decimalToCents($this->response->getAmount()))
+                ->setInterestAmount($this->decimalToCents($this->response->getInterestAmount()))
+                ->setServiceCharge($this->decimalToCents($this->response->getServiceCharge()))
+                ->setInterestRate($this->decimalToCents($this->response->getInterestRate()))
+                ->setAnnualPercentageRate($this->response->getAnnualPercentageRate())
+                ->setMonthlyDebitInterest($this->decimalToCents($this->response->getMonthlyDebitInterest()))
+                ->setRate($this->decimalToCents($this->response->getRate()))
+                ->setNumberOfRates($this->response->getNumberOfRates())
+                ->setLastRate($this->decimalToCents($this->response->getLastRate()))
+                ->setPaymentFirstDay($this->response->getPaymentFirstday());
+        }
+        
         return $responseTransfer;
     }
 

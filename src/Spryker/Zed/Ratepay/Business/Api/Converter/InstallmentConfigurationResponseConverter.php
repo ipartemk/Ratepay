@@ -8,6 +8,7 @@ namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer;
 use Spryker\Shared\Library\Currency\CurrencyManager;
+use Spryker\Zed\Ratepay\Business\Api\Constants;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Configuration;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
 
@@ -47,27 +48,33 @@ class InstallmentConfigurationResponseConverter extends BaseConverter
      */
     public function convert()
     {
+        $baseResponse = $this->responseTransfer->convert();
+
         $responseTransfer = new RatepayInstallmentConfigurationResponseTransfer();
         $responseTransfer
-            ->setBaseResponse($this->responseTransfer->convert())
+            ->setBaseResponse($baseResponse);
 
-            ->setInterestrateMin($this->response->getInterestrateMin())
-            ->setInterestrateDefault($this->response->getInterestrateDefault())
-            ->setInterestrateMax($this->response->getInterestrateMax())
-            ->setInterestRateMerchantTowardsBank($this->response->getInterestRateMerchantTowardsBank())
-            ->setMonthNumberMin($this->response->getMonthNumberMin())
-            ->setMonthNumberMax($this->response->getMonthNumberMax())
-            ->setMonthLongrun($this->response->getMonthLongrun())
-            ->setAmountMinLongrun($this->response->getAmountMinLongrun())
-            ->setMonthAllowed($this->response->getMonthAllowed())
-            ->setValidPaymentFirstdays($this->response->getValidPaymentFirstdays())
-            ->setPaymentFirstday($this->response->getPaymentFirstday())
-            ->setPaymentAmount($this->response->getPaymentAmount())
-            ->setPaymentLastrate($this->response->getPaymentLastrate())
-            ->setRateMinNormal($this->response->getRateMinNormal())
-            ->setRateMinLongrun($this->response->getRateMinLongrun())
-            ->setServiceCharge($this->response->getServiceCharge())
-            ->setMinDifferenceDueday($this->response->getMinDifferenceDueday());
+        $successCode = Constants::REQUEST_CODE_SUCCESS_MATRIX[Constants::REQUEST_MODEL_CONFIGURATION_REQUEST];
+        if ($successCode == $baseResponse->getResultCode()) {
+            $responseTransfer
+                ->setInterestrateMin($this->response->getInterestrateMin())
+                ->setInterestrateDefault($this->response->getInterestrateDefault())
+                ->setInterestrateMax($this->response->getInterestrateMax())
+                ->setInterestRateMerchantTowardsBank($this->response->getInterestRateMerchantTowardsBank())
+                ->setMonthNumberMin($this->response->getMonthNumberMin())
+                ->setMonthNumberMax($this->response->getMonthNumberMax())
+                ->setMonthLongrun($this->response->getMonthLongrun())
+                ->setAmountMinLongrun($this->response->getAmountMinLongrun())
+                ->setMonthAllowed($this->response->getMonthAllowed())
+                ->setValidPaymentFirstdays($this->response->getValidPaymentFirstdays())
+                ->setPaymentFirstday($this->response->getPaymentFirstday())
+                ->setPaymentAmount($this->response->getPaymentAmount())
+                ->setPaymentLastrate($this->response->getPaymentLastrate())
+                ->setRateMinNormal($this->response->getRateMinNormal())
+                ->setRateMinLongrun($this->response->getRateMinLongrun())
+                ->setServiceCharge($this->response->getServiceCharge())
+                ->setMinDifferenceDueday($this->response->getMinDifferenceDueday());
+        }
 
         return $responseTransfer;
     }

@@ -57,7 +57,7 @@ abstract class AbstractFacadeTest extends AbstractBusinessTest
      */
     protected function getFacadeMock(AdapterInterface $adapter)
     {
-        return (new RatepayFacadeMockBuilder)->build($adapter, $this);
+        return (new RatepayFacadeMockBuilder())->build($adapter, $this);
     }
 
     /**
