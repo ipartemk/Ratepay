@@ -73,17 +73,23 @@ class ShoppingBasket extends AbstractRequest
             '@amount' => $this->getAmount(),
             '@currency' => $this->getCurrency(),
             'items' => [],
-            'shipping' => [
+        ];
+
+        if ($this->getShippingUnitPrice()) {
+            $return['shipping'] = [
                 '@unit-price-gross' => $this->getShippingUnitPrice(),
                 '@tax-rate' => $this->getShippingTaxRate(),
                 '#' => $this->getShippingTitle(),
-            ],
-            'discount' => [
+            ];
+        }
+
+        if ($this->getDiscountUnitPrice()) {
+            $return['discount'] = [
                 '@unit-price-gross' => $this->getDiscountUnitPrice() * self::BASKET_DISCOUNT_COEFFICIENT,
                 '@tax-rate' => $this->getDiscountTaxRate(),
                 '#' => $this->getDiscountTitle(),
-            ]
-        ];
+            ];
+        }
 
         $items = $this->getItems();
         foreach ($items as $item) {

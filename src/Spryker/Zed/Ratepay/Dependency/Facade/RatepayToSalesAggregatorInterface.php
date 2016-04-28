@@ -17,4 +17,11 @@ interface RatepayToSalesAggregatorInterface
      */
     public function getOrderTotalsByIdSalesOrder($idSalesOrder);
 
+    /**
+     * @param int $idSalesOrderItem
+     *
+     * @return \Generated\Shared\Transfer\ItemTransfer
+     */
+    public function getOrderItemTotalsByIdSalesOrderItem($idSalesOrderItem);
+
 }

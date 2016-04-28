@@ -86,45 +86,48 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $orderItems
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function capturePayment(OrderTransfer $orderTransfer)
+    public function capturePayment(OrderTransfer $orderTransfer, array $orderItems)
     {
         return $this
             ->getFactory()
             ->createCapturePaymentTransactionHandler()
-            ->request($orderTransfer);
+            ->request($orderTransfer, $orderItems);
     }
 
     /**
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $orderItems
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function cancelPayment(OrderTransfer $orderTransfer)
+    public function cancelPayment(OrderTransfer $orderTransfer, array $orderItems)
     {
         return $this
             ->getFactory()
             ->createCancelPaymentTransactionHandler()
-            ->request($orderTransfer);
+            ->request($orderTransfer, $orderItems);
     }
 
     /**
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $orderItems
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function refundPayment(OrderTransfer $orderTransfer)
+    public function refundPayment(OrderTransfer $orderTransfer, array $orderItems)
     {
         return $this
             ->getFactory()
             ->createRefundPaymentTransactionHandler()
-            ->request($orderTransfer);
+            ->request($orderTransfer, $orderItems);
     }
 
     /**

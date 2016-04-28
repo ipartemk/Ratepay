@@ -141,10 +141,11 @@ abstract class AbstractMethod implements MethodInterface
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $orderItems
      *
      * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
      */
-    public function deliveryConfirm(OrderTransfer $orderTransfer)
+    public function deliveryConfirm(OrderTransfer $orderTransfer, array $orderItems)
     {
         $payment = $this->loadOrderPayment($orderTransfer);
         $paymentData = $this->getTransferObjectFromPayment($payment);
@@ -154,17 +155,18 @@ abstract class AbstractMethod implements MethodInterface
          */
         $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM);
         $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
-        $this->mapShoppingBasketAndItems($orderTransfer, $paymentData, $request);
+        $this->mapPartialShoppingBasketAndItems($orderTransfer, $paymentData, $request, $orderItems);
 
         return $request;
     }
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $orderItems
      *
      * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
      */
-    public function paymentCancel(OrderTransfer $orderTransfer)
+    public function paymentCancel(OrderTransfer $orderTransfer, array $orderItems)
     {
         $payment = $this->loadOrderPayment($orderTransfer);
         $paymentData = $this->getTransferObjectFromPayment($payment);
@@ -176,17 +178,18 @@ abstract class AbstractMethod implements MethodInterface
         $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
         $request->getHead()->setOrderId($orderTransfer->requireOrderReference()->getIdSalesOrder());
         $request->getHead()->setExternalOrderId($orderTransfer->requireOrderReference()->getOrderReference());
-        $this->mapShoppingBasketAndItems($orderTransfer, $paymentData, $request);
+        $this->mapPartialShoppingBasketAndItems($orderTransfer, $paymentData, $request, $orderItems);
 
         return $request;
     }
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $orderItems
      *
      * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
      */
-    public function paymentRefund(OrderTransfer $orderTransfer)
+    public function paymentRefund(OrderTransfer $orderTransfer, array $orderItems)
     {
         $payment = $this->loadOrderPayment($orderTransfer);
         $paymentData = $this->getTransferObjectFromPayment($payment);
@@ -198,7 +201,7 @@ abstract class AbstractMethod implements MethodInterface
         $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
         $request->getHead()->setOrderId($orderTransfer->requireOrderReference()->getIdSalesOrder());
         $request->getHead()->setExternalOrderId($orderTransfer->requireOrderReference()->getOrderReference());
-        $this->mapShoppingBasketAndItems($orderTransfer, $paymentData, $request);
+        $this->mapPartialShoppingBasketAndItems($orderTransfer, $paymentData, $request, $orderItems);
 
         return $request;
     }
@@ -257,6 +260,30 @@ abstract class AbstractMethod implements MethodInterface
             ->map();
         $basketItems = $dataTransfer->requireItems()->getItems();
         foreach ($basketItems as $basketItem) {
+            $shoppingBasketItem = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_BASKET_ITEM);
+            $this->mapperFactory
+                ->getBasketItemMapper($basketItem, $shoppingBasketItem)
+                ->map();
+
+            $request->getShoppingBasket()->addItem($shoppingBasketItem);
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer|\Generated\Shared\Transfer\QuoteTransfer $dataTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $orderItems
+     * @param \Spryker\Shared\Transfer\TransferInterface $paymentData
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
+     *
+     * @return void
+     */
+    protected function mapPartialShoppingBasketAndItems($dataTransfer, $paymentData, $request, array $orderItems)
+    {
+        $this->mapperFactory
+            ->getPartialBasketMapper($dataTransfer, $paymentData, $orderItems, $request->getShoppingBasket())
+            ->map();
+
+        foreach ($orderItems as $basketItem) {
             $shoppingBasketItem = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_BASKET_ITEM);
             $this->mapperFactory
                 ->getBasketItemMapper($basketItem, $shoppingBasketItem)

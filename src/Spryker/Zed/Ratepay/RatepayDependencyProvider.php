@@ -31,4 +31,19 @@ class RatepayDependencyProvider extends AbstractBundleDependencyProvider
         return $container;
     }
 
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    public function provideBusinessLayerDependencies(Container $container)
+    {
+
+        $container[static::FACADE_SALES_AGGREGATOR] = function (Container $container) {
+            return new RatepayToSalesAggregatorBridge($container->getLocator()->salesAggregator()->facade());
+        };
+
+        return $container;
+    }
+
 }

@@ -14,15 +14,16 @@ class RefundPaymentTransaction extends BaseTransaction implements OrderTransacti
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $orderItems
      *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     * @return \Spryker\Shared\Transfer\AbstractTransfer
      */
-    public function request(OrderTransfer $orderTransfer)
+    public function request(OrderTransfer $orderTransfer, array $orderItems = [])
     {
         $paymentMethod = $this->getPaymentMethod($orderTransfer);
         $request = $this
             ->getMethodMapper($paymentMethod->getPaymentType())
-            ->paymentRefund($orderTransfer);
+            ->paymentRefund($orderTransfer, $orderItems);
 
         $response = $this->sendRequest((string)$request);
         $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_REFUND, $request, $response);

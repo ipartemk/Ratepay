@@ -31,4 +31,32 @@ abstract class BaseCommandPlugin extends AbstractPlugin implements CommandByOrde
             ->getOrderTotalsByIdSalesOrder($orderEntity->getIdSalesOrder());
     }
 
+    /**
+     * @param int $idSalesOrderItem
+     *
+     * @return \Generated\Shared\Transfer\ItemTransfer
+     */
+    protected function getOrderItemTotalsByIdSalesOrderItem($idSalesOrderItem)
+    {
+        return $this
+            ->getFactory()
+            ->getSalesAggregator()
+            ->getOrderItemTotalsByIdSalesOrderItem($idSalesOrderItem);
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems
+     *
+     * @return \Generated\Shared\Transfer\ItemTransfer[]
+     */
+    protected function getOrderItemsTransfer(array $orderItems)
+    {
+        $orderTransferItems = [];
+        foreach ($orderItems as $orderItem) {
+            $orderTransferItems[] = $this->getOrderItemTotalsByIdSalesOrderItem($orderItem->getIdSalesOrderItem());
+        }
+
+        return $orderTransferItems;
+    }
+
 }

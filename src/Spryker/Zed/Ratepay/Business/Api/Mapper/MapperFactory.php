@@ -99,6 +99,29 @@ class MapperFactory
     }
 
     /**
+     * @param \Generated\Shared\Transfer\OrderTransfer|\Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Spryker\Shared\Transfer\TransferInterface $ratepayPaymentTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $orderItems
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket $basket
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Mapper\PartialBasketMapper
+     */
+    public function getPartialBasketMapper(
+        $quoteTransfer,
+        $ratepayPaymentTransfer,
+        array $orderItems,
+        ShoppingBasket $basket
+    ) {
+
+        return new PartialBasketMapper(
+            $quoteTransfer,
+            $ratepayPaymentTransfer,
+            $orderItems,
+            $basket
+        );
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Spryker\Shared\Transfer\TransferInterface $ratepayPaymentTransfer
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer $customer

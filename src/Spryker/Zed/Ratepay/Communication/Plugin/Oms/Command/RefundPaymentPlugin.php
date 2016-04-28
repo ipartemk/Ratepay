@@ -28,7 +28,8 @@ class RefundPaymentPlugin extends BaseCommandPlugin implements CommandByOrderInt
     public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
         $orderTransfer = $this->getOrderTransfer($orderEntity);
-        $this->getFacade()->refundPayment($orderTransfer);
+        $orderTransferItems = $this->getOrderItemsTransfer($orderItems);
+        $this->getFacade()->refundPayment($orderTransfer, $orderTransferItems);
 
         return [];
     }

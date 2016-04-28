@@ -48,7 +48,7 @@ class InvoiceTest extends InvoiceAbstractTest
      */
     protected function runFacadeMethod($facade)
     {
-        return $facade->cancelPayment($this->orderTransfer);
+        return $facade->cancelPayment($this->orderTransfer, $this->orderTransfer->getItems()->getArrayCopy());
     }
 
 }

@@ -14,10 +14,11 @@ interface OrderTransactionInterface
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $orderItems
      *
      * @return \Spryker\Shared\Transfer\AbstractTransfer
      */
-    public function request(OrderTransfer $orderTransfer);
+    public function request(OrderTransfer $orderTransfer, array $orderItems = []);
 
     /**
      * @param \Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface $mapper
