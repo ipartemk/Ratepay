@@ -55,9 +55,6 @@ class BasketMapper extends BaseMapper
 
         $shippingUnitPrice = $this->centsToDecimal($totalsTransfer->requireExpenseTotal()->getExpenseTotal());
         $this->basket->setShippingUnitPrice($shippingUnitPrice);
-
-        $discountUnitPrice = $this->centsToDecimal($totalsTransfer->requireDiscountTotal()->getDiscountTotal());
-        $this->basket->setDiscountUnitPrice($discountUnitPrice);
     }
 
 }

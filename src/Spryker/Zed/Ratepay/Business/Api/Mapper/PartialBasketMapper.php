@@ -57,16 +57,13 @@ class PartialBasketMapper extends BaseMapper
     {
         $grandTotal = 0;
         foreach ($this->basketItems as $basketItem) {
-            $grandTotal += $basketItem->getUnitGrossPriceWithProductOptions();
+            $grandTotal += $basketItem->getUnitGrossPriceWithProductOptionAndDiscountAmounts();
         }
         $this->basket->setAmount($this->centsToDecimal($grandTotal));
         $this->basket->setCurrency($this->ratepayPaymentTransfer->requireCurrencyIso3()->getCurrencyIso3());
 
 //        $shippingUnitPrice = $this->centsToDecimal($totalsTransfer->requireExpenseTotal()->getExpenseTotal());
 //        $this->basket->setShippingUnitPrice($shippingUnitPrice);
-
-//        $discountUnitPrice = $this->centsToDecimal($totalsTransfer->requireDiscountTotal()->getDiscountTotal());
-//        $this->basket->setDiscountUnitPrice($discountUnitPrice);
     }
 
 }

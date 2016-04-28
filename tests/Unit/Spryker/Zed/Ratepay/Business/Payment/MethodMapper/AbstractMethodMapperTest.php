@@ -140,7 +140,7 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
 
         //payment
         $this->assertEquals('EUR', $request->getPayment()->getCurrency());
-        $this->assertEquals(2, $request->getPayment()->getAmount());
+        $this->assertEquals(18, $request->getPayment()->getAmount());
         $this->testPaymentSpecificRequestData($request);
     }
 
@@ -262,9 +262,9 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
     {
         $totalsTransfer = new TotalsTransfer();
         $totalsTransfer
-            ->setGrandTotal(200)
-            ->setSubtotal(200)
-            ->setDiscountTotal(0)
+            ->setGrandTotal(1800)
+            ->setSubtotal(2000)
+            ->setDiscountTotal(200)
             ->setExpenseTotal(0);
 
         return $totalsTransfer;
@@ -296,10 +296,11 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
             ->setSku($itemPrefix . '33333')
             ->setGroupKey($itemPrefix . '33333333333')
             ->setQuantity(1)
-            ->setUnitGrossPrice(10)
+            ->setUnitGrossPrice(1000)
             ->setTaxRate('19')
             ->setUnitTotalDiscountAmountWithProductOption(100)
-            ->setUnitGrossPriceWithProductOptions(100);
+            ->setUnitGrossPriceWithProductOptionAndDiscountAmounts(900)
+            ->setUnitGrossPriceWithProductOptions(1000);
 
         return $itemTransfer;
     }
@@ -329,7 +330,7 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
     protected function testBasketAndItems($request)
     {
         //Basket
-        $this->assertEquals(2, $request->getShoppingBasket()->getAmount());
+        $this->assertEquals(18, $request->getShoppingBasket()->getAmount());
         $this->assertEquals('EUR', $request->getShoppingBasket()->getCurrency());
         $this->assertEquals(0, (float)$request->getShoppingBasket()->getShippingUnitPrice());
         $this->assertEquals(0, (float)$request->getShoppingBasket()->getShippingTaxRate());
@@ -352,9 +353,9 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
         $this->assertEquals('133333', $firstItem->getArticleNumber());
         $this->assertEquals('133333333333', $firstItem->getUniqueArticleNumber());
         $this->assertEquals(1, $firstItem->getQuantity());
-        $this->assertEquals(1, $firstItem->getUnitPriceGross());
+        $this->assertEquals(10, $firstItem->getUnitPriceGross());
         $this->assertEquals(19, $firstItem->getTaxRate());
-        $this->assertEquals(0, $firstItem->getDiscount());
+        $this->assertEquals(1, $firstItem->getDiscount());
 
         /**
          * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem $secondItem
@@ -364,9 +365,9 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
         $this->assertEquals('233333', $secondItem->getArticleNumber());
         $this->assertEquals('233333333333', $secondItem->getUniqueArticleNumber());
         $this->assertEquals(1, $secondItem->getQuantity());
-        $this->assertEquals(1, $secondItem->getUnitPriceGross());
+        $this->assertEquals(10, $secondItem->getUnitPriceGross());
         $this->assertEquals(19, $secondItem->getTaxRate());
-        $this->assertEquals(0, $secondItem->getDiscount());
+        $this->assertEquals(1, $secondItem->getDiscount());
     }
 
     /**
