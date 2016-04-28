@@ -33,4 +33,14 @@ class RatepayToSalesAggregatorBridge implements RatepayToSalesAggregatorInterfac
         return $this->salesAggregatorFacade->getOrderTotalsByIdSalesOrder($idSalesOrder);
     }
 
+    /**
+     * @param int $idSalesOrderItem
+     *
+     * @return \Generated\Shared\Transfer\ItemTransfer
+     */
+    public function getOrderItemTotalsByIdSalesOrderItem($idSalesOrderItem)
+    {
+        return $this->salesAggregatorFacade->getOrderItemTotalsByIdSalesOrderItem($idSalesOrderItem);
+    }
+
 }

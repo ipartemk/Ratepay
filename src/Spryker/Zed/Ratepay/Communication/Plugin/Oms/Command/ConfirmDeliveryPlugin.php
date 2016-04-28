@@ -28,7 +28,8 @@ class ConfirmDeliveryPlugin extends BaseCommandPlugin implements CommandByOrderI
     public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
         $orderTransfer = $this->getOrderTransfer($orderEntity);
-        $this->getFacade()->capturePayment($orderTransfer);
+        $orderTransferItems = $this->getOrderItemsTransfer($orderItems);
+        $this->getFacade()->capturePayment($orderTransfer, $orderTransferItems);
 
         return [];
     }

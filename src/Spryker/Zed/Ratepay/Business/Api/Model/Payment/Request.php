@@ -62,6 +62,7 @@ class Request extends Base
             $this->getCustomer()->getRootTag() => $this->getCustomer(),
             $this->getShoppingBasket()->getRootTag() => $this->getShoppingBasket(),
         ];
+
         return $result;
     }
 
@@ -73,6 +74,7 @@ class Request extends Base
     public function setCustomer(Customer $customer)
     {
         $this->customer = $customer;
+
         return $this;
     }
 
@@ -92,6 +94,7 @@ class Request extends Base
     public function setShoppingBasket(ShoppingBasket $basket)
     {
         $this->basket = $basket;
+
         return $this;
     }
 
@@ -111,6 +114,7 @@ class Request extends Base
     public function setPayment(Payment $payment)
     {
         $this->payment = $payment;
+
         return $this;
     }
 

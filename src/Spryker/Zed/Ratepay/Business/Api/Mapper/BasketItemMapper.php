@@ -51,14 +51,28 @@ class BasketItemMapper extends BaseMapper
         $itemPrice = $this->centsToDecimal($this->itemTransfer->requireUnitGrossPriceWithProductOptions()->getUnitGrossPriceWithProductOptions());
         $this->basketItem->setUnitPriceGross($itemPrice);
 
-        //todo:: uncomment discount amount when discount per item will be implemented.
-        //$itemDiscount = $this->centsToDecimal($this->itemTransfer->requireUnitTotalDiscountAmountWithProductOption()->getUnitTotalDiscountAmountWithProductOption());
-        //$this->basketItem->setDiscount($itemDiscount);
+        $itemDiscount = $this->getBasketItemDiscount();
+        if ($itemDiscount) {
+            $this->basketItem->setDiscount($itemDiscount);
+        }
 
         // @todo: ProductOptions didn't tested, because we have no implementation for it now.
         foreach ($this->itemTransfer->getProductOptions() as $productOption) {
             $this->basketItem->addProductOption($productOption->getLabelOptionValue());
         }
+    }
+
+    /**
+     * @return float
+     */
+    protected function getBasketItemDiscount()
+    {
+        $itemDiscount = $this->itemTransfer
+            ->requireUnitTotalDiscountAmountWithProductOption()
+            ->getUnitTotalDiscountAmountWithProductOption();
+        $itemDiscount = $this->centsToDecimal($itemDiscount);
+
+        return $itemDiscount;
     }
 
 }

@@ -8,7 +8,7 @@ namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 
-class BasketMapper extends BaseMapper
+class PartialBasketMapper extends BaseMapper
 {
 
     /**
@@ -27,18 +27,26 @@ class BasketMapper extends BaseMapper
     protected $basket;
 
     /**
+     * @var
+     */
+    protected $basketItems;
+
+    /**
      * @param \Generated\Shared\Transfer\OrderTransfer|\Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Spryker\Shared\Transfer\TransferInterface $ratepayPaymentTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $basketItems
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket $basket
      */
     public function __construct(
         $quoteTransfer,
         $ratepayPaymentTransfer,
+        array $basketItems,
         ShoppingBasket $basket
     ) {
 
         $this->quoteTransfer = $quoteTransfer;
         $this->ratepayPaymentTransfer = $ratepayPaymentTransfer;
+        $this->basketItems = $basketItems;
         $this->basket = $basket;
     }
 
@@ -47,14 +55,15 @@ class BasketMapper extends BaseMapper
      */
     public function map()
     {
-        $totalsTransfer = $this->quoteTransfer->requireTotals()->getTotals();
-
-        $grandTotal = $this->centsToDecimal($totalsTransfer->requireGrandTotal()->getGrandTotal());
-        $this->basket->setAmount($grandTotal);
+        $grandTotal = 0;
+        foreach ($this->basketItems as $basketItem) {
+            $grandTotal += $basketItem->getUnitGrossPriceWithProductOptionAndDiscountAmounts();
+        }
+        $this->basket->setAmount($this->centsToDecimal($grandTotal));
         $this->basket->setCurrency($this->ratepayPaymentTransfer->requireCurrencyIso3()->getCurrencyIso3());
 
-        $shippingUnitPrice = $this->centsToDecimal($totalsTransfer->requireExpenseTotal()->getExpenseTotal());
-        $this->basket->setShippingUnitPrice($shippingUnitPrice);
+//        $shippingUnitPrice = $this->centsToDecimal($totalsTransfer->requireExpenseTotal()->getExpenseTotal());
+//        $this->basket->setShippingUnitPrice($shippingUnitPrice);
     }
 
 }

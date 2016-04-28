@@ -14,10 +14,11 @@ class PreAuthorizePaymentTransaction extends BaseTransaction implements OrderTra
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $orderItems
      *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     * @return \Spryker\Shared\Transfer\AbstractTransfer
      */
-    public function request(OrderTransfer $orderTransfer)
+    public function request(OrderTransfer $orderTransfer, array $orderItems = [])
     {
         $paymentMethod = $this->getPaymentMethod($orderTransfer);
         $request = $this

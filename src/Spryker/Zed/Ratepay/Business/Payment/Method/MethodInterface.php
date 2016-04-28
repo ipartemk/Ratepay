@@ -45,24 +45,27 @@ interface MethodInterface
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $orderItems
      *
      * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
      */
-    public function deliveryConfirm(OrderTransfer $orderTransfer);
+    public function deliveryConfirm(OrderTransfer $orderTransfer, array $orderItems);
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $orderItems
      *
      * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
      */
-    public function paymentCancel(OrderTransfer $orderTransfer);
+    public function paymentCancel(OrderTransfer $orderTransfer, array $orderItems);
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $orderItems
      *
      * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
      */
-    public function paymentRefund(OrderTransfer $orderTransfer);
+    public function paymentRefund(OrderTransfer $orderTransfer, array $orderItems);
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer

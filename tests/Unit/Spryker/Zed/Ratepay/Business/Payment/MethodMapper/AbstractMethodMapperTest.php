@@ -140,7 +140,7 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
 
         //payment
         $this->assertEquals('EUR', $request->getPayment()->getCurrency());
-        $this->assertEquals('33.46', $request->getPayment()->getAmount());
+        $this->assertEquals(18, $request->getPayment()->getAmount());
         $this->testPaymentSpecificRequestData($request);
     }
 
@@ -178,7 +178,8 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
     public function testDeliveryConfirm()
     {
         $paymentMethod = $this->getPaymentMethod();
-        $request = $paymentMethod->deliveryConfirm($this->getOrderTransfer());
+        $orderTransfer = $this->getOrderTransfer();
+        $request = $paymentMethod->deliveryConfirm($orderTransfer, $orderTransfer->getItems()->getArrayCopy());
 
         $this->assertInstanceOf('\Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm', $request);
 
@@ -202,7 +203,8 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
     public function testPaymentCancel()
     {
         $paymentMethod = $this->getPaymentMethod();
-        $request = $paymentMethod->paymentCancel($this->getOrderTransfer());
+        $orderTransfer = $this->getOrderTransfer();
+        $request = $paymentMethod->paymentCancel($orderTransfer, $orderTransfer->getItems()->getArrayCopy());
 
         $this->assertInstanceOf('\Spryker\Zed\Ratepay\Business\Api\Model\Payment\Cancel', $request);
 
@@ -226,7 +228,8 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
     public function testPaymentRefund()
     {
         $paymentMethod = $this->getPaymentMethod();
-        $request = $paymentMethod->paymentRefund($this->getOrderTransfer());
+        $orderTransfer = $this->getOrderTransfer();
+        $request = $paymentMethod->paymentRefund($orderTransfer, $orderTransfer->getItems()->getArrayCopy());
 
         $this->assertInstanceOf('\Spryker\Zed\Ratepay\Business\Api\Model\Payment\Refund', $request);
 
@@ -259,10 +262,10 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
     {
         $totalsTransfer = new TotalsTransfer();
         $totalsTransfer
-            ->setGrandTotal(3346)
-            ->setSubtotal(2856)
-            ->setDiscountTotal(0)
-            ->setExpenseTotal(490);
+            ->setGrandTotal(1800)
+            ->setSubtotal(2000)
+            ->setDiscountTotal(200)
+            ->setExpenseTotal(0);
 
         return $totalsTransfer;
     }
@@ -292,11 +295,12 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
             ->setName($itemPrefix . 'test')
             ->setSku($itemPrefix . '33333')
             ->setGroupKey($itemPrefix . '33333333333')
-            ->setQuantity($itemPrefix . '2')
-            ->setUnitGrossPrice($itemPrefix . '1')
-            ->setTaxRate($itemPrefix . '9')
-            ->setUnitTotalDiscountAmountWithProductOption($itemPrefix . '9')
-            ->setUnitGrossPriceWithProductOptions($itemPrefix . '55555');
+            ->setQuantity(1)
+            ->setUnitGrossPrice(1000)
+            ->setTaxRate('19')
+            ->setUnitTotalDiscountAmountWithProductOption(100)
+            ->setUnitGrossPriceWithProductOptionAndDiscountAmounts(900)
+            ->setUnitGrossPriceWithProductOptions(1000);
 
         return $itemTransfer;
     }
@@ -326,10 +330,10 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
     protected function testBasketAndItems($request)
     {
         //Basket
-        $this->assertEquals('33.46', $request->getShoppingBasket()->getAmount());
+        $this->assertEquals(18, $request->getShoppingBasket()->getAmount());
         $this->assertEquals('EUR', $request->getShoppingBasket()->getCurrency());
-        $this->assertEquals('4.90', $request->getShoppingBasket()->getShippingUnitPrice());
-        $this->assertEquals('0.00', $request->getShoppingBasket()->getShippingTaxRate());
+        $this->assertEquals(0, (float)$request->getShoppingBasket()->getShippingUnitPrice());
+        $this->assertEquals(0, (float)$request->getShoppingBasket()->getShippingTaxRate());
         $this->assertEquals('Shipping costs', $request->getShoppingBasket()->getShippingTitle());
         $this->assertEquals('0.00', $request->getShoppingBasket()->getDiscountTaxRate());
         $this->assertEquals('0.00', $request->getShoppingBasket()->getDiscountUnitPrice());
@@ -348,10 +352,10 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
         $this->assertEquals('1test', $firstItem->getItemName());
         $this->assertEquals('133333', $firstItem->getArticleNumber());
         $this->assertEquals('133333333333', $firstItem->getUniqueArticleNumber());
-        $this->assertEquals('12', $firstItem->getQuantity());
-        $this->assertEquals('1555.55', $firstItem->getUnitPriceGross());
-        $this->assertEquals('19', $firstItem->getTaxRate());
-        $this->assertEquals(0, $firstItem->getDiscount());
+        $this->assertEquals(1, $firstItem->getQuantity());
+        $this->assertEquals(10, $firstItem->getUnitPriceGross());
+        $this->assertEquals(19, $firstItem->getTaxRate());
+        $this->assertEquals(1, $firstItem->getDiscount());
 
         /**
          * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem $secondItem
@@ -360,10 +364,10 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
         $this->assertEquals('2test', $secondItem->getItemName());
         $this->assertEquals('233333', $secondItem->getArticleNumber());
         $this->assertEquals('233333333333', $secondItem->getUniqueArticleNumber());
-        $this->assertEquals('22', $secondItem->getQuantity());
-        $this->assertEquals('2555.55', $secondItem->getUnitPriceGross());
-        $this->assertEquals('29', $secondItem->getTaxRate());
-        $this->assertEquals(0, $secondItem->getDiscount());
+        $this->assertEquals(1, $secondItem->getQuantity());
+        $this->assertEquals(10, $secondItem->getUnitPriceGross());
+        $this->assertEquals(19, $secondItem->getTaxRate());
+        $this->assertEquals(1, $secondItem->getDiscount());
     }
 
     /**
