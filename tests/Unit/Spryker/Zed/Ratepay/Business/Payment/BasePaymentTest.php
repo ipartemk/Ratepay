@@ -35,17 +35,20 @@ class BasePaymentTest extends Test
 
     /**
      * @param string $className
+     * @param array $additionalMockMethods
      *
      * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\QuoteTransactionInterface
      */
-    protected function getTransactionHandlerObject($className)
+    protected function getTransactionHandlerObject($className, $additionalMockMethods = [])
     {
-        $executionAdapter = $this->getMockBuilder('\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $executionAdapter = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle');
+        $executionAdapter->shouldReceive('sendRequest')
+            ->andReturn((new Response())->getTestPaymentConfirmResponseData());
 
-        $executionAdapter->method('sendRequest')
-            ->willReturn((new Response())->getTestPaymentConfirmResponseData());
+        foreach ($additionalMockMethods as $method=>$return) {
+            $executionAdapter->shouldReceive($method)
+                ->andReturn($return);
+        }
 
         $converterFactory = new ConverterFactory();
         $paymentLogger = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Payment\Model\PaymentLogger');
@@ -96,7 +99,7 @@ class BasePaymentTest extends Test
     /**
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
-    protected function mockQuoteTransfer()
+    protected function mockQuoteTransfer($paymentMethod = 'INVOICE')
     {
         $quoteTransfer = $this->mockery->mock('\Generated\Shared\Transfer\QuoteTransfer');
         $quoteTransfer->shouldReceive('requirePayment')
@@ -106,7 +109,7 @@ class BasePaymentTest extends Test
         $quoteTransfer->shouldReceive('requirePaymentMethod')
             ->andReturn($this->mockery->self());
         $quoteTransfer->shouldReceive('getPaymentMethod')
-            ->andReturn(RatepayConstants::METHOD_INVOICE);
+            ->andReturn($paymentMethod);
 
         return $quoteTransfer;
     }
@@ -116,19 +119,7 @@ class BasePaymentTest extends Test
      */
     protected function mockMethodInvoice()
     {
-        $modelPartHead = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head');
-        $modelPartHead->shouldReceive('getOrderId')
-            ->andReturn(1);
-        $modelPartHead->shouldReceive('getOperation')
-            ->andReturn(Constants::REQUEST_MODEL_PAYMENT_REQUEST);
-        $modelPartHead->shouldReceive('getTransactionId')
-            ->andReturn('tr1');
-        $modelPartHead->shouldReceive('getTransactionShortId')
-            ->andReturn('tr1_short');
-
-        $paymentInit = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init');
-        $paymentInit->shouldReceive('getHead')
-            ->andReturn($modelPartHead);
+        $paymentInit = $this->mockModelPaymentInit();
 
         $invoiceMethod = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Payment\Method\Invoice');
         $invoiceMethod->shouldReceive('getMethodName')
@@ -145,6 +136,154 @@ class BasePaymentTest extends Test
             ->andReturn($paymentTransfer);
 
         return $invoiceMethod;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Installment
+     */
+    protected function mockMethodInstallmentConfiguration()
+    {
+        $paymentConfiguration = $this->mockModelPaymentConfiguration();
+
+        return $this->mockMethodInstallment($paymentConfiguration);
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Installment
+     */
+    protected function mockMethodInstallmentCalculation()
+    {
+        $paymentCalculation = $this->mockModelPaymentCalculation();
+
+        return $this->mockMethodInstallment($paymentCalculation);
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Installment
+     */
+    protected function mockMethodInstallment($payment)
+    {
+        $installmentMethod = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Payment\Method\Installment');
+        $installmentMethod->shouldReceive('getMethodName')
+            ->andReturn(RatepayConstants::METHOD_INSTALLMENT);
+        $installmentMethod->shouldReceive('paymentInit')
+            ->andReturn($payment);
+        $installmentMethod->shouldReceive('paymentRequest')
+            ->andReturn($payment);
+        $installmentMethod->shouldReceive('paymentConfirm')
+            ->andReturn($payment);
+        $installmentMethod->shouldReceive('configurationRequest')
+            ->andReturn($this->mockModelPaymentConfiguration());
+        $installmentMethod->shouldReceive('calculationRequest')
+            ->andReturn($this->mockModelPaymentCalculation());
+
+        $paymentTransfer = new RatepayPaymentInvoiceTransfer();
+        $installmentMethod->shouldReceive('getPaymentData')
+            ->andReturn($paymentTransfer);
+
+        return $installmentMethod;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request
+     */
+    protected function mockModelPaymentRequest()
+    {
+        $modelPaymentRequest = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request');
+        $modelPaymentRequest->shouldReceive('getHead')
+            ->andReturn($this->mockModelPartHead());
+        $modelPaymentRequest->shouldReceive('getPayment')
+            ->andReturn($this->mockModelPartPayment());
+
+        return $modelPaymentRequest;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init
+     */
+    protected function mockModelPaymentInit()
+    {
+        $paymentInit = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init');
+        $paymentInit->shouldReceive('getHead')
+            ->andReturn($this->mockModelPartHead());
+        $paymentInit->shouldReceive('getPayment')
+            ->andReturn($this->mockModelPartPayment());
+
+        return $paymentInit;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Configuration
+     */
+    protected function mockModelPaymentConfiguration()
+    {
+        $paymentConfiguration = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Api\Model\Payment\Configuration');
+        $paymentConfiguration->shouldReceive('getHead')
+            ->andReturn($this->mockModelPartHead());
+        $paymentConfiguration->shouldReceive('getPayment')
+            ->andReturn($this->mockModelPartPayment());
+
+        return $paymentConfiguration;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation
+     */
+    protected function mockModelPaymentCalculation()
+    {
+        $paymentConfiguration = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation');
+        $paymentConfiguration->shouldReceive('getHead')
+            ->andReturn($this->mockModelPartHead());
+        $paymentConfiguration->shouldReceive('getPayment')
+            ->andReturn($this->mockModelPartPayment());
+        $paymentConfiguration->shouldReceive('getInstallmentCalculation')
+            ->andReturn($this->mockModelPartInstallmentCalculation());
+
+        return $paymentConfiguration;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head
+     */
+    protected function mockModelPartHead()
+    {
+        $modelPartHead = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head');
+        $modelPartHead->shouldReceive('getOrderId')
+            ->andReturn(1);
+        $modelPartHead->shouldReceive('getOperation')
+            ->andReturn(Constants::REQUEST_MODEL_PAYMENT_REQUEST);
+        $modelPartHead->shouldReceive('getTransactionId')
+            ->andReturn('tr1');
+        $modelPartHead->shouldReceive('getTransactionShortId')
+            ->andReturn('tr1_short');
+
+        return $modelPartHead;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment
+     */
+    protected function mockModelPartPayment()
+    {
+        $modelPartPayment = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment');
+        $modelPartPayment->shouldReceive('getMethod')
+            ->andReturn('');
+
+        return $modelPartPayment;
+    }
+
+    /**
+     * @param string $subType
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation
+     */
+    protected function mockModelPartInstallmentCalculation($subType = 'calculation_by_rate')
+    {
+        $modelPartInstallmentCalculation = $this->mockery->mock('\Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation');
+        $modelPartInstallmentCalculation->shouldReceive('getSubType')
+            ->andReturn($subType);
+
+        return $modelPartInstallmentCalculation;
     }
 
     /**
