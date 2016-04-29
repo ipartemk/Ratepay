@@ -37,7 +37,7 @@ class BasePaymentTest extends Test
      * @param string $className
      * @param array $additionalMockMethods
      *
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\QuoteTransactionInterface
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\QuoteTransactionInterface|\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\OrderTransactionInterface
      */
     protected function getTransactionHandlerObject($className, $additionalMockMethods = [])
     {
@@ -130,6 +130,13 @@ class BasePaymentTest extends Test
             ->andReturn($paymentInit);
         $invoiceMethod->shouldReceive('paymentConfirm')
             ->andReturn($paymentInit);
+        $invoiceMethod->shouldReceive('paymentCancel')
+            ->andReturn($paymentInit);
+        $invoiceMethod->shouldReceive('deliveryConfirm')
+            ->andReturn($paymentInit);
+        $invoiceMethod->shouldReceive('paymentRefund')
+            ->andReturn($paymentInit);
+        
 
         $paymentTransfer = new RatepayPaymentInvoiceTransfer();
         $invoiceMethod->shouldReceive('getPaymentData')

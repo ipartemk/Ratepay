@@ -24,4 +24,49 @@ class OrderTransactionTest extends BaseTransactionTest
         );
     }
 
+    public function testCancelPayment()
+    {
+        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CancelPaymentTransaction');
+        $transactionHandler->registerMethodMapper($this->mockMethodInvoice());
+
+        $responseTransfer = $transactionHandler->request($this->mockOrderTransfer());
+
+        $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayResponseTransfer', $responseTransfer);
+
+        $this->assertEquals(
+            'Die Prüfung war erfolgreich. Vielen Dank, dass Sie die Zahlart Rechnung gewählt haben.',
+            $responseTransfer->getCustomerMessage()
+        );
+    }
+
+    public function testCapturePayment()
+    {
+        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CapturePaymentTransaction');
+        $transactionHandler->registerMethodMapper($this->mockMethodInvoice());
+
+        $responseTransfer = $transactionHandler->request($this->mockOrderTransfer());
+
+        $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayResponseTransfer', $responseTransfer);
+
+        $this->assertEquals(
+            'Die Prüfung war erfolgreich. Vielen Dank, dass Sie die Zahlart Rechnung gewählt haben.',
+            $responseTransfer->getCustomerMessage()
+        );
+    }
+
+    public function testRefundPayment()
+    {
+        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\RefundPaymentTransaction');
+        $transactionHandler->registerMethodMapper($this->mockMethodInvoice());
+
+        $responseTransfer = $transactionHandler->request($this->mockOrderTransfer());
+
+        $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayResponseTransfer', $responseTransfer);
+
+        $this->assertEquals(
+            'Die Prüfung war erfolgreich. Vielen Dank, dass Sie die Zahlart Rechnung gewählt haben.',
+            $responseTransfer->getCustomerMessage()
+        );
+    }
+
 }

@@ -15,6 +15,7 @@ class RatepayDependencyProvider extends AbstractBundleDependencyProvider
 {
 
     const FACADE_SALES_AGGREGATOR = 'FACADE_SALES_AGGREGATED';
+    const FACADE_PRODUCT = 'FACADE_PRODUCT';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -42,8 +43,11 @@ class RatepayDependencyProvider extends AbstractBundleDependencyProvider
         $container[static::FACADE_SALES_AGGREGATOR] = function (Container $container) {
             return new RatepayToSalesAggregatorBridge($container->getLocator()->salesAggregator()->facade());
         };
+        $container[self::FACADE_PRODUCT] = function (Container $container) {
+            return $container->getLocator()->product()->facade();
+        };
 
         return $container;
     }
-
+    
 }
