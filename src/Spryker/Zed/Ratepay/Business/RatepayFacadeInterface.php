@@ -10,6 +10,7 @@ use Generated\Shared\Transfer\CartChangeTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Spryker\Zed\Messenger\Business\Model\MessengerInterface;
 
 /**
  * @method \Spryker\Zed\Ratepay\Business\RatepayBusinessFactory getFactory()
@@ -141,10 +142,21 @@ interface RatepayFacadeInterface
     public function isCancellationConfirmed(OrderTransfer $orderTransfer);
 
     /**
+     * @api
+     *
      * @param \Generated\Shared\Transfer\CartChangeTransfer $change
      *
      * @return \Generated\Shared\Transfer\CartChangeTransfer
      */
     public function expandItems(CartChangeTransfer $change);
+
+    /**
+     * @api
+     *
+     * @param \Spryker\Zed\Messenger\Business\Model\MessengerInterface|null $messenger
+     *
+     * @return void
+     */
+    public function install(MessengerInterface $messenger = null);
 
 }

@@ -45,7 +45,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
         $this->doTestInstance($responseTransfer, '\Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer');
         $this->doTestConverterData($responseTransfer->getBaseResponse());
     }
-    
+
     /**
      * @param \Spryker\Shared\Transfer\AbstractTransfer $responseTransfer
      * @param string $className

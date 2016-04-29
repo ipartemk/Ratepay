@@ -15,7 +15,7 @@ class PartialBasketMapperTest extends AbstractMapperTest
     public function testMapper()
     {
         $basket = new ShoppingBasket();
-        
+
         $this->mapperFactory
             ->getPartialBasketMapper(
                 $this->mockQuoteTransfer(),

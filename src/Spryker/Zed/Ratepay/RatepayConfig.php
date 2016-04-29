@@ -7,6 +7,7 @@
 
 namespace Spryker\Zed\Ratepay;
 
+use Spryker\Shared\Application\ApplicationConstants;
 use Spryker\Shared\Ratepay\RatepayConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
 
@@ -62,6 +63,15 @@ class RatepayConfig extends AbstractBundleConfig
     public function getShopId()
     {
         return $this->get(RatepayConstants::SHOP_ID);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTranslationFilePath()
+    {
+        return $this->get(ApplicationConstants::APPLICATION_SPRYKER_ROOT)
+            . '/Ratepay/src/Spryker/Zed/Ratepay/Business/Internal/glossary.yml';
     }
 
 }

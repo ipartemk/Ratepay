@@ -14,7 +14,7 @@ class BankAccountMapperTest extends AbstractMapperTest
     public function testMapper()
     {
         $bankAccount = new BankAccount();
-        
+
         $this->mapperFactory
             ->getBankAccountMapper(
                 $this->mockQuoteTransfer(),

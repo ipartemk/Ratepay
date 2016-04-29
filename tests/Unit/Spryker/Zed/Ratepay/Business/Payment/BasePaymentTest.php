@@ -136,7 +136,6 @@ class BasePaymentTest extends Test
             ->andReturn($paymentInit);
         $invoiceMethod->shouldReceive('paymentRefund')
             ->andReturn($paymentInit);
-        
 
         $paymentTransfer = new RatepayPaymentInvoiceTransfer();
         $invoiceMethod->shouldReceive('getPaymentData')

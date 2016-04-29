@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
+use Spryker\Zed\Messenger\Business\Model\MessengerInterface;
 
 /**
  * @method \Spryker\Zed\Ratepay\Business\RatepayBusinessFactory getFactory()
@@ -222,6 +223,8 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     }
 
     /**
+     * @api
+     *
      * @param \Generated\Shared\Transfer\CartChangeTransfer $change
      *
      * @return \Generated\Shared\Transfer\CartChangeTransfer
@@ -229,6 +232,18 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     public function expandItems(CartChangeTransfer $change)
     {
         return $this->getFactory()->createProductExpander()->expandItems($change);
+    }
+
+    /**
+     * @api
+     *
+     * @param \Spryker\Zed\Messenger\Business\Model\MessengerInterface|null $messenger
+     *
+     * @return void
+     */
+    public function install(MessengerInterface $messenger = null)
+    {
+        $this->getFactory()->createInstaller($messenger)->install();
     }
 
 }

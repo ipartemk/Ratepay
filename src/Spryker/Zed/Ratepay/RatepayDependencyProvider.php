@@ -9,12 +9,15 @@ namespace Spryker\Zed\Ratepay;
 
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
+use Spryker\Zed\Ratepay\Dependency\Facade\RatepayToGlossaryBridge;
+use Spryker\Zed\Ratepay\Dependency\Facade\RatepayToProductBridge;
 use Spryker\Zed\Ratepay\Dependency\Facade\RatepayToSalesAggregatorBridge;
 
 class RatepayDependencyProvider extends AbstractBundleDependencyProvider
 {
 
     const FACADE_SALES_AGGREGATOR = 'FACADE_SALES_AGGREGATED';
+    const FACADE_GLOSSARY = 'GLOSSARY_FACADE';
     const FACADE_PRODUCT = 'FACADE_PRODUCT';
 
     /**
@@ -44,10 +47,13 @@ class RatepayDependencyProvider extends AbstractBundleDependencyProvider
             return new RatepayToSalesAggregatorBridge($container->getLocator()->salesAggregator()->facade());
         };
         $container[self::FACADE_PRODUCT] = function (Container $container) {
-            return $container->getLocator()->product()->facade();
+            return new RatepayToProductBridge($container->getLocator()->product()->facade());
+        };
+        $container[self::FACADE_GLOSSARY] = function (Container $container) {
+            return new RatepayToGlossaryBridge($container->getLocator()->glossary()->facade());
         };
 
         return $container;
     }
-    
+
 }

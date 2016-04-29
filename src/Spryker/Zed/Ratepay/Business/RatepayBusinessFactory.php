@@ -10,11 +10,13 @@ namespace Spryker\Zed\Ratepay\Business;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
+use Spryker\Zed\Messenger\Business\Model\MessengerInterface;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
 use Spryker\Zed\Ratepay\Business\Api\ApiFactory;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
 use Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory;
 use Spryker\Zed\Ratepay\Business\Expander\ProductExpander;
+use Spryker\Zed\Ratepay\Business\Internal\Install;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapper\PaymentMethodMapperInterface;
 use Spryker\Zed\Ratepay\Business\Order\Saver as Saver;
@@ -327,6 +329,30 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         return new ProductExpander(
             $this->getProvidedDependency(RatepayDependencyProvider::FACADE_PRODUCT)
         );
+    }
+
+    /**
+     * @param \Spryker\Zed\Messenger\Business\Model\MessengerInterface $messenger
+     *
+     * @return \Spryker\Zed\Price\Business\Internal\Install
+     */
+    public function createInstaller(MessengerInterface $messenger)
+    {
+        $installer = new Install(
+            $this->getGlossaryFacade(),
+            $this->getConfig()
+        );
+        $installer->setMessenger($messenger);
+
+        return $installer;
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Dependency\Facade\RatepayToGlossaryInterface
+     */
+    protected function getGlossaryFacade()
+    {
+        return $this->getProvidedDependency(RatepayDependencyProvider::FACADE_GLOSSARY);
     }
 
 }

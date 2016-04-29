@@ -7,22 +7,22 @@
 namespace Spryker\Zed\Ratepay\Business\Expander;
 
 use Generated\Shared\Transfer\CartChangeTransfer;
-use Spryker\Zed\Product\Business\ProductFacade;
+use Spryker\Zed\Ratepay\Dependency\Facade\RatepayToProductBridge;
 
 class ProductExpander implements ProductExpanderInterface
 {
 
     /**
-     * @var \Spryker\Zed\Product\Business\ProductFacade 
+     * @var \Spryker\Zed\Ratepay\Dependency\Facade\RatepayToProductBridge
      */
-    private $productFacade;
+    private $ratepayToProductBridge;
 
     /**
-     * @param \Spryker\Zed\Product\Business\ProductFacade $productFacade
+     * @param \Spryker\Zed\Ratepay\Dependency\Facade\RatepayToProductBridge $ratepayToProductBridge
      */
-    public function __construct(ProductFacade $productFacade)
+    public function __construct(RatepayToProductBridge $ratepayToProductBridge)
     {
-        $this->productFacade = $productFacade;
+        $this->ratepayToProductBridge = $ratepayToProductBridge;
     }
 
     /**
@@ -33,7 +33,7 @@ class ProductExpander implements ProductExpanderInterface
     public function expandItems(CartChangeTransfer $change)
     {
         foreach ($change->getItems() as $cartItem) {
-            $productConcreteTransfer = $this->productFacade->getProductConcrete($cartItem->getSku());
+            $productConcreteTransfer = $this->ratepayToProductBridge->getProductConcrete($cartItem->getSku());
 
             foreach ($productConcreteTransfer->getLocalizedAttributes() as $localizedAttribute) {
                 $attr = $localizedAttribute->getAttributes();
@@ -44,7 +44,7 @@ class ProductExpander implements ProductExpanderInterface
                     $cartItem->setDescription($attr['long_description']);
                 }
             }
-            
+
         }
 
         return $change;

@@ -21,8 +21,7 @@ class AddressMapperTest extends AbstractMapperTest
             ->setAddress2("addr2")
             ->setZipCode("zip")
             ->setFirstName("fn")
-            ->setLastName("ln")
-        ;
+            ->setLastName("ln");
         $address = new Address();
         $this->mapperFactory
             ->getAddressMapper(
@@ -51,9 +50,5 @@ class AddressMapperTest extends AbstractMapperTest
         $this->assertEquals("fn", $address->getFirstName());
         $this->assertEquals("ln", $address->getLastName());
     }
-
-
-    
-
 
 }

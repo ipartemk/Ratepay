@@ -26,17 +26,16 @@ abstract class AbstractMapperTest extends \PHPUnit_Framework_TestCase
         $this->mapperFactory = new MapperFactory();
     }
 
-    abstract function testMapper();
+    abstract public function testMapper();
 
     /**
-     * @return QuoteTransfer
+     * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     protected function mockQuoteTransfer()
     {
         $total = new TotalsTransfer();
         $total->setGrandTotal(9900)
-            ->setExpenseTotal(8900)
-        ;
+            ->setExpenseTotal(8900);
 
         $quoteTransfer = new QuoteTransfer();
         $quoteTransfer->setTotals($total);
@@ -45,7 +44,7 @@ abstract class AbstractMapperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return RatepayPaymentElvTransfer
+     * @return \Generated\Shared\Transfer\RatepayPaymentElvTransfer
      */
     protected function mockPaymentElvTransfer()
     {
@@ -53,11 +52,9 @@ abstract class AbstractMapperTest extends \PHPUnit_Framework_TestCase
         $ratepayPaymentTransfer->setBankAccountIban("iban")
             ->setBankAccountBic("bic")
             ->setBankAccountHolder("holder")
-            ->setCurrencyIso3("iso3")
-        ;
+            ->setCurrencyIso3("iso3");
 
         return $ratepayPaymentTransfer;
     }
-    
 
 }
