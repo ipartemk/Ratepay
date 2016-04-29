@@ -6,6 +6,7 @@
 
 namespace Spryker\Zed\Ratepay\Business;
 
+use Generated\Shared\Transfer\CartChangeTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -218,6 +219,16 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
             ->getFactory()
             ->createStatusTransaction()
             ->isCancellationConfirmed($orderTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\CartChangeTransfer $change
+     *
+     * @return \Generated\Shared\Transfer\CartChangeTransfer
+     */
+    public function expandItems(CartChangeTransfer $change)
+    {
+        return $this->getFactory()->createProductExpander()->expandItems($change);
     }
 
 }

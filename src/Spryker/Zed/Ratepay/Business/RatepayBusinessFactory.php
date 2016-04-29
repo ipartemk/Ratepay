@@ -14,6 +14,7 @@ use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
 use Spryker\Zed\Ratepay\Business\Api\ApiFactory;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
 use Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory;
+use Spryker\Zed\Ratepay\Business\Expander\ProductExpander;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapper\PaymentMethodMapperInterface;
 use Spryker\Zed\Ratepay\Business\Order\Saver as Saver;
@@ -31,6 +32,7 @@ use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice as Invoice;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment as Prepayment;
 use Spryker\Zed\Ratepay\Business\Payment\Model\PaymentLogger;
 use Spryker\Zed\Ratepay\Business\Status\TransactionStatus as TransactionStatus;
+use Spryker\Zed\Ratepay\RatepayDependencyProvider;
 
 /**
  * @method \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface getQueryContainer()
@@ -314,6 +316,16 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
             $this->createApiRequestFactory(),
             $this->createMapperFactory(),
             $this->getQueryContainer()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Expander\ProductExpanderInterface
+     */
+    public function createProductExpander()
+    {
+        return new ProductExpander(
+            $this->getProvidedDependency(RatepayDependencyProvider::FACADE_PRODUCT)
         );
     }
 
