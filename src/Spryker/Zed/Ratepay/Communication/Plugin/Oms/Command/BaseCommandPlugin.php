@@ -53,7 +53,8 @@ abstract class BaseCommandPlugin extends AbstractPlugin implements CommandByOrde
     {
         $orderTransferItems = [];
         foreach ($orderItems as $orderItem) {
-            $orderTransferItems[] = $this->getOrderItemTotalsByIdSalesOrderItem($orderItem->getIdSalesOrderItem());
+            $orderTransferItems[$orderItem->getIdSalesOrderItem()] = $this
+                ->getOrderItemTotalsByIdSalesOrderItem($orderItem->getIdSalesOrderItem());
         }
 
         return $orderTransferItems;

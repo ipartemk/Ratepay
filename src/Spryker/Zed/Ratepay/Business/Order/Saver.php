@@ -46,7 +46,6 @@ class Saver implements SaverInterface
         $this->paymentMapper = $paymentMapper;
     }
 
-
     /**
      * @return void
      */

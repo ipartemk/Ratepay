@@ -28,7 +28,6 @@ class InstallmentCalculationByTimeTest extends InstallmentAbstractTest
 
         $expectedResponse = $this->sendRequest($adapterMock, $adapterMock->getSuccessResponse());
 
-
         $expectedResponseTransfer = $this->converterFactory
             ->getInstallmentCalculationResponseConverter($expectedResponse, $this->getCalculationRequest())
             ->convert();

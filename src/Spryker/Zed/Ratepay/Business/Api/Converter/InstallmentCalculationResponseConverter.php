@@ -70,7 +70,7 @@ class InstallmentCalculationResponseConverter extends BaseConverter
                 ->setLastRate($this->decimalToCents($this->response->getLastRate()))
                 ->setPaymentFirstDay($this->response->getPaymentFirstday());
         }
-        
+
         return $responseTransfer;
     }
 

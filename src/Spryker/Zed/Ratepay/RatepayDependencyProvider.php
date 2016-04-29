@@ -14,7 +14,7 @@ use Spryker\Zed\Ratepay\Dependency\Facade\RatepayToSalesAggregatorBridge;
 class RatepayDependencyProvider extends AbstractBundleDependencyProvider
 {
 
-    const FACADE_SALES_AGGREGATOR = 'facade sales aggregated';
+    const FACADE_SALES_AGGREGATOR = 'FACADE_SALES_AGGREGATED';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container

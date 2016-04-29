@@ -45,7 +45,7 @@ class BasePaymentTest extends Test
         $executionAdapter->shouldReceive('sendRequest')
             ->andReturn((new Response())->getTestPaymentConfirmResponseData());
 
-        foreach ($additionalMockMethods as $method=>$return) {
+        foreach ($additionalMockMethods as $method => $return) {
             $executionAdapter->shouldReceive($method)
                 ->andReturn($return);
         }

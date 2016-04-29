@@ -27,7 +27,6 @@ class InstallmentConfigurationTest extends InstallmentAbstractTest
 
         $expectedResponse = $this->sendRequest($adapterMock, $adapterMock->getSuccessResponse());
 
-
         $expectedResponseTransfer = $this->converterFactory
             ->getInstallmentConfigurationResponseConverter($expectedResponse, $this->getConfigurationRequest())
             ->convert();
@@ -84,7 +83,7 @@ class InstallmentConfigurationTest extends InstallmentAbstractTest
     }
 
     /**
-     * @return Configuration
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Configuration
      */
     protected function getConfigurationRequest()
     {
