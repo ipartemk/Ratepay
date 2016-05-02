@@ -6,6 +6,7 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Deliver;
 
+use Spryker\Zed\Ratepay\Business\Api\Constants;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Base;
@@ -13,7 +14,10 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Base;
 class Confirm extends Base
 {
 
-    const OPERATION = 'CONFIRMATION_DELIVER';
+    /**
+     * Deliver confirmation operation.
+     */
+    const OPERATION = Constants::REQUEST_MODEL_DELIVER_CONFIRM;
 
     /**
      * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket

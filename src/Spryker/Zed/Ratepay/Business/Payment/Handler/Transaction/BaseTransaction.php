@@ -19,7 +19,7 @@ use Spryker\Zed\Ratepay\Business\Exception\NoMethodMapperException;
 use Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface;
 use Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
 
-class BaseTransaction
+abstract class BaseTransaction
 {
 
     /**
@@ -78,7 +78,6 @@ class BaseTransaction
             ->requirePaymentMethod()
             ->getPaymentMethod();
 
-        //init payment method call.
         $paymentMethod = $this->getMethodMapper($paymentMethod);
         $request = $paymentMethod
             ->paymentInit();
@@ -96,9 +95,7 @@ class BaseTransaction
                 ->setResultCode($initResponseTransfer->requireResultCode()->getResultCode());
         }
 
-        return $this->converterFactory
-            ->getTransferObjectConverter($response)
-            ->convert();
+        return $initResponseTransfer;
     }
 
     /**

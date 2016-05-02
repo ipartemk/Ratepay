@@ -20,7 +20,6 @@ class InstallmentCalculationTransaction extends BaseTransaction implements Quote
      */
     public function request(QuoteTransfer $quoteTransfer)
     {
-        //payment request call.
         $paymentMethod = $quoteTransfer
             ->requirePayment()
             ->getPayment()
