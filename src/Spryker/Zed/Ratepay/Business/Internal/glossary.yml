@@ -90,7 +90,6 @@ summary.ratepay.installment.interest_amount:
   translations:
     de_DE: 'Interest amount'
     en_US: 'Interest amount'
-
 summary.ratepay.installment.order_grand_total:
   translations:
     de_DE: 'Order grant total'

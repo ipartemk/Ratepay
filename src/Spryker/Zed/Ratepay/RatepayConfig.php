@@ -70,8 +70,7 @@ class RatepayConfig extends AbstractBundleConfig
      */
     public function getTranslationFilePath()
     {
-        return $this->get(ApplicationConstants::APPLICATION_SPRYKER_ROOT)
-            . '/Ratepay/src/Spryker/Zed/Ratepay/Business/Internal/glossary.yml';
+        return $this->get(ApplicationConstants::APPLICATION_SPRYKER_ROOT) . RatepayConstants::GLOSSARY_FILE_PATH;
     }
 
 }

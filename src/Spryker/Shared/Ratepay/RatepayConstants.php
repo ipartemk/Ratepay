@@ -82,4 +82,9 @@ interface RatepayConstants
      */
     const LOGGER_STREAM_OUTPUT = APPLICATION_ROOT_DIR.'/data/log/ratepay.log';
 
+    /**
+     * Path to bundle glossary file.
+     */
+    const GLOSSARY_FILE_PATH = '/Ratepay/src/Spryker/Zed/Ratepay/Business/Internal/glossary.yml';
+
 }
