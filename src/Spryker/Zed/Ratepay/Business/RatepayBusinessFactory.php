@@ -334,7 +334,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     /**
      * @param \Spryker\Zed\Messenger\Business\Model\MessengerInterface $messenger
      *
-     * @return \Spryker\Zed\Price\Business\Internal\Install
+     * @return \Spryker\Zed\Ratepay\Business\Internal\Install
      */
     public function createInstaller(MessengerInterface $messenger)
     {

@@ -20,7 +20,6 @@ class InstallmentConfigurationTransaction extends BaseTransaction implements Quo
      */
     public function request(QuoteTransfer $quoteTransfer)
     {
-        //payment request call.
         $paymentMethod = $quoteTransfer
             ->requirePayment()
             ->getPayment()
@@ -32,11 +31,9 @@ class InstallmentConfigurationTransaction extends BaseTransaction implements Quo
         $response = $this->sendRequest((string)$request);
         $this->logInfo(ApiConstants::REQUEST_MODEL_CONFIGURATION_REQUEST, $request, $response);
 
-        $responseTransfer = $this->converterFactory
+        return $this->converterFactory
             ->getInstallmentConfigurationResponseConverter($response, $request)
             ->convert();
-
-        return $responseTransfer;
     }
 
     /**

@@ -20,6 +20,9 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 {
 
     /**
+     * Specification:
+     * - Save order payment method data according to quote and checkout response transfer data.
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
@@ -40,6 +43,9 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     }
 
     /**
+     * Specification:
+     * - Process init payment request to Ratepay Getaway to retrieve transaction data.
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
@@ -55,6 +61,9 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     }
 
     /**
+     * Specification:
+     * - Process pre-check payment request to Ratepay Getaway.
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
@@ -70,6 +79,9 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     }
 
     /**
+     * Specification:
+     * - Process payment confirmation request to Ratepay Getaway.
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
@@ -85,6 +97,9 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     }
 
     /**
+     * Specification:
+     * - Process capture payment request to Ratepay Getaway.
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
@@ -101,6 +116,9 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     }
 
     /**
+     * Specification:
+     * - Process cancel payment request to Ratepay Getaway.
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
@@ -117,6 +135,9 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     }
 
     /**
+     * Specification:
+     * - Process refund payment request to Ratepay Getaway.
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
@@ -133,6 +154,9 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     }
 
     /**
+     * Specification:
+     * - Process installment payment method calculator configuration request to Ratepay Getaway.
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
@@ -148,6 +172,9 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     }
 
     /**
+     * Specification:
+     * - Process installment payment method calculator calculation request to Ratepay Getaway.
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
@@ -163,6 +190,9 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     }
 
     /**
+     * Specification:
+     * - Check is pre-authorization API request got success response from Ratepay Getaway.
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
@@ -178,6 +208,9 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     }
 
     /**
+     * Specification:
+     * - Check is capture API request got success response from Ratepay Getaway.
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
@@ -193,6 +226,9 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     }
 
     /**
+     * Specification:
+     * - Check is payment refund API request got success response from Ratepay Getaway.
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
@@ -208,6 +244,9 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     }
 
     /**
+     * Specification:
+     * - Check is payment cancellation API request got success response from Ratepay Getaway.
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
@@ -223,6 +262,9 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     }
 
     /**
+     * Specification:
+     * - Expand cart items with necessary for Ratepay information (short_description, long_description, etc).
+     *
      * @api
      *
      * @param \Generated\Shared\Transfer\CartChangeTransfer $change
@@ -235,6 +277,9 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
     }
 
     /**
+     * Specification:
+     * - Install bundle translations to project glossary.
+     *
      * @api
      *
      * @param \Spryker\Zed\Messenger\Business\Model\MessengerInterface|null $messenger

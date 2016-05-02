@@ -19,7 +19,9 @@ class RatepayClient extends AbstractClient implements RatepayClientInterface
     /**
      * @api
      *
-     * @inheritdoc
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
     public function preauthorizePayment(QuoteTransfer $quoteTransfer)
     {
@@ -32,7 +34,9 @@ class RatepayClient extends AbstractClient implements RatepayClientInterface
     /**
      * @api
      *
-     * @inheritdoc
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer
      */
     public function installmentConfiguration(QuoteTransfer $quoteTransfer)
     {
@@ -45,7 +49,9 @@ class RatepayClient extends AbstractClient implements RatepayClientInterface
     /**
      * @api
      *
-     * @inheritdoc
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer
      */
     public function installmentCalculation(QuoteTransfer $quoteTransfer)
     {

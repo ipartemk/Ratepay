@@ -20,7 +20,6 @@ class InstallmentCalculationTransaction extends BaseTransaction implements Quote
      */
     public function request(QuoteTransfer $quoteTransfer)
     {
-        //payment request call.
         $paymentMethod = $quoteTransfer
             ->requirePayment()
             ->getPayment()
@@ -33,11 +32,6 @@ class InstallmentCalculationTransaction extends BaseTransaction implements Quote
             ->calculationRequest($quoteTransfer);
         $response = $this->sendRequest((string)$request);
         $this->logInfo(ApiConstants::REQUEST_MODEL_CALCULATION_REQUEST, $request, $response);
-
-        if ($response->isSuccessful()) {
-            //todo
-        }
-
         $responseTransfer = $this->converterFactory
             ->getInstallmentCalculationResponseConverter($response, $request)
             ->convert();
