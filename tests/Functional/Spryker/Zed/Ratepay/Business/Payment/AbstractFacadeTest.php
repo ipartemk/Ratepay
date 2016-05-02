@@ -7,7 +7,7 @@
 namespace Functional\Spryker\Zed\Ratepay\Business\Payment;
 
 use Functional\Spryker\Zed\Ratepay\Business\AbstractBusinessTest;
-use Orm\Zed\Country\Persistence\Base\SpyCountryQuery;
+use Orm\Zed\Country\Persistence\SpyCountryQuery;
 use Orm\Zed\Customer\Persistence\Map\SpyCustomerTableMap;
 use Orm\Zed\Customer\Persistence\SpyCustomerQuery;
 use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay;

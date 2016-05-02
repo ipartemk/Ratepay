@@ -109,28 +109,4 @@ class RatepayQueryContainer extends AbstractQueryContainer implements RatepayQue
             ->filterByFkSalesOrder($idPayment);
     }
 
-    /**
-     * @api
-     *
-     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayHistoryQuery
-     */
-    public function queryPaymentHistory()
-    {
-        return $this->getFactory()->createPaymentRatepayHistory();
-    }
-
-    /**
-     * @api
-     *
-     * @param int $idPayment
-     *
-     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayHistoryQuery
-     */
-    public function queryPaymentHistoryByPaymentId($idPayment)
-    {
-        return $this
-            ->queryPaymentHistory()
-            ->filterByFkPaymentRatepay($idPayment);
-    }
-
 }

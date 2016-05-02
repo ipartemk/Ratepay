@@ -6,8 +6,12 @@
 
 namespace Unit\Spryker\Zed\Ratepay\Business\Api\Converter;
 
+use Generated\Shared\Transfer\AddressTransfer;
+use Generated\Shared\Transfer\CustomerTransfer;
+use Generated\Shared\Transfer\PaymentTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayPaymentElvTransfer;
+use Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer;
 use Generated\Shared\Transfer\TotalsTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory;
 
@@ -38,9 +42,43 @@ abstract class AbstractMapperTest extends \PHPUnit_Framework_TestCase
             ->setExpenseTotal(8900);
 
         $quoteTransfer = new QuoteTransfer();
-        $quoteTransfer->setTotals($total);
+        $quoteTransfer->setTotals($total)
+            ->setCustomer($this->mockCustomerTransfer())
+            ->setBillingAddress($this->mockAddressTransfer())
+            ->setShippingAddress($this->mockAddressTransfer())
+            ->setPayment(new PaymentTransfer())
+        ;
 
         return $quoteTransfer;
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\CustomerTransfer
+     */
+    protected function mockCustomerTransfer()
+    {
+        $customerTransfer = new CustomerTransfer();
+        $customerTransfer->setEmail("email@site.com");
+
+        return $customerTransfer;
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\AddressTransfer
+     */
+    protected function mockAddressTransfer()
+    {
+        $address = new AddressTransfer();
+        $address->setFirstName("fn")
+            ->setLastName("ln")
+            ->setPhone("0491234567")
+            ->setCity("Berlin")
+            ->setIso2Code("iso2")
+            ->setAddress1("addr1")
+            ->setAddress2("addr2")
+            ->setZipCode("zip")
+        ;
+        return $address;
     }
 
     /**
@@ -52,9 +90,46 @@ abstract class AbstractMapperTest extends \PHPUnit_Framework_TestCase
         $ratepayPaymentTransfer->setBankAccountIban("iban")
             ->setBankAccountBic("bic")
             ->setBankAccountHolder("holder")
-            ->setCurrencyIso3("iso3");
+            ->setCurrencyIso3("iso3")
+            ->setGender("m")
+            ->setDateOfBirth("1980-01-02")
+            ->setIpAddress("127.1.2.3")
+            ->setCustomerAllowCreditInquiry(true)
+            ->setPaymentType("invoice")
+        ;
 
         return $ratepayPaymentTransfer;
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer
+     */
+    protected function mockRatepayPaymentInstallmentTransfer()
+    {
+        $ratepayPaymentInstallmentTransfer = new RatepayPaymentInstallmentTransfer();
+        $ratepayPaymentInstallmentTransfer
+            ->setInstallmentCalculationType('calculation-by-rate')
+            ->setInstallmentGrandTotalAmount(12570)
+            ->setInstallmentRate(1200)
+            ->setInstallmentInterestRate(14)
+            ->setInstallmentLastRate(1450)
+            ->setInstallmentMonth(3)
+            ->setInstallmentPaymentFirstDay(28)
+            ->setInstallmentCalculationStart("2016-05-15")
+
+            ->setBankAccountIban("iban")
+            ->setBankAccountBic("bic")
+            ->setBankAccountHolder("holder")
+            ->setCurrencyIso3("iso3")
+            ->setGender("m")
+            ->setDateOfBirth("1980-01-02")
+            ->setIpAddress("127.1.2.3")
+            ->setCustomerAllowCreditInquiry(true)
+            ->setPaymentType("invoice")
+            ->setDebitPayType("invoice")
+        ;
+
+        return $ratepayPaymentInstallmentTransfer;
     }
 
 }

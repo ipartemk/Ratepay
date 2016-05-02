@@ -194,7 +194,7 @@ class InstallmentCalculation extends AbstractRequest
     }
 
     /**
-     * @return \DateTime
+     * @return string
      */
     public function getCalculationStart()
     {
