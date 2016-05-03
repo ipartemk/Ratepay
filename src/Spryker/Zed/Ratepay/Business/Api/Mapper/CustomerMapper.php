@@ -56,10 +56,8 @@ class CustomerMapper extends BaseMapper
         /** @var \Generated\Shared\Transfer\AddressTransfer $shippingAddress */
         $shippingAddress = $this->quoteTransfer->requireBillingAddress()->getShippingAddress();
 
-        $this->customer->setAllowCreditInquiry(
-            $this->ratepayPaymentTransfer->requireCustomerAllowCreditInquiry()->getCustomerAllowCreditInquiry() ?
-                    Customer::ALLOW_CREDIT_INQUIRY_YES : Customer::ALLOW_CREDIT_INQUIRY_NO
-        )
+        $this->customer
+            ->setAllowCreditInquiry($this->ratepayPaymentTransfer->getCustomerAllowCreditInquiry())
             ->setGender($this->ratepayPaymentTransfer->requireGender()->getGender())
             ->setDob($this->ratepayPaymentTransfer->requireDateOfBirth()->getDateOfBirth())
             ->setIpAddress($this->ratepayPaymentTransfer->requireIpAddress()->getIpAddress())

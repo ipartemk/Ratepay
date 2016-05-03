@@ -39,7 +39,7 @@ abstract class AbstractMapper implements PaymentMethodMapperInterface
 
             ->setGender($paymentTransfer->requireGender()->getGender())
             ->setDateOfBirth($paymentTransfer->requireDateOfBirth()->getDateOfBirth())
-            ->setCustomerAllowCreditInquiry($paymentTransfer->requireCustomerAllowCreditInquiry()->getCustomerAllowCreditInquiry())
+            ->setCustomerAllowCreditInquiry(($paymentTransfer->getCustomerAllowCreditInquiry() === false) ? false : true)
 
             ->setIpAddress($paymentTransfer->requireIpAddress()->getIpAddress())
             ->setCurrencyIso3($paymentTransfer->requireCurrencyIso3()->getCurrencyIso3());

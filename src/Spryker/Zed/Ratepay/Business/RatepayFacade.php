@@ -21,7 +21,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Save order payment method data according to quote and checkout response transfer data.
+     * - Saves order payment method data according to quote and checkout response transfer data.
      *
      * @api
      *
@@ -39,7 +39,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process init payment request to Ratepay Getaway to retrieve transaction data.
+     * - Process init payment request to Ratepay gateway to retrieve transaction data.
      *
      * @api
      *
@@ -57,7 +57,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process pre-check payment request to Ratepay Getaway.
+     * - Process pre-check payment request to Ratepay gateway.
      *
      * @api
      *
@@ -75,7 +75,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process payment confirmation request to Ratepay Getaway.
+     * - Process payment confirmation request to Ratepay gateway.
      *
      * @api
      *
@@ -93,7 +93,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process capture payment request to Ratepay Getaway.
+     * - Process capture payment request to Ratepay gateway.
      *
      * @api
      *
@@ -112,7 +112,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process cancel payment request to Ratepay Getaway.
+     * - Process cancel payment request to Ratepay gateway.
      *
      * @api
      *
@@ -131,7 +131,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process refund payment request to Ratepay Getaway.
+     * - Process refund payment request to Ratepay gateway.
      *
      * @api
      *
@@ -150,7 +150,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process installment payment method calculator configuration request to Ratepay Getaway.
+     * - Process installment payment method calculator configuration request to Ratepay gateway.
      *
      * @api
      *
@@ -168,7 +168,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process installment payment method calculator calculation request to Ratepay Getaway.
+     * - Process installment payment method calculator calculation request to Ratepay gateway.
      *
      * @api
      *
@@ -186,7 +186,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Check is pre-authorization API request got success response from Ratepay Getaway.
+     * - Checks if pre-authorization API request got success response from Ratepay gateway.
      *
      * @api
      *
@@ -204,7 +204,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Check is capture API request got success response from Ratepay Getaway.
+     * - Checks if capture API request got success response from Ratepay gateway.
      *
      * @api
      *
@@ -222,7 +222,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Check is payment refund API request got success response from Ratepay Getaway.
+     * - Checks if payment refund API request got success response from Ratepay gateway.
      *
      * @api
      *
@@ -240,7 +240,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Check is payment cancellation API request got success response from Ratepay Getaway.
+     * - Checks if payment cancellation API request got success response from Ratepay gateway.
      *
      * @api
      *
@@ -258,7 +258,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Expand cart items with necessary for Ratepay information (short_description, long_description, etc).
+     * - Expands cart items with necessary for Ratepay information (short_description, long_description, etc).
      *
      * @api
      *
