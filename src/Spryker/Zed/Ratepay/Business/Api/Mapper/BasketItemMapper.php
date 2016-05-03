@@ -56,7 +56,6 @@ class BasketItemMapper extends BaseMapper
             $this->basketItem->setDiscount($itemDiscount);
         }
 
-        // @todo: ProductOptions didn't tested, because we have no implementation for it now.
         foreach ($this->itemTransfer->getProductOptions() as $productOption) {
             $this->basketItem->addProductOption($productOption->getLabelOptionValue());
         }

@@ -63,7 +63,6 @@ class CustomerMapper extends BaseMapper
             ->setEmail($customerTransfer->requireEmail()->getEmail())
             ->setPhone($this->quoteTransfer->requireBillingAddress()->getBillingAddress()->requirePhone()->getPhone());
 
-        // @todo: refactor
         $addressMapper = new AddressMapper(
             $billingAddress,
             ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_BILLING,

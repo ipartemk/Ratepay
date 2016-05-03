@@ -51,7 +51,10 @@ class QuoteTransactionTest extends BaseTransactionTest
         $additionalMockMethods = [
             'getMethodMapper' => $this->mockModelPaymentConfiguration()
         ];
-        $transactionHandler = $this->getTransactionHandlerObject($additionalMockMethods);
+        $transactionHandler = $this->getTransactionHandlerObject(
+            '\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\InstallmentConfigurationTransaction',
+            $additionalMockMethods
+        );
         $transactionHandler->registerMethodMapper($this->mockMethodInstallmentConfiguration());
 
         $ratepayResponseTransfer = $transactionHandler->request($this->mockQuoteTransfer('INSTALLMENT'));
