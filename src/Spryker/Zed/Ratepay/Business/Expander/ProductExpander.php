@@ -7,7 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Expander;
 
 use Generated\Shared\Transfer\CartChangeTransfer;
-use Spryker\Zed\Ratepay\Dependency\Facade\RatepayToProductBridge;
+use Spryker\Zed\Ratepay\Dependency\Facade\RatepayToProductInterface;
 
 class ProductExpander implements ProductExpanderInterface
 {
@@ -18,9 +18,9 @@ class ProductExpander implements ProductExpanderInterface
     private $ratepayToProductBridge;
 
     /**
-     * @param \Spryker\Zed\Ratepay\Dependency\Facade\RatepayToProductBridge $ratepayToProductBridge
+     * @param \Spryker\Zed\Ratepay\Dependency\Facade\RatepayToProductInterface $ratepayToProductBridge
      */
-    public function __construct(RatepayToProductBridge $ratepayToProductBridge)
+    public function __construct(RatepayToProductInterface $ratepayToProductBridge)
     {
         $this->ratepayToProductBridge = $ratepayToProductBridge;
     }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
@@ -18,8 +17,7 @@ use Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory;
 use Spryker\Zed\Ratepay\Business\Expander\ProductExpander;
 use Spryker\Zed\Ratepay\Business\Internal\Install;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory;
-use Spryker\Zed\Ratepay\Business\Order\MethodMapper\PaymentMethodMapperInterface;
-use Spryker\Zed\Ratepay\Business\Order\Saver as Saver;
+use Spryker\Zed\Ratepay\Business\Order\Saver;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CancelPaymentTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CapturePaymentTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\InitPaymentTransaction;
@@ -28,12 +26,12 @@ use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\InstallmentConfigur
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\PreAuthorizePaymentTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\PreCheckPaymentTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\RefundPaymentTransaction;
-use Spryker\Zed\Ratepay\Business\Payment\Method\Elv as Elv;
+use Spryker\Zed\Ratepay\Business\Payment\Method\Elv;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Installment;
-use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice as Invoice;
-use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment as Prepayment;
+use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice;
+use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment;
 use Spryker\Zed\Ratepay\Business\Payment\Model\PaymentLogger;
-use Spryker\Zed\Ratepay\Business\Status\TransactionStatus as TransactionStatus;
+use Spryker\Zed\Ratepay\Business\Status\TransactionStatus;
 use Spryker\Zed\Ratepay\RatepayDependencyProvider;
 
 /**
@@ -240,15 +238,17 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
-     * @param \Spryker\Zed\Ratepay\Business\Order\MethodMapper\PaymentMethodMapperInterface $paymentMapper
      *
      * @return \Spryker\Zed\Ratepay\Business\Order\SaverInterface
      */
     public function createOrderSaver(
         QuoteTransfer $quoteTransfer,
-        CheckoutResponseTransfer $checkoutResponseTransfer,
-        PaymentMethodMapperInterface $paymentMapper
+        CheckoutResponseTransfer $checkoutResponseTransfer
     ) {
+        $paymentMapper = $this
+            ->getMethodMapperFactory()
+            ->createPaymentTransactionHandler()
+            ->prepareMethodMapper($quoteTransfer);
 
         return new Saver(
             $quoteTransfer,

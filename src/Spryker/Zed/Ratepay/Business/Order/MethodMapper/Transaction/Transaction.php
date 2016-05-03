@@ -55,7 +55,7 @@ class Transaction implements TransactionInterface
     protected function getMethodMapper($paymentMethod)
     {
         if (isset($this->methodMappers[$paymentMethod]) === false) {
-            throw new NoPaymentMapperException('The payment method mapper is not defined.');
+            throw new NoPaymentMapperException(sprintf("The payment method %s mapper is not defined.", $paymentMethod));
         }
 
         return $this->methodMappers[$paymentMethod];

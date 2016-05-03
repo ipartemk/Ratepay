@@ -1,9 +1,9 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
+
 namespace Spryker\Zed\Ratepay\Business\Api;
 
 class SimpleXMLElement extends \SimpleXMLElement
@@ -29,12 +29,33 @@ class SimpleXMLElement extends \SimpleXMLElement
      * This method replaced all zoot signs
      *
      * @param string $str
+     *
      * @return string
      */
     protected function removeSpecialChars($str)
     {
-        $search = array("–", "´", "‹", "›", "‘", "’", "‚", "“", "”", "„", "‟", "•", "‒", "―", "—", "™", "¼", "½", "¾");
-        $replace = array("-", "'", "<", ">", "'", "'", ",", '"', '"', '"', '"', "-", "-", "-", "-", "TM", "1/4", "1/2", "3/4");
-        return str_replace($search, $replace, $str);
+        $search = [
+            "–"=>"-",
+            "´"=>"'",
+            "‹"=>"<",
+            "›"=>">",
+            "‘"=>"'",
+            "’"=>"'",
+            "‚"=>",",
+            "“"=>'"',
+            "”"=>'"',
+            "„"=>'"',
+            "‟"=>'"',
+            "•"=>"-",
+            "‒"=>"-",
+            "―"=>"-",
+            "—"=>"-",
+            "™"=>"TM",
+            "¼"=>"1/4",
+            "½"=>"1/2",
+            "¾"=>"3/4"
+        ];
+
+        return str_replace(array_keys($search), array_values($search), $str);
     }
 }

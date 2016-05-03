@@ -14,6 +14,7 @@ use Spryker\Zed\Ratepay\Business\Expander\ProductExpander;
 
 class ProductExpanderTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * @var \Mockery;
      */

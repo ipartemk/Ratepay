@@ -24,9 +24,7 @@ class RatepayPlugin extends AbstractPlugin implements ItemExpanderPluginInterfac
      */
     public function expandItems(CartChangeTransfer $cartChangeTransfer)
     {
-        $this->getFacade()->expandItems($cartChangeTransfer);
-
-        return $cartChangeTransfer;
+        return $this->getFacade()->expandItems($cartChangeTransfer);
     }
 
 }

@@ -8,6 +8,7 @@
 namespace Spryker\Zed\Ratepay\Business\Order\MethodMapper\Transaction;
 
 use Generated\Shared\Transfer\QuoteTransfer;
+use Spryker\Zed\Ratepay\Business\Order\MethodMapper\PaymentMethodMapperInterface;
 
 interface TransactionInterface
 {
@@ -18,5 +19,12 @@ interface TransactionInterface
      * @return \Spryker\Zed\Ratepay\Business\Order\MethodMapper\PaymentMethodMapperInterface
      */
     public function prepareMethodMapper(QuoteTransfer $quoteTransfer);
+
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Order\MethodMapper\PaymentMethodMapperInterface $mapper
+     *
+     * @return void
+     */
+    public function registerMethodMapper(PaymentMethodMapperInterface $mapper);
 
 }

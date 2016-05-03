@@ -12,12 +12,13 @@ use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Spryker\Zed\Checkout\Dependency\Plugin\CheckoutPreConditionInterface;
-use Spryker\Zed\Kernel\Communication\AbstractPlugin as BaseAbstractPlugin;
+use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
 /**
  * @method \Spryker\Zed\Ratepay\Business\RatepayFacade getFacade()
+ * @method \Spryker\Zed\Ratepay\Communication\RatepayCommunicationFactory getFactory()
  */
-class RatepayPreCheckPlugin extends BaseAbstractPlugin implements CheckoutPreConditionInterface
+class RatepayPreCheckPlugin extends AbstractPlugin implements CheckoutPreConditionInterface
 {
 
     /**

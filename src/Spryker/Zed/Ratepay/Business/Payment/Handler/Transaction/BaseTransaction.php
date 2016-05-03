@@ -132,7 +132,7 @@ abstract class BaseTransaction
     protected function getMethodMapper($accountBrand)
     {
         if (isset($this->methodMappers[$accountBrand]) === false) {
-            throw new NoMethodMapperException('The method mapper is not registered.');
+            throw new NoMethodMapperException(sprintf("The method %s mapper is not registered.", $accountBrand));
         }
 
         return $this->methodMappers[$accountBrand];

@@ -29,5 +29,5 @@ class InstallmentDetailMapperTest extends AbstractMapperTest
         $this->assertEquals(14, $installmentDetail->getInterestRate());
         $this->assertEquals(28, $installmentDetail->getPaymentFirstday());
     }
-    
+
 }
