@@ -69,7 +69,7 @@ class RatepayConfig extends AbstractBundleConfig
      */
     public function getTranslationFilePath()
     {
-        return __DIR__ . RatepayConstants::GLOSSARY_FILE_PATH;
+        return __DIR__ . DIRECTORY_SEPARATOR . RatepayConstants::GLOSSARY_FILE_PATH;
     }
 
 }

@@ -117,7 +117,6 @@ class Customer extends AbstractRequest
                 $this->getShippingAddress(),
             ],
             'customer-allow-credit-inquiry' => $this->getAllowCreditInquiry(),
-
         ];
 
         $bankAccount = $this->getBankAccount();
@@ -146,6 +145,7 @@ class Customer extends AbstractRequest
 
     /**
      * @param string $firstName
+     *
      * @return $this
      */
     public function setFirstName($firstName)
@@ -164,6 +164,7 @@ class Customer extends AbstractRequest
 
     /**
      * @param string $lastName
+     *
      * @return $this
      */
     public function setLastName($lastName)
@@ -182,6 +183,7 @@ class Customer extends AbstractRequest
 
     /**
      * @param string $gender
+     *
      * @return $this
      */
     public function setGender($gender)
@@ -200,6 +202,7 @@ class Customer extends AbstractRequest
 
     /**
      * @param string $company
+     *
      * @return $this
      */
     public function setCompany($company)
@@ -218,6 +221,7 @@ class Customer extends AbstractRequest
 
     /**
      * @param string $dob
+     *
      * @return $this
      */
     public function setDob($dob)
@@ -236,6 +240,7 @@ class Customer extends AbstractRequest
 
     /**
      * @param string $ipAddress
+     *
      * @return $this
      */
     public function setIpAddress($ipAddress)
@@ -254,6 +259,7 @@ class Customer extends AbstractRequest
 
     /**
      * @param string $email
+     *
      * @return $this
      */
     public function setEmail($email)
@@ -272,6 +278,7 @@ class Customer extends AbstractRequest
 
     /**
      * @param string $phone
+     *
      * @return $this
      */
     public function setPhone($phone)
@@ -290,6 +297,7 @@ class Customer extends AbstractRequest
 
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address $shippingAddress
+     *
      * @return $this
      */
     public function setShippingAddress(Address $shippingAddress)
@@ -308,6 +316,7 @@ class Customer extends AbstractRequest
 
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address $billingAddress
+     *
      * @return $this
      */
     public function setBillingAddress(Address $billingAddress)
@@ -326,13 +335,14 @@ class Customer extends AbstractRequest
 
     /**
      * @param string $allowCreditInquiry
+     *
      * @return $this
      */
     public function setAllowCreditInquiry($allowCreditInquiry)
     {
-        if (in_array($allowCreditInquiry, $this->allowCreditInquiryValues)) {
-            $this->allowCreditInquiry = $allowCreditInquiry;
-        }
+        $this->allowCreditInquiry = ($allowCreditInquiry === false)
+            ? self::ALLOW_CREDIT_INQUIRY_NO : self::ALLOW_CREDIT_INQUIRY_YES;
+
         return $this;
     }
 
@@ -346,6 +356,7 @@ class Customer extends AbstractRequest
 
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount $bankAccount
+     *
      * @return $this
      */
     public function setBankAccount(BankAccount $bankAccount)

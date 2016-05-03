@@ -85,6 +85,6 @@ interface RatepayConstants
     /**
      * Path to bundle glossary file.
      */
-    const GLOSSARY_FILE_PATH = '/Business/Internal/glossary.yml';
+    const GLOSSARY_FILE_PATH = 'Business/Internal/glossary.yml';
 
 }
