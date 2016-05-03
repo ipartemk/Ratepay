@@ -25,12 +25,4 @@ class RatepayCommunicationFactory extends AbstractCommunicationFactory
         return $this->getProvidedDependency(RatepayDependencyProvider::FACADE_SALES_AGGREGATOR);
     }
 
-    /**
-     * @return \Spryker\Zed\Ratepay\Dependency\Facade\RatepayToGlossaryInterface
-     */
-    public function getGlossaryFacade()
-    {
-        return $this->getProvidedDependency(RatepayDependencyProvider::FACADE_GLOSSARY);
-    }
-
 }

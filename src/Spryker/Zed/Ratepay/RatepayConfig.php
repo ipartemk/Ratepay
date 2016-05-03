@@ -7,7 +7,6 @@
 
 namespace Spryker\Zed\Ratepay;
 
-use Spryker\Shared\Application\ApplicationConstants;
 use Spryker\Shared\Ratepay\RatepayConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
 
@@ -70,7 +69,7 @@ class RatepayConfig extends AbstractBundleConfig
      */
     public function getTranslationFilePath()
     {
-        return $this->get(ApplicationConstants::APPLICATION_SPRYKER_ROOT) . RatepayConstants::GLOSSARY_FILE_PATH;
+        return __DIR__ . RatepayConstants::GLOSSARY_FILE_PATH;
     }
 
 }

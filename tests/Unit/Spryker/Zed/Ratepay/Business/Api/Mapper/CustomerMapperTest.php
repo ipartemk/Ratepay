@@ -35,7 +35,7 @@ class CustomerMapperTest extends AbstractMapperTest
     }
 
     /**
-     * @return Customer
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer
      */
     protected function mockCustomer()
     {

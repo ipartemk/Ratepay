@@ -46,8 +46,7 @@ abstract class AbstractMapperTest extends \PHPUnit_Framework_TestCase
             ->setCustomer($this->mockCustomerTransfer())
             ->setBillingAddress($this->mockAddressTransfer())
             ->setShippingAddress($this->mockAddressTransfer())
-            ->setPayment(new PaymentTransfer())
-        ;
+            ->setPayment(new PaymentTransfer());
 
         return $quoteTransfer;
     }
@@ -76,8 +75,7 @@ abstract class AbstractMapperTest extends \PHPUnit_Framework_TestCase
             ->setIso2Code("iso2")
             ->setAddress1("addr1")
             ->setAddress2("addr2")
-            ->setZipCode("zip")
-        ;
+            ->setZipCode("zip");
         return $address;
     }
 
@@ -95,8 +93,7 @@ abstract class AbstractMapperTest extends \PHPUnit_Framework_TestCase
             ->setDateOfBirth("1980-01-02")
             ->setIpAddress("127.1.2.3")
             ->setCustomerAllowCreditInquiry(true)
-            ->setPaymentType("invoice")
-        ;
+            ->setPaymentType("invoice");
 
         return $ratepayPaymentTransfer;
     }
@@ -126,8 +123,7 @@ abstract class AbstractMapperTest extends \PHPUnit_Framework_TestCase
             ->setIpAddress("127.1.2.3")
             ->setCustomerAllowCreditInquiry(true)
             ->setPaymentType("invoice")
-            ->setDebitPayType("invoice")
-        ;
+            ->setDebitPayType("invoice");
 
         return $ratepayPaymentInstallmentTransfer;
     }

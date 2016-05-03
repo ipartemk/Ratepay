@@ -20,7 +20,7 @@ class PreCheckPaymentTransaction extends BaseTransaction implements QuoteTransac
     public function request(QuoteTransfer $quoteTransfer)
     {
         $this->initPayment($quoteTransfer);
-        
+
         $paymentMethod = $quoteTransfer
             ->requirePayment()
             ->getPayment()

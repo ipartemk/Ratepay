@@ -13,7 +13,7 @@ class InstallmentCalculationMapperTest extends AbstractMapperTest
 
     public function testMapper()
     {
-        $calculation = new InstallmentCalculation(); 
+        $calculation = new InstallmentCalculation();
 
         $this->mapperFactory
             ->getInstallmentCalculationMapper(

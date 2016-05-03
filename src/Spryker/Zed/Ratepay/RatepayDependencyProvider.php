@@ -43,9 +43,6 @@ class RatepayDependencyProvider extends AbstractBundleDependencyProvider
     public function provideBusinessLayerDependencies(Container $container)
     {
 
-        $container[static::FACADE_SALES_AGGREGATOR] = function (Container $container) {
-            return new RatepayToSalesAggregatorBridge($container->getLocator()->salesAggregator()->facade());
-        };
         $container[self::FACADE_PRODUCT] = function (Container $container) {
             return new RatepayToProductBridge($container->getLocator()->product()->facade());
         };

@@ -6,23 +6,23 @@
 
 namespace Unit\Spryker\Zed\Ratepay\Business\Order\MethodMapper;
 
-use Generated\Shared\Transfer\QuoteTransfer;
 use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay;
 
 class BaseMethodMapperTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * @var \Mockery;
      */
     protected $mockery;
 
     /**
-     * @var QuoteTransfer
+     * @var \Generated\Shared\Transfer\QuoteTransfer
      */
     protected $quoteTransfer;
 
     /**
-     * @var SpyPaymentRatepay
+     * @var \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay
      */
     protected $payment;
 
@@ -94,7 +94,7 @@ class BaseMethodMapperTest extends \PHPUnit_Framework_TestCase
 
         return $paymentTransfer;
     }
-    
+
     protected function tearDown()
     {
         parent::tearDown();
