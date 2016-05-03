@@ -43,22 +43,6 @@ class RatepayQueryContainer extends AbstractQueryContainer implements RatepayQue
      * @api
      *
      * @param int $idPayment
-     * @param int $statusCode
-     *
-     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery
-     */
-    public function queryPaymentByIdAndStatusCode($idPayment, $statusCode)
-    {
-        return $this
-            ->queryPayments()
-            ->filterByIdPaymentRatepay($idPayment)
-            ->filterByStatusCode($statusCode);
-    }
-
-    /**
-     * @api
-     *
-     * @param int $idPayment
      * @param string $paymentType
      *
      * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery

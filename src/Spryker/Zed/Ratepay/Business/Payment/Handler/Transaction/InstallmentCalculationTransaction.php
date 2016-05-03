@@ -27,7 +27,6 @@ class InstallmentCalculationTransaction extends BaseTransaction implements Quote
             ->getPaymentMethod();
 
         $paymentMethod = $this->getMethodMapper($paymentMethod);
-        /** @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation $request */
         $request = $paymentMethod
             ->calculationRequest($quoteTransfer);
         $response = $this->sendRequest((string)$request);

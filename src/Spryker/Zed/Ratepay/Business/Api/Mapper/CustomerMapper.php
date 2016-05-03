@@ -49,11 +49,8 @@ class CustomerMapper extends BaseMapper
      */
     public function map()
     {
-        /** @var \Generated\Shared\Transfer\CustomerTransfer $ratepayPayment */
         $customerTransfer = $this->quoteTransfer->requireCustomer()->getCustomer();
-        /** @var \Generated\Shared\Transfer\AddressTransfer $billingAddress */
         $billingAddress = $this->quoteTransfer->requireBillingAddress()->getBillingAddress();
-        /** @var \Generated\Shared\Transfer\AddressTransfer $shippingAddress */
         $shippingAddress = $this->quoteTransfer->requireBillingAddress()->getShippingAddress();
 
         $this->customer

@@ -41,16 +41,6 @@ interface RatepayQueryContainerInterface extends QueryContainerInterface
      * @api
      *
      * @param int $idPayment
-     * @param int $statusCode
-     *
-     * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery
-     */
-    public function queryPaymentByIdAndStatusCode($idPayment, $statusCode);
-
-    /**
-     * @api
-     *
-     * @param int $idPayment
      * @param string $paymentType
      *
      * @return \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery
