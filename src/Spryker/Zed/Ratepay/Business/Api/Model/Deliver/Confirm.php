@@ -7,9 +7,9 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Deliver;
 
 use Spryker\Zed\Ratepay\Business\Api\Constants;
+use Spryker\Zed\Ratepay\Business\Api\Model\Base;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
-use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Base;
 
 class Confirm extends Base
 {
