@@ -1,3 +1,15 @@
+payment.method.checkout_title.ratepayElv:
+  translations:
+    en_US: 'RatePAY Direct Debit'
+payment.method.checkout_title.ratepayInstallment:
+  translations:
+    en_US: 'RatePAY Installment'
+payment.method.checkout_title.ratepayInvoice:
+  translations:
+    en_US: 'RatePAY Invoice'
+payment.method.checkout_title.ratepayPrepayment:
+  translations:
+    en_US: 'RatePAY Prepayment'
 payment.ratepay.elv:
   translations:
     en_US: 'Direct Debit'
