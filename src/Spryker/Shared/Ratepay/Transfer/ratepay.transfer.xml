@@ -80,6 +80,9 @@
 
         <property name="debitPayType" type="string"/>
 
+        <property name="interestRate" type="float"/>
+        <property name="interestMonth" type="int"/>
+
         <property name="installmentGrandTotalAmount" type="float"/> <!-- Installment Grand Total -->
         <property name="installmentInterestAmount" type="float"/> <!-- Installment interest amount -->
         <property name="installmentSubType" type="string"/> <!-- Time | Rate -->

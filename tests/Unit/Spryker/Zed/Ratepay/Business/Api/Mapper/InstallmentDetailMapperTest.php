@@ -23,10 +23,10 @@ class InstallmentDetailMapperTest extends AbstractMapperTest
             )
             ->map();
 
-        $this->assertEquals(3, $installmentDetail->getMonthNumber());
+        $this->assertEquals(3, $installmentDetail->getRatesNumber());
         $this->assertEquals(12, $installmentDetail->getAmount());
         $this->assertEquals(14.5, $installmentDetail->getLastAmount());
-        $this->assertEquals(14, $installmentDetail->getInterestRate());
+        $this->assertEquals(0.14, $installmentDetail->getInterestRate());
         $this->assertEquals(28, $installmentDetail->getPaymentFirstday());
     }
 

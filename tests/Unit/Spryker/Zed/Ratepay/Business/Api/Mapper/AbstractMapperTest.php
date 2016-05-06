@@ -111,6 +111,9 @@ abstract class AbstractMapperTest extends \PHPUnit_Framework_TestCase
             ->setInstallmentInterestRate(14)
             ->setInstallmentLastRate(1450)
             ->setInstallmentMonth(3)
+            ->setInterestRate(14)
+            ->setInterestMonth(3)
+            ->setInstallmentNumberRates(3)
             ->setInstallmentPaymentFirstDay(28)
             ->setInstallmentCalculationStart("2016-05-15")
 

@@ -16,7 +16,7 @@ class InstallmentDetail extends AbstractRequest
     /**
      * @var int
      */
-    protected $monthNumber;
+    protected $ratesNumber;
 
     /**
      * @var float
@@ -44,7 +44,7 @@ class InstallmentDetail extends AbstractRequest
     protected function buildData()
     {
         $return = [
-            'installment-number' => $this->getMonthNumber(),
+            'installment-number' => $this->getRatesNumber(),
             'installment-amount' => $this->getAmount(),
             'last-installment-amount' => $this->getLastAmount(),
             'interest-rate' => $this->getInterestRate(),
@@ -65,19 +65,19 @@ class InstallmentDetail extends AbstractRequest
     /**
      * @return int
      */
-    public function getMonthNumber()
+    public function getRatesNumber()
     {
-        return $this->monthNumber;
+        return $this->ratesNumber;
     }
 
     /**
-     * @param int $monthNumber
+     * @param int $ratesNumber
      *
      * @return $this
      */
-    public function setMonthNumber($monthNumber)
+    public function setRatesNumber($ratesNumber)
     {
-        $this->monthNumber = $monthNumber;
+        $this->ratesNumber = $ratesNumber;
 
         return $this;
     }
