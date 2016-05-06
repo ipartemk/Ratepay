@@ -11,24 +11,10 @@ use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\LocalizedAttributesTransfer;
 use Generated\Shared\Transfer\ProductConcreteTransfer;
 use Spryker\Zed\Ratepay\Business\Expander\ProductExpander;
+use Spryker\Zed\Ratepay\Dependency\Facade\RatepayToProductBridge;
 
 class ProductExpanderTest extends \PHPUnit_Framework_TestCase
 {
-
-    /**
-     * @var \Mockery;
-     */
-    protected $mockery;
-
-    /**
-     * @return void
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->mockery = new \Mockery();
-    }
 
     public function testExpandItems()
     {
@@ -60,18 +46,13 @@ class ProductExpanderTest extends \PHPUnit_Framework_TestCase
         $product = new ProductConcreteTransfer();
         $product->addLocalizedAttributes($localizedAttribute);
 
-        $ratepayToProductBridge = $this->mockery->mock('\Spryker\Zed\Ratepay\Dependency\Facade\RatepayToProductBridge');
-        $ratepayToProductBridge->shouldReceive('getProductConcrete')
-            ->andReturn($product);
+        $ratepayToProductBridge = $this->getMockBuilder('\Spryker\Zed\Ratepay\Dependency\Facade\RatepayToProductBridge')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $ratepayToProductBridge->method('getProductConcrete')
+            ->willReturn($product);
 
         return $ratepayToProductBridge;
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        $this->mockery->close();
     }
 
 }

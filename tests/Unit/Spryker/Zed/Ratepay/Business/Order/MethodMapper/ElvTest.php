@@ -47,8 +47,8 @@ class ElvTest extends BaseMethodMapperTest
         $paymentTransfer = new RatepayPaymentElvTransfer();
         $paymentTransfer = $this->mockPaymentTransfer($paymentTransfer);
 
-        $quoteTransfer->shouldReceive('getRatepayElv')
-            ->andReturn($paymentTransfer);
+        $quoteTransfer->getPayment()
+            ->setRatepayElv($paymentTransfer);
 
         return $quoteTransfer;
     }

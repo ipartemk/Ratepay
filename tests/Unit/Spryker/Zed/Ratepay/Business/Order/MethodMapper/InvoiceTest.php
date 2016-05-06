@@ -43,8 +43,8 @@ class InvoiceTest extends BaseMethodMapperTest
         $paymentTransfer = new RatepayPaymentInvoiceTransfer();
         $paymentTransfer = $this->mockPaymentTransfer($paymentTransfer);
 
-        $quoteTransfer->shouldReceive('getRatepayInvoice')
-            ->andReturn($paymentTransfer);
+        $quoteTransfer->getPayment()
+            ->setRatepayInvoice($paymentTransfer);
 
         return $quoteTransfer;
     }

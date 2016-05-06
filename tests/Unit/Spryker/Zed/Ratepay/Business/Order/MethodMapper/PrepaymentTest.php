@@ -43,8 +43,8 @@ class PrepaymentTest extends BaseMethodMapperTest
         $paymentTransfer = new RatepayPaymentPrepaymentTransfer();
         $paymentTransfer = $this->mockPaymentTransfer($paymentTransfer);
 
-        $quoteTransfer->shouldReceive('getRatepayPrepayment')
-            ->andReturn($paymentTransfer);
+        $quoteTransfer->getPayment()
+            ->setRatepayPrepayment($paymentTransfer);
 
         return $quoteTransfer;
     }

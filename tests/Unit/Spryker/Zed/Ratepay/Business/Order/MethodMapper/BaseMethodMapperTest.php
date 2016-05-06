@@ -6,15 +6,12 @@
 
 namespace Unit\Spryker\Zed\Ratepay\Business\Order\MethodMapper;
 
+use Generated\Shared\Transfer\PaymentTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
 use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay;
 
 class BaseMethodMapperTest extends \PHPUnit_Framework_TestCase
 {
-
-    /**
-     * @var \Mockery;
-     */
-    protected $mockery;
 
     /**
      * @var \Generated\Shared\Transfer\QuoteTransfer
@@ -38,7 +35,6 @@ class BaseMethodMapperTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->mockery = new \Mockery();
         $this->quoteTransfer = $this->mockQuoteTransfer();
         $this->payment = new SpyPaymentRatepay();
     }
@@ -62,15 +58,11 @@ class BaseMethodMapperTest extends \PHPUnit_Framework_TestCase
      */
     protected function mockQuoteTransfer()
     {
-        $quoteTransfer = $this->mockery->mock('\Generated\Shared\Transfer\QuoteTransfer');
-        $quoteTransfer->shouldReceive('requirePayment')
-            ->andReturn($this->mockery->self());
-        $quoteTransfer->shouldReceive('getPayment')
-            ->andReturn($this->mockery->self());
-        $quoteTransfer->shouldReceive('requirePaymentMethod')
-            ->andReturn($this->mockery->self());
-        $quoteTransfer->shouldReceive('getPaymentMethod')
-            ->andReturn($this->paymentMethod);
+        $paymentTransfer = new PaymentTransfer();
+        $paymentTransfer->setPaymentMethod($this->paymentMethod);
+
+        $quoteTransfer = new QuoteTransfer();
+        $quoteTransfer->setPayment($paymentTransfer);
 
         return $quoteTransfer;
     }
@@ -93,13 +85,6 @@ class BaseMethodMapperTest extends \PHPUnit_Framework_TestCase
         $paymentTransfer->setCurrencyIso3("iso3");
 
         return $paymentTransfer;
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        $this->mockery->close();
     }
 
 }

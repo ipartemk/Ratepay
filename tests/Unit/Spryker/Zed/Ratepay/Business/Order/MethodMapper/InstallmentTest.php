@@ -60,8 +60,8 @@ class InstallmentTest extends BaseMethodMapperTest
         $paymentTransfer = new RatepayPaymentInstallmentTransfer();
         $paymentTransfer = $this->mockPaymentTransfer($paymentTransfer);
 
-        $quoteTransfer->shouldReceive('getRatepayInstallment')
-            ->andReturn($paymentTransfer);
+        $quoteTransfer->getPayment()
+            ->setRatepayInstallment($paymentTransfer);
 
         return $quoteTransfer;
     }
