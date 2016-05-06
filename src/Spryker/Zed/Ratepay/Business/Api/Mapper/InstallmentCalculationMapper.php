@@ -57,8 +57,8 @@ class InstallmentCalculationMapper extends BaseMapper
         $this->calculation
             ->setSubType($this->ratepayPaymentTransfer->getInstallmentCalculationType())
             ->setAmount($grandTotal)
-            ->setCalculationRate($this->ratepayPaymentTransfer->getInstallmentInterestRate())
-            ->setMonth($this->ratepayPaymentTransfer->getInstallmentMonth())
+            ->setCalculationRate($this->ratepayPaymentTransfer->getInterestRate())
+            ->setMonth($this->ratepayPaymentTransfer->getInterestMonth())
             ->setPaymentFirstday($this->ratepayPaymentTransfer->getInstallmentPaymentFirstDay())
             ->setCalculationStart($this->ratepayPaymentTransfer->getInstallmentCalculationStart());
     }

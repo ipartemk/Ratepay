@@ -49,10 +49,10 @@ class InstallmentDetailMapper extends BaseMapper
     public function map()
     {
         $this->installmentDetail
-            ->setMonthNumber($this->ratepayPaymentTransfer->getInstallmentMonth())
+            ->setRatesNumber($this->ratepayPaymentTransfer->getInstallmentNumberRates())
             ->setAmount($this->centsToDecimal($this->ratepayPaymentTransfer->getInstallmentRate()))
             ->setLastAmount($this->centsToDecimal($this->ratepayPaymentTransfer->getInstallmentLastRate()))
-            ->setInterestRate($this->ratepayPaymentTransfer->getInstallmentInterestRate())
+            ->setInterestRate($this->centsToDecimal($this->ratepayPaymentTransfer->getInstallmentInterestRate()))
             ->setPaymentFirstday($this->ratepayPaymentTransfer->getInstallmentPaymentFirstDay());
     }
 
