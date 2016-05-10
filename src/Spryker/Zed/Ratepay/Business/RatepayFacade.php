@@ -39,7 +39,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process init payment request to Ratepay gateway to retrieve transaction data.
+     * - Performs the init payment request to Ratepay gateway to retrieve transaction data.
      *
      * @api
      *
@@ -57,7 +57,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process pre-check payment request to Ratepay gateway.
+     * - Performs the pre-check payment request to Ratepay gateway.
      *
      * @api
      *
@@ -75,7 +75,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process payment confirmation request to Ratepay gateway.
+     * - Performs the payment confirmation request to Ratepay gateway.
      *
      * @api
      *
@@ -93,7 +93,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process capture payment request to Ratepay gateway.
+     * - Performs the capture payment request to Ratepay gateway.
      *
      * @api
      *
@@ -112,7 +112,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process cancel payment request to Ratepay gateway.
+     * - Performs the cancel payment request to Ratepay gateway.
      *
      * @api
      *
@@ -131,7 +131,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process refund payment request to Ratepay gateway.
+     * - Performs the refund payment request to Ratepay gateway.
      *
      * @api
      *
@@ -150,7 +150,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process installment payment method calculator configuration request to Ratepay gateway.
+     * - Performs the installment payment method calculator configuration request to Ratepay gateway.
      *
      * @api
      *
@@ -168,7 +168,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process installment payment method calculator calculation request to Ratepay gateway.
+     * - Performs the installment payment method calculator calculation request to Ratepay gateway.
      *
      * @api
      *
@@ -186,7 +186,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Checks if pre-authorization API request got success response from Ratepay gateway.
+     * - Checks if the pre-authorization API request got success response from Ratepay gateway.
      *
      * @api
      *
@@ -204,7 +204,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Checks if capture API request got success response from Ratepay gateway.
+     * - Checks if the capture API request got success response from Ratepay gateway.
      *
      * @api
      *
@@ -222,7 +222,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Checks if payment refund API request got success response from Ratepay gateway.
+     * - Checks if the payment refund API request got success response from Ratepay gateway.
      *
      * @api
      *
@@ -240,7 +240,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Checks if payment cancellation API request got success response from Ratepay gateway.
+     * - Checks if the payment cancellation API request got success response from Ratepay gateway.
      *
      * @api
      *
@@ -273,7 +273,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Install bundle translations to project glossary.
+     * - Installs bundle translations to project glossary.
      *
      * @api
      *

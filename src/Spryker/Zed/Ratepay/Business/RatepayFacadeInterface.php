@@ -20,7 +20,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Save order ratepay payment method data according to quote and checkout response transfer data.
+     * - Saves order ratepay payment method data according to quote and checkout response transfer data.
      *
      * @api
      *
@@ -33,7 +33,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process init payment request to Ratepay Getaway to retrieve transaction data.
+     * - Performs init payment request to Ratepay Getaway to retrieve transaction data.
      *
      * @api
      *
@@ -45,7 +45,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process pre-check payment request to Ratepay Getaway.
+     * - Performs pre-check payment request to Ratepay Getaway.
      *
      * @api
      *
@@ -57,7 +57,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process payment confirmation request to Ratepay Getaway.
+     * - Performs payment confirmation request to Ratepay Getaway.
      *
      * @api
      *
@@ -69,7 +69,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process capture payment request to Ratepay Getaway.
+     * - Performs capture payment request to Ratepay Getaway.
      *
      * @api
      *
@@ -82,7 +82,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process cancel payment request to Ratepay Getaway.
+     * - Performs cancel payment request to Ratepay Getaway.
      *
      * @api
      *
@@ -95,7 +95,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process refund payment request to Ratepay Getaway.
+     * - Performs refund payment request to Ratepay Getaway.
      *
      * @api
      *
@@ -108,7 +108,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process installment payment method calculator configuration request to Ratepay Getaway.
+     * - Performs installment payment method calculator configuration request to Ratepay Getaway.
      *
      * @api
      *
@@ -120,7 +120,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Process installment payment method calculator calculation request to Ratepay Getaway.
+     * - Performs installment payment method calculator calculation request to Ratepay Getaway.
      *
      * @api
      *
@@ -132,7 +132,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Check is pre-authorization API request got success response from Ratepay Getaway.
+     * - Checks if the pre-authorization API request got success response from Ratepay Getaway.
      *
      * @api
      *
@@ -144,7 +144,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Check is capture API request got success response from Ratepay Getaway.
+     * - Checks if the capture API request got success response from Ratepay Getaway.
      *
      * @api
      *
@@ -156,7 +156,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Check is payment refund API request got success response from Ratepay Getaway.
+     * - Checks if the payment refund API request got success response from Ratepay Getaway.
      *
      * @api
      *
@@ -168,7 +168,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Check is payment cancellation API request got success response from Ratepay Getaway.
+     * - Checks if the payment cancellation API request got success response from Ratepay Getaway.
      *
      * @api
      *
@@ -180,7 +180,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Expand cart items with necessary for Ratepay information (short_description, long_description, etc).
+     * - Expands cart items with necessary for Ratepay information (short_description, long_description, etc).
      *
      * @api
      *
@@ -192,7 +192,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Install bundle translations to project glossary.
+     * - Installs bundle translations to project glossary.
      *
      * @api
      *
