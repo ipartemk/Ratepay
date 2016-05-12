@@ -49,19 +49,18 @@ class BasePaymentTest extends Test
 
         $converterFactory = new ConverterFactory();
 
-        $paymentLogger = $this->getMockBuilder('\Spryker\Zed\Ratepay\Business\Payment\Model\PaymentLogger')
-            ->disableOriginalConstructor()
+        $transactionHandler = $this->getMockBuilder($className)
+            ->setConstructorArgs([
+                $executionAdapter,
+                $converterFactory,
+                $this->mockRatepayQueryContainer()
+            ])
+            ->setMethods(['logInfo'])
             ->getMock();
-        $paymentLogger->method('info')
+        $transactionHandler->method('logInfo')
             ->willReturn(null);
 
-
-        return new $className(
-            $executionAdapter,
-            $converterFactory,
-            $paymentLogger,
-            $this->mockRatepayQueryContainer()
-        );
+        return $transactionHandler;
     }
 
     /**

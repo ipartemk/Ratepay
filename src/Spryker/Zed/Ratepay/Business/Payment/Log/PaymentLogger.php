@@ -4,7 +4,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\Ratepay\Business\Payment\Model;
+namespace Spryker\Zed\Ratepay\Business\Payment\Log;
 
 use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayLog;
 use Psr\Log\LoggerInterface;

@@ -9,18 +9,19 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
-use Psr\Log\LoggerInterface;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PyamentRequest;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;
 use Spryker\Zed\Ratepay\Business\Exception\NoMethodMapperException;
+use Spryker\Zed\Ratepay\Business\Payment\Log\LoggerTrait;
 use Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface;
 use Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
 
 abstract class BaseTransaction
 {
+    use LoggerTrait;
 
     /**
      * @var \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface
@@ -31,11 +32,6 @@ abstract class BaseTransaction
      * @var \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory
      */
     protected $converterFactory;
-
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
 
     /**
      * @var \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface $queryContainer
@@ -50,18 +46,15 @@ abstract class BaseTransaction
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface $executionAdapter
      * @param \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory $converterFactory
-     * @param \Psr\Log\LoggerInterface $logger
      * @param \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface $queryContainer
      */
     public function __construct(
         AdapterInterface $executionAdapter,
         ConverterFactory $converterFactory,
-        LoggerInterface $logger,
         RatepayQueryContainerInterface $queryContainer
     ) {
         $this->executionAdapter = $executionAdapter;
         $this->converterFactory = $converterFactory;
-        $this->logger = $logger;
         $this->queryContainer = $queryContainer;
     }
 
@@ -199,7 +192,7 @@ abstract class BaseTransaction
             $context['payment_method'] = $request->getPayment()->getMethod();
         }
 
-        $this->logger->info($message, $context);
+        $this->getLogger()->info($message, $context);
     }
 
 }
