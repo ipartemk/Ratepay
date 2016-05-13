@@ -7,8 +7,9 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
+use Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentDetail;
+use Spryker\Zed\Ratepay\Business\Api\Model\Builder\Payment;
+use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail as InstallmentDetailPart;
 
 class InstallmentPaymentMapper extends BaseMapper
 {
@@ -24,14 +25,14 @@ class InstallmentPaymentMapper extends BaseMapper
     protected $ratepayPaymentTransfer;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Payment
      */
     protected $payment;
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment $payment
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Payment $payment
      */
     public function __construct(
         QuoteTransfer $quoteTransfer,
@@ -49,9 +50,9 @@ class InstallmentPaymentMapper extends BaseMapper
      */
     public function map()
     {
-        $this->payment
+        $this->payment->getStorage()
             ->setDebitPayType($this->ratepayPaymentTransfer->getDebitPayType())
-            ->setInstallmentDetails(new InstallmentDetail())
+            ->setInstallmentDetails(new InstallmentDetail(new InstallmentDetailPart()))
             ->setAmount(
                 $this->centsToDecimal(
                     $this->quoteTransfer

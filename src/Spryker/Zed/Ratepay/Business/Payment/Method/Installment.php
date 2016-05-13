@@ -95,7 +95,7 @@ class Installment extends AbstractMethod
             ->getInstallmentPaymentMapper($quoteTransfer, $paymentData, $request->getPayment())
             ->map();
         $this->mapperFactory
-            ->getInstallmentDetailMapper($quoteTransfer, $paymentData, $request->getPayment()->getInstallmentDetails())
+            ->getInstallmentDetailMapper($quoteTransfer, $paymentData, $request->getPayment()->getStorage()->getInstallmentDetails())
             ->map();
         if ($paymentData->getDebitPayType() == RatepayConstants::DEBIT_PAY_TYPE_DIRECT_DEBIT) {
             $this->mapBankAccountData($quoteTransfer, $paymentData, $request);
@@ -111,7 +111,7 @@ class Installment extends AbstractMethod
      */
     protected function mapConfigurationData($quoteTransfer, $paymentData, $request)
     {
-        $request->getHead()
+        $request->getHead()->getStorage()
             ->setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId())
             ->setCustomerId($quoteTransfer->getCustomer()->getIdCustomer());
     }
@@ -125,7 +125,7 @@ class Installment extends AbstractMethod
      */
     protected function mapCalculationData($quoteTransfer, $paymentData, $request)
     {
-        $request->getHead()
+        $request->getHead()->getStorage()
             ->setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId())
             ->setCustomerId($quoteTransfer->getCustomer()->getIdCustomer())
             ->setOperationSubstring($paymentData->getInstallmentCalculationType());

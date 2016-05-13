@@ -218,4 +218,95 @@
         <property name="salutation" type="string" />
     </transfer>
 
+    <transfer name="RatepayRequest">
+        <property name="head" type="RatepayRequestHead" />
+        <property name="customer" type="RatepayRequestCustomer" />
+        <property name="bankAccount" type="RatepayRequestBankAccount" />
+        <property name="shippingAddress" type="RatepayRequestAddress" />
+        <property name="billingAddress" type="RatepayRequestAddress" />
+        <property name="payment" type="RatepayRequestPayment" />
+        <property name="shoppingBasket" type="RatepayRequestShoppingBasket" />
+
+    </transfer>
+
+    <transfer name="RatepayRequestHead">
+        <property name="systemId" type="string" />
+        <property name="transactionId" type="string" />
+        <property name="transactionShortId" type="string" />
+        <property name="profileId" type="string" />
+        <property name="securityCode" type="string" />
+        <property name="operation" type="string" />
+        <property name="operationSubstring" type="string" />
+        <property name="orderId" type="int" />
+        <property name="externalOrderId" type="string" />
+        <property name="customerId" type="string" />
+        <property name="deviceFingerprint" type="string" />
+    </transfer>
+
+    <transfer name="RatepayRequestCustomer">
+        <property name="firstName" type="string" />
+        <property name="lastName" type="string" />
+        <property name="gender" type="string" />
+        <property name="dob" type="string" />
+        <property name="ipAddress" type="string" />
+        <property name="company" type="string" />
+        <property name="email" type="string" />
+        <property name="phone" type="string" />
+        <property name="allowCreditInquiry" type="int" />
+    </transfer>
+
+    <transfer name="RatepayRequestBankAccount">
+        <property name="owner" type="string" />
+        <property name="iban" type="string" />
+        <property name="bicSwift" type="string" />
+    </transfer>
+
+    <transfer name="RatepayRequestAddress">
+        <property name="addressType" type="string" />
+        <property name="firstName" type="string" />
+        <property name="lastName" type="string" />
+        <property name="street" type="string" />
+        <property name="streetAdditional" type="string" />
+        <property name="streetNumber" type="string" />
+        <property name="company" type="string" />
+        <property name="city" type="string" />
+        <property name="zipCode" type="string" />
+        <property name="iso2Code" type="string" />
+        <property name="salutation" type="string" />
+        <property name="countryCode" type="string" />
+    </transfer>
+
+    <transfer name="RatepayRequestPayment">
+        <property name="method" type="string" />
+        <property name="currency" type="string" />
+        <property name="amount" type="string" />
+        <property name="installmentDetails" type="string" />
+        <property name="debitPayType" type="string" />
+    </transfer>
+
+    <transfer name="RatepayRequestShoppingBasket">
+        <property name="amount" type="float" />
+        <property name="currency" type="string" />
+        <property name="shippingUnitPrice" type="float" />
+        <property name="shippingTaxRate" type="float" />
+        <property name="shippingTitle" type="string" />
+        <property name="discountUnitPrice" type="float" />
+        <property name="discountTaxRate" type="float" />
+        <property name="discountTitle" type="string" />
+        <property name="items" type="RatepayRequestShoppingBasketItem[]" />
+    </transfer>
+
+    <transfer name="RatepayRequestShoppingBasketItem">
+        <property name="itemName" type="string" />
+        <property name="articleNumber" type="string" />
+        <property name="uniqueArticleNumber" type="string" />
+        <property name="quantity" type="int" />
+        <property name="unitPriceGross" type="float" />
+        <property name="taxRate" type="float" />
+        <property name="discount" type="float" />
+        <property name="productOptions" type="[]" />
+        <property name="description" type="string" />
+        <property name="descriptionAddition" type="string" />
+    </transfer>
+
 </transfer>

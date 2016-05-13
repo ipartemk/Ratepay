@@ -7,7 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail;
+use Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentDetail;
 
 class InstallmentDetailMapper extends BaseMapper
 {
@@ -23,14 +23,14 @@ class InstallmentDetailMapper extends BaseMapper
     protected $ratepayPaymentTransfer;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentDetail
      */
     protected $installmentDetail;
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail $installmentDetail
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentDetail $installmentDetail
      */
     public function __construct(
         QuoteTransfer $quoteTransfer,
@@ -48,7 +48,7 @@ class InstallmentDetailMapper extends BaseMapper
      */
     public function map()
     {
-        $this->installmentDetail
+        $this->installmentDetail->getStorage()
             ->setRatesNumber($this->ratepayPaymentTransfer->getInstallmentNumberRates())
             ->setAmount($this->centsToDecimal($this->ratepayPaymentTransfer->getInstallmentRate()))
             ->setLastAmount($this->centsToDecimal($this->ratepayPaymentTransfer->getInstallmentLastRate()))

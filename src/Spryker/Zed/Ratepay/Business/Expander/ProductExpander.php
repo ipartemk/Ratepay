@@ -15,7 +15,7 @@ class ProductExpander implements ProductExpanderInterface
     /**
      * @var \Spryker\Zed\Ratepay\Dependency\Facade\RatepayToProductBridge
      */
-    private $ratepayToProductBridge;
+    protected $ratepayToProductBridge;
 
     /**
      * @param \Spryker\Zed\Ratepay\Dependency\Facade\RatepayToProductInterface $ratepayToProductBridge

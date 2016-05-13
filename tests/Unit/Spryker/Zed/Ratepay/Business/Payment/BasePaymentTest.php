@@ -49,18 +49,18 @@ class BasePaymentTest extends Test
 
         $converterFactory = new ConverterFactory();
 
-        $transactionHandler = $this->getMockBuilder($className)
-            ->setConstructorArgs([
-                $executionAdapter,
-                $converterFactory,
-                $this->mockRatepayQueryContainer()
-            ])
-            ->setMethods(['logInfo'])
+        $paymentLogger = $this->getMockBuilder('\Spryker\Zed\Ratepay\Business\Payment\Model\PaymentLogger')
+            ->disableOriginalConstructor()
             ->getMock();
-        $transactionHandler->method('logInfo')
+        $paymentLogger->method('info')
             ->willReturn(null);
 
-        return $transactionHandler;
+        return new $className(
+            $executionAdapter,
+            $converterFactory,
+            $paymentLogger,
+            $this->mockRatepayQueryContainer()
+        );
     }
 
     /**
@@ -138,7 +138,6 @@ class BasePaymentTest extends Test
             ->willReturn($paymentInit);
         $invoiceMethod->method('getPaymentData')
             ->willReturn($paymentTransfer);
-
 
         return $invoiceMethod;
     }
@@ -263,8 +262,7 @@ class BasePaymentTest extends Test
         $modelPartHead->setOrderId(1)
             ->setOperation(Constants::REQUEST_MODEL_PAYMENT_REQUEST)
             ->setTransactionId('tr1')
-            ->setTransactionShortId('tr1_short')
-        ;
+            ->setTransactionShortId('tr1_short');
 
         return $modelPartHead;
     }

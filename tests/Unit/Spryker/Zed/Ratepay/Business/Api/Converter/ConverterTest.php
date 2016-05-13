@@ -7,8 +7,8 @@
 namespace Unit\Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation;
+use Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head;
+use Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentCalculation;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Configuration;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;

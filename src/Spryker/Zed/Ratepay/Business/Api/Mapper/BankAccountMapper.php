@@ -7,7 +7,6 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
 
 class BankAccountMapper extends BaseMapper
 {
@@ -23,24 +22,24 @@ class BankAccountMapper extends BaseMapper
     protected $ratepayPaymentTransfer;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount
+     * @var \Generated\Shared\Transfer\RatepayRequestTransfer
      */
-    protected $bankAccount;
+    protected $requestTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Spryker\Shared\Transfer\TransferInterface $ratepayPaymentTransfer
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount $bankAccount
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
      */
     public function __construct(
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer,
-        BankAccount $bankAccount
+        $requestTransfer
     ) {
 
         $this->quoteTransfer = $quoteTransfer;
         $this->ratepayPaymentTransfer = $ratepayPaymentTransfer;
-        $this->bankAccount = $bankAccount;
+        $this->requestTransfer = $requestTransfer;
     }
 
     /**
@@ -48,9 +47,10 @@ class BankAccountMapper extends BaseMapper
      */
     public function map()
     {
-        $this->bankAccount->setOwner($this->ratepayPaymentTransfer->getBankAccountHolder());
-        $this->bankAccount->setIban($this->ratepayPaymentTransfer->getBankAccountIban());
-        $this->bankAccount->setBicSwift($this->ratepayPaymentTransfer->getBankAccountBic());
+        $this->requestTransfer->getBankAccount()
+            ->setOwner($this->ratepayPaymentTransfer->getBankAccountHolder())
+            ->setIban($this->ratepayPaymentTransfer->getBankAccountIban())
+            ->setBicSwift($this->ratepayPaymentTransfer->getBankAccountBic());
     }
 
 }

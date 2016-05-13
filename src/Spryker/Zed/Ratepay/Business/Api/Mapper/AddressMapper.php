@@ -7,8 +7,8 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\AddressTransfer;
+use Generated\Shared\Transfer\RatepayRequestTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 
 class AddressMapper extends BaseMapper
 {
@@ -24,21 +24,21 @@ class AddressMapper extends BaseMapper
     protected $type;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address
+     * @var \Generated\Shared\Transfer\RatepayRequestTransfer
      */
-    protected $address;
+    protected $requestTransfer;
 
 
     /**
      * @param \Generated\Shared\Transfer\AddressTransfer $addressTransfer
      * @param string $type
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address $address
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
      */
-    public function __construct(AddressTransfer $addressTransfer, $type, Address $address)
+    public function __construct(AddressTransfer $addressTransfer, $type, RatepayRequestTransfer $requestTransfer)
     {
         $this->addressTransfer = $addressTransfer;
         $this->type = $type;
-        $this->address = $address;
+        $this->requestTransfer = $requestTransfer;
     }
 
     /**
@@ -46,18 +46,21 @@ class AddressMapper extends BaseMapper
      */
     public function map()
     {
-        $this->address->setAddressType($this->type)
+        if ($this->type == ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_DELIVERY) {
+            $requestAddressTransfer = $this->requestTransfer->getShippingAddress();
+        } else {
+            $requestAddressTransfer = $this->requestTransfer->getBillingAddress()
+                ->setFirstName($this->addressTransfer->requireFirstName()->getFirstName())
+                ->setLastName($this->addressTransfer->requireLastName()->getLastName());
+        }
+
+        $requestAddressTransfer
             ->setCity($this->addressTransfer->requireCity()->getCity())
             ->setCountryCode($this->addressTransfer->requireIso2Code()->getIso2Code())
             ->setStreet($this->addressTransfer->requireAddress1()->getAddress1())
             ->setStreetAdditional($this->addressTransfer->getAddress3()) // This is optional.
             ->setStreetNumber($this->addressTransfer->requireAddress2()->getAddress2())
             ->setZipCode($this->addressTransfer->requireZipCode()->getZipCode());
-        if ($this->type != ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_BILLING) {
-            $this->address
-                ->setFirstName($this->addressTransfer->requireFirstName()->getFirstName())
-                ->setLastName($this->addressTransfer->requireLastName()->getLastName());
-        }
     }
 
 }

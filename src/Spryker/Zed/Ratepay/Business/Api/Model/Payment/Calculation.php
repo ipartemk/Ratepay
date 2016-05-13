@@ -8,8 +8,8 @@ namespace Spryker\Zed\Ratepay\Business\Api\Model\Payment;
 
 use Spryker\Zed\Ratepay\Business\Api\Constants;
 use Spryker\Zed\Ratepay\Business\Api\Model\Base;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation;
+use Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head;
+use Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentCalculation;
 
 class Calculation extends Base
 {
@@ -17,13 +17,13 @@ class Calculation extends Base
     const OPERATION = Constants::REQUEST_MODEL_CALCULATION_REQUEST;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentCalculation
      */
     protected $installmentCalculation;
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head $head
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation $installmentCalculation
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head $head
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentCalculation $installmentCalculation
      */
     public function __construct(Head $head, InstallmentCalculation $installmentCalculation)
     {
@@ -45,7 +45,7 @@ class Calculation extends Base
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentCalculation
      */
     public function getInstallmentCalculation()
     {
@@ -53,7 +53,7 @@ class Calculation extends Base
     }
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation $installmentCalculation
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentCalculation $installmentCalculation
      *
      * @return $this
      */

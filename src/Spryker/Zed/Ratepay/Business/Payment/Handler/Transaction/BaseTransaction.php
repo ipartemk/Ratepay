@@ -21,6 +21,7 @@ use Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
 
 abstract class BaseTransaction
 {
+
     use LoggerTrait;
 
     /**
@@ -161,7 +162,7 @@ abstract class BaseTransaction
 
     /**
      * @param string $message
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Base $request
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Base $request
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response
      *
      * @return void
@@ -169,12 +170,12 @@ abstract class BaseTransaction
     protected function logInfo($message, $request, $response)
     {
         $context = [
-            'order_id' => $request->getHead()->getOrderId(),
+            'order_id' => $request->getHead()->getStorage()->getOrderId(),
 
             'payment_method' => null,
-            'request_type' => $request->getHead()->getOperation(),
-            'request_transaction_id' => $request->getHead()->getTransactionId(),
-            'request_transaction_short_id' => $request->getHead()->getTransactionShortId(),
+            'request_type' => $request->getHead()->getStorage()->getOperation(),
+            'request_transaction_id' => $request->getHead()->getStorage()->getTransactionId(),
+            'request_transaction_short_id' => $request->getHead()->getStorage()->getTransactionShortId(),
             'request_body' => (string)$request,
 
             'response_type' => $response->getResponseType(),
@@ -189,7 +190,7 @@ abstract class BaseTransaction
             'response_customer_message' => $response->getCustomerMessage(),
         ];
         if ($request instanceof PyamentRequest) {
-            $context['payment_method'] = $request->getPayment()->getMethod();
+            $context['payment_method'] = $request->getPayment()->getStorage()->getMethod();
         }
 
         $this->getLogger()->info($message, $context);

@@ -8,12 +8,14 @@ namespace Spryker\Zed\Ratepay\Business;
 
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\RatepayRequestTransfer;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Messenger\Business\Model\MessengerInterface;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
 use Spryker\Zed\Ratepay\Business\Api\ApiFactory;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
 use Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory;
+use Spryker\Zed\Ratepay\Business\Api\Model\Builder\BuilderFactory;
 use Spryker\Zed\Ratepay\Business\Expander\ProductExpander;
 use Spryker\Zed\Ratepay\Business\Internal\Install;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory;
@@ -30,7 +32,6 @@ use Spryker\Zed\Ratepay\Business\Payment\Method\Elv;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Installment;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment;
-use Spryker\Zed\Ratepay\Business\Payment\Model\PaymentLogger;
 use Spryker\Zed\Ratepay\Business\Status\TransactionStatus;
 use Spryker\Zed\Ratepay\RatepayDependencyProvider;
 
@@ -206,7 +207,9 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
      */
     public function createApiRequestFactory()
     {
-        $factory = new ApiFactory();
+        $factory = new ApiFactory(
+            $this->createBuilderFactory()
+        );
 
         return $factory->createRequestModelFactory();
     }
@@ -254,7 +257,19 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
      */
     protected function createMapperFactory()
     {
-        return new MapperFactory();
+        return new MapperFactory(
+            $this->createRequestTransfer()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\BuilderFactory
+     */
+    protected function createBuilderFactory()
+    {
+        return new BuilderFactory(
+            $this->createRequestTransfer()
+        );
     }
 
     /**
@@ -265,6 +280,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         return new Invoice(
             $this->createApiRequestFactory(),
             $this->createMapperFactory(),
+            $this->createBuilderFactory(),
             $this->getQueryContainer()
         );
     }
@@ -277,6 +293,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         return new Elv(
             $this->createApiRequestFactory(),
             $this->createMapperFactory(),
+            $this->createBuilderFactory(),
             $this->getQueryContainer()
         );
     }
@@ -289,6 +306,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         return new Prepayment(
             $this->createApiRequestFactory(),
             $this->createMapperFactory(),
+            $this->createBuilderFactory(),
             $this->getQueryContainer()
         );
     }
@@ -301,6 +319,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         return new Installment(
             $this->createApiRequestFactory(),
             $this->createMapperFactory(),
+            $this->createBuilderFactory(),
             $this->getQueryContainer()
         );
     }
@@ -337,6 +356,14 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     protected function getGlossaryFacade()
     {
         return $this->getProvidedDependency(RatepayDependencyProvider::FACADE_GLOSSARY);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\RatepayRequestTransfer
+     */
+    protected function createRequestTransfer()
+    {
+        return new RatepayRequestTransfer();
     }
 
 }

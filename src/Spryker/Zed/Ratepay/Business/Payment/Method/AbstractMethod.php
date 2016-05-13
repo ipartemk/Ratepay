@@ -10,6 +10,7 @@ use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory;
+use Spryker\Zed\Ratepay\Business\Api\Model\Builder\BuilderFactory;
 use Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactoryInterface;
 use \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
 
@@ -32,6 +33,11 @@ abstract class AbstractMethod implements MethodInterface
     protected $mapperFactory;
 
     /**
+     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Builder\BuilderFactory
+     */
+    protected $builderFactory;
+
+    /**
      * @var \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface $queryContainer
      */
     protected $queryContainer;
@@ -39,16 +45,19 @@ abstract class AbstractMethod implements MethodInterface
     /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactoryInterface $modelFactory
      * @param \Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory $mapperFactory
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\BuilderFactory $builderFactory
      * @param \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface $queryContainer
      *
      */
     public function __construct(
         RequestModelFactoryInterface $modelFactory,
         MapperFactory $mapperFactory,
+        BuilderFactory $builderFactory,
         RatepayQueryContainerInterface $queryContainer
     ) {
         $this->modelFactory = $modelFactory;
         $this->mapperFactory = $mapperFactory;
+        $this->builderFactory = $builderFactory;
         $this->queryContainer = $queryContainer;
     }
 
@@ -88,7 +97,7 @@ abstract class AbstractMethod implements MethodInterface
      */
     protected function mapPaymentData($quoteTransfer, $paymentData, $request)
     {
-        $request->getHead()
+        $request->getHead()->getStorage()
             ->setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId())
             ->setCustomerId($quoteTransfer->getCustomer()->getIdCustomer())
             ->setDeviceFingerprint($paymentData->requireDeviceFingerprint()->getDeviceFingerprint());
@@ -110,10 +119,10 @@ abstract class AbstractMethod implements MethodInterface
      */
     protected function mapBankAccountData($quoteTransfer, $paymentData, $request)
     {
-        $bankAccount = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_BANK_ACCOUNT);
-        $request->getCustomer()->setBankAccount($bankAccount);
+        $bankAccount = $this->modelFactory->getBuilderFactory();
+        $request->getCustomer()->getStorage()->setBankAccount($bankAccount);
         $this->mapperFactory
-            ->getBankAccountMapper($quoteTransfer, $paymentData, $request->getCustomer()->getBankAccount())
+            ->getBankAccountMapper($quoteTransfer, $paymentData)
             ->map();
     }
 
@@ -131,9 +140,10 @@ abstract class AbstractMethod implements MethodInterface
          * @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Confirm $request
          */
         $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM);
-        $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
-        $request->getHead()->setOrderId($orderTransfer->requireOrderReference()->getIdSalesOrder());
-        $request->getHead()->setExternalOrderId($orderTransfer->requireOrderReference()->getOrderReference());
+        $request->getHead()->getStorage()
+            ->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId())
+            ->setOrderId($orderTransfer->requireOrderReference()->getIdSalesOrder())
+            ->setExternalOrderId($orderTransfer->requireOrderReference()->getOrderReference());
 
         return $request;
     }
@@ -153,7 +163,7 @@ abstract class AbstractMethod implements MethodInterface
          * @var \Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm $request
          */
         $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM);
-        $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
+        $request->getHead()->getStorage()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
         $this->mapPartialShoppingBasketAndItems($orderTransfer, $paymentData, $request, $orderItems);
 
         return $request;
@@ -174,9 +184,10 @@ abstract class AbstractMethod implements MethodInterface
          * @var \Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm $request
          */
         $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_PAYMENT_CANCEL);
-        $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
-        $request->getHead()->setOrderId($orderTransfer->requireOrderReference()->getIdSalesOrder());
-        $request->getHead()->setExternalOrderId($orderTransfer->requireOrderReference()->getOrderReference());
+        $request->getHead()->getStorage()
+            ->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId())
+            ->setOrderId($orderTransfer->requireOrderReference()->getIdSalesOrder())
+            ->setExternalOrderId($orderTransfer->requireOrderReference()->getOrderReference());
         $this->mapPartialShoppingBasketAndItems($orderTransfer, $paymentData, $request, $orderItems);
 
         return $request;
@@ -197,9 +208,10 @@ abstract class AbstractMethod implements MethodInterface
          * @var \Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm $request
          */
         $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_PAYMENT_REFUND);
-        $request->getHead()->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId());
-        $request->getHead()->setOrderId($orderTransfer->requireOrderReference()->getIdSalesOrder());
-        $request->getHead()->setExternalOrderId($orderTransfer->requireOrderReference()->getOrderReference());
+        $request->getHead()->getStorage()
+            ->setTransactionId($payment->getTransactionId())->setTransactionShortId($payment->getTransactionShortId())
+            ->setOrderId($orderTransfer->requireOrderReference()->getIdSalesOrder())
+            ->setExternalOrderId($orderTransfer->requireOrderReference()->getOrderReference());
         $this->mapPartialShoppingBasketAndItems($orderTransfer, $paymentData, $request, $orderItems);
 
         return $request;
@@ -259,12 +271,12 @@ abstract class AbstractMethod implements MethodInterface
             ->map();
         $basketItems = $dataTransfer->requireItems()->getItems();
         foreach ($basketItems as $basketItem) {
-            $shoppingBasketItem = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_BASKET_ITEM);
+            $shoppingBasketItem = $this->builderFactory->createShoppingBasketItem();
             $this->mapperFactory
                 ->getBasketItemMapper($basketItem, $shoppingBasketItem)
                 ->map();
 
-            $request->getShoppingBasket()->addItem($shoppingBasketItem);
+            $request->getShoppingBasket()->getStorage()->addItem($shoppingBasketItem);
         }
     }
 
@@ -283,12 +295,12 @@ abstract class AbstractMethod implements MethodInterface
             ->map();
 
         foreach ($orderItems as $basketItem) {
-            $shoppingBasketItem = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_BASKET_ITEM);
+            $shoppingBasketItem = $this->builderFactory->createShoppingBasketItem();
             $this->mapperFactory
                 ->getBasketItemMapper($basketItem, $shoppingBasketItem)
                 ->map();
 
-            $request->getShoppingBasket()->addItem($shoppingBasketItem);
+            $request->getShoppingBasket()->getStorage()->addItem($shoppingBasketItem);
         }
     }
 

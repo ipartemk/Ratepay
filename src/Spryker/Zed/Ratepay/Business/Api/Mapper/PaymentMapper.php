@@ -7,7 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
+use Generated\Shared\Transfer\RatepayRequestTransfer;
 
 class PaymentMapper extends BaseMapper
 {
@@ -23,24 +23,24 @@ class PaymentMapper extends BaseMapper
     protected $ratepayPaymentTransfer;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment
+     * @var \Generated\Shared\Transfer\RatepayRequestTransfer
      */
-    protected $payment;
+    protected $requestTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Spryker\Shared\Transfer\TransferInterface $ratepayPaymentTransfer
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment $payment
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
      */
     public function __construct(
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer,
-        Payment $payment
+        RatepayRequestTransfer $requestTransfer
     ) {
 
         $this->quoteTransfer = $quoteTransfer;
         $this->ratepayPaymentTransfer = $ratepayPaymentTransfer;
-        $this->payment = $payment;
+        $this->requestTransfer = $requestTransfer;
     }
 
     /**
@@ -49,12 +49,12 @@ class PaymentMapper extends BaseMapper
     public function map()
     {
         $totalsTransfer = $this->quoteTransfer->requireTotals()->getTotals();
-
-        $this->payment->setCurrency($this->ratepayPaymentTransfer->requireCurrencyIso3()->getCurrencyIso3());
-        $this->payment->setMethod($this->ratepayPaymentTransfer->requirePaymentType()->getPaymentType());
-
         $grandTotal = $this->centsToDecimal($totalsTransfer->requireGrandTotal()->getGrandTotal());
-        $this->payment->setAmount($grandTotal);
+
+        $this->requestTransfer->getPayment()
+            ->setCurrency($this->ratepayPaymentTransfer->requireCurrencyIso3()->getCurrencyIso3())
+            ->setMethod($this->ratepayPaymentTransfer->requirePaymentType()->getPaymentType())
+            ->setAmount($grandTotal);
     }
 
 }

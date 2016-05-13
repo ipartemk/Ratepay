@@ -8,7 +8,6 @@ namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
 
 class CustomerMapper extends BaseMapper
 {
@@ -24,24 +23,24 @@ class CustomerMapper extends BaseMapper
     protected $ratepayPaymentTransfer;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer
+     * @var \Generated\Shared\Transfer\RatepayRequestTransfer
      */
-    protected $customer;
+    protected $requestTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Spryker\Shared\Transfer\TransferInterface $ratepayPaymentTransfer
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer $customer
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
      */
     public function __construct(
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer,
-        Customer $customer
+        $requestTransfer
     ) {
 
         $this->quoteTransfer = $quoteTransfer;
         $this->ratepayPaymentTransfer = $ratepayPaymentTransfer;
-        $this->customer = $customer;
+        $this->requestTransfer = $requestTransfer;
     }
 
     /**
@@ -53,7 +52,7 @@ class CustomerMapper extends BaseMapper
         $billingAddress = $this->quoteTransfer->requireBillingAddress()->getBillingAddress();
         $shippingAddress = $this->quoteTransfer->requireBillingAddress()->getShippingAddress();
 
-        $this->customer
+        $this->requestTransfer->getCustomer()
             ->setAllowCreditInquiry($this->ratepayPaymentTransfer->getCustomerAllowCreditInquiry())
             ->setGender($this->ratepayPaymentTransfer->requireGender()->getGender())
             ->setDob($this->ratepayPaymentTransfer->requireDateOfBirth()->getDateOfBirth())
@@ -66,14 +65,14 @@ class CustomerMapper extends BaseMapper
         $addressMapper = new AddressMapper(
             $billingAddress,
             ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_BILLING,
-            $this->customer->getBillingAddress()
+            $this->requestTransfer
         );
         $addressMapper->map();
 
         $addressMapper = new AddressMapper(
             $shippingAddress,
             ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_DELIVERY,
-            $this->customer->getShippingAddress()
+            $this->requestTransfer
         );
         $addressMapper->map();
     }

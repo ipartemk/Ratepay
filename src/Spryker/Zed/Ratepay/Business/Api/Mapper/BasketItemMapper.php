@@ -7,7 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\ItemTransfer;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
+use Generated\Shared\Transfer\RatepayRequestTransfer;
 
 class BasketItemMapper extends BaseMapper
 {
@@ -18,21 +18,20 @@ class BasketItemMapper extends BaseMapper
     protected $itemTransfer;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem
+     * @var \Generated\Shared\Transfer\RatepayRequestTransfer
      */
-    protected $basketItem;
+    protected $requestTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem $basketItem
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
      */
     public function __construct(
         ItemTransfer $itemTransfer,
-        ShoppingBasketItem $basketItem
+        RatepayRequestTransfer $requestTransfer
     ) {
-
         $this->itemTransfer = $itemTransfer;
-        $this->basketItem = $basketItem;
+        $this->requestTransfer = $requestTransfer;
     }
 
     /**
@@ -40,25 +39,32 @@ class BasketItemMapper extends BaseMapper
      */
     public function map()
     {
-        $this->basketItem->setItemName($this->itemTransfer->requireName()->getName());
-        $this->basketItem->setArticleNumber($this->itemTransfer->requireSku()->getSku());
-        $this->basketItem->setUniqueArticleNumber($this->itemTransfer->requireGroupKey()->getGroupKey());
-        $this->basketItem->setQuantity($this->itemTransfer->requireQuantity()->getQuantity());
-        $this->basketItem->setTaxRate($this->itemTransfer->requireTaxRate()->getTaxRate());
-        $this->basketItem->setDescription($this->itemTransfer->getDescription());
-        $this->basketItem->setDescriptionAddition($this->itemTransfer->getDescriptionAddition());
+        $itemPrice = $this->itemTransfer
+            ->requireUnitGrossPriceWithProductOptions()
+            ->getUnitGrossPriceWithProductOptions();
+        $itemPrice = $this->centsToDecimal($itemPrice);
 
-        $itemPrice = $this->centsToDecimal($this->itemTransfer->requireUnitGrossPriceWithProductOptions()->getUnitGrossPriceWithProductOptions());
-        $this->basketItem->setUnitPriceGross($itemPrice);
+        $this->requestTransfer->getShoppingBasket()->getItems()[0]
+            ->setItemName($this->itemTransfer->requireName()->getName())
+            ->setArticleNumber($this->itemTransfer->requireSku()->getSku())
+            ->setUniqueArticleNumber($this->itemTransfer->requireGroupKey()->getGroupKey())
+            ->setQuantity($this->itemTransfer->requireQuantity()->getQuantity())
+            ->setTaxRate($this->itemTransfer->requireTaxRate()->getTaxRate())
+            ->setDescription($this->itemTransfer->getDescription())
+            ->setDescriptionAddition($this->itemTransfer->getDescriptionAddition())
+            ->setUnitPriceGross($itemPrice);
 
         $itemDiscount = $this->getBasketItemDiscount();
         if ($itemDiscount) {
-            $this->basketItem->setDiscount($itemDiscount);
+            $this->requestTransfer->getShoppingBasket()->getItems()[0]->setDiscount($itemDiscount);
         }
 
+        $productOptions = [];
         foreach ($this->itemTransfer->getProductOptions() as $productOption) {
-            $this->basketItem->addProductOption($productOption->getLabelOptionValue());
+            $productOptions[] = $productOption->getLabelOptionValue();
         }
+
+        $this->requestTransfer->getShoppingBasket()->getItems()[0]->setProductOptions($productOptions);
     }
 
     /**

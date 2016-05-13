@@ -7,7 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation;
+use Generated\Shared\Transfer\RatepayRequestTransfer;
 
 class InstallmentCalculationMapper extends BaseMapper
 {
@@ -23,24 +23,24 @@ class InstallmentCalculationMapper extends BaseMapper
     protected $ratepayPaymentTransfer;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation
+     * @var \Generated\Shared\Transfer\RatepayRequestTransfer
      */
-    protected $calculation;
+    protected $requestTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation $calculation
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
      */
     public function __construct(
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer,
-        InstallmentCalculation $calculation
+        RatepayRequestTransfer $requestTransfer
     ) {
 
         $this->quoteTransfer = $quoteTransfer;
         $this->ratepayPaymentTransfer = $ratepayPaymentTransfer;
-        $this->calculation = $calculation;
+        $this->requestTransfer = $requestTransfer;
     }
 
     /**
@@ -54,7 +54,7 @@ class InstallmentCalculationMapper extends BaseMapper
                 ->requireGrandTotal()
                 ->getGrandTotal()
         );
-        $this->calculation
+        $this->requestTransfer->getInstallmentCalculation()
             ->setSubType($this->ratepayPaymentTransfer->getInstallmentCalculationType())
             ->setAmount($grandTotal)
             ->setCalculationRate($this->ratepayPaymentTransfer->getInterestRate())

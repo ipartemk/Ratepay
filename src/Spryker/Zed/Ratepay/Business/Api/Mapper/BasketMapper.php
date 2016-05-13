@@ -6,7 +6,7 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
+use Generated\Shared\Transfer\RatepayRequestTransfer;
 
 class BasketMapper extends BaseMapper
 {
@@ -22,24 +22,23 @@ class BasketMapper extends BaseMapper
     protected $ratepayPaymentTransfer;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket
+     * @var \Generated\Shared\Transfer\RatepayRequestTransfer
      */
-    protected $basket;
+    protected $requestTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer|\Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Spryker\Shared\Transfer\TransferInterface $ratepayPaymentTransfer
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket $basket
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
      */
     public function __construct(
         $quoteTransfer,
         $ratepayPaymentTransfer,
-        ShoppingBasket $basket
+        RatepayRequestTransfer $requestTransfer
     ) {
-
         $this->quoteTransfer = $quoteTransfer;
         $this->ratepayPaymentTransfer = $ratepayPaymentTransfer;
-        $this->basket = $basket;
+        $this->requestTransfer = $requestTransfer;
     }
 
     /**
@@ -48,13 +47,13 @@ class BasketMapper extends BaseMapper
     public function map()
     {
         $totalsTransfer = $this->quoteTransfer->requireTotals()->getTotals();
+        $shippingUnitPrice = $this->centsToDecimal($totalsTransfer->requireExpenseTotal()->getExpenseTotal());
 
         $grandTotal = $this->centsToDecimal($totalsTransfer->requireGrandTotal()->getGrandTotal());
-        $this->basket->setAmount($grandTotal);
-        $this->basket->setCurrency($this->ratepayPaymentTransfer->requireCurrencyIso3()->getCurrencyIso3());
-
-        $shippingUnitPrice = $this->centsToDecimal($totalsTransfer->requireExpenseTotal()->getExpenseTotal());
-        $this->basket->setShippingUnitPrice($shippingUnitPrice);
+        $this->requestTransfer->getShoppingBasket()
+            ->setAmount($grandTotal)
+            ->setCurrency($this->ratepayPaymentTransfer->requireCurrencyIso3()->getCurrencyIso3())
+            ->setShippingUnitPrice($shippingUnitPrice);
     }
 
 }
