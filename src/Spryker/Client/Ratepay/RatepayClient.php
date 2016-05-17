@@ -21,21 +21,6 @@ class RatepayClient extends AbstractClient implements RatepayClientInterface
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
-     */
-    public function preauthorizePayment(QuoteTransfer $quoteTransfer)
-    {
-        return $this
-            ->getFactory()
-            ->createRatepayStub()
-            ->preauthorizePayment($quoteTransfer);
-    }
-
-    /**
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
      * @return \Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer
      */
     public function installmentConfiguration(QuoteTransfer $quoteTransfer)

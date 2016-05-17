@@ -4,9 +4,9 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Functional\Spryker\Zed\Ratepay\Business\Payment\PreCheck;
+namespace Functional\Spryker\Zed\Ratepay\Business\Payment\RequestPayment;
 
-use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\PreCheckElvAdapterMock;
+use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\RequestPaymentElvAdapterMock;
 use Functional\Spryker\Zed\Ratepay\Business\Payment\ElvAbstractTest;
 use Spryker\Shared\Ratepay\RatepayConstants;
 
@@ -24,19 +24,19 @@ class ElvTest extends ElvAbstractTest
     }
 
     /**
-     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\PreCheckElvAdapterMock
+     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\RequestPaymentElvAdapterMock
      */
     protected function getPaymentSuccessResponseAdapterMock()
     {
-        return new PreCheckElvAdapterMock();
+        return new RequestPaymentElvAdapterMock();
     }
 
     /**
-     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\PreCheckElvAdapterMock
+     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\RequestPaymentElvAdapterMock
      */
     protected function getPaymentFailureResponseAdapterMock()
     {
-        return (new PreCheckElvAdapterMock())->expectFailure();
+        return (new RequestPaymentElvAdapterMock())->expectFailure();
     }
 
     /**
@@ -46,7 +46,7 @@ class ElvTest extends ElvAbstractTest
      */
     protected function runFacadeMethod($facade)
     {
-        return $facade->preCheckPayment($this->quoteTransfer);
+        return $facade->requestPayment($this->quoteTransfer);
     }
 
     /**

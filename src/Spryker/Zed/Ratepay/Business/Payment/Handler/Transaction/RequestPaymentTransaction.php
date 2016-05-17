@@ -9,7 +9,7 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 
-class PreCheckPaymentTransaction extends BaseTransaction implements QuoteTransactionInterface
+class RequestPaymentTransaction extends BaseTransaction implements QuoteTransactionInterface
 {
 
     /**

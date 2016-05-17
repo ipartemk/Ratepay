@@ -17,14 +17,14 @@ interface TransactionStatusInterface
      *
      * @return bool
      */
-    public function isPreAuthorizationApproved(OrderTransfer $orderTransfer);
+    public function isPaymentConfirmed(OrderTransfer $orderTransfer);
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return bool
      */
-    public function isCaptureApproved(OrderTransfer $orderTransfer);
+    public function isDeliveryConfirmed(OrderTransfer $orderTransfer);
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer

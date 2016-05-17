@@ -21,13 +21,13 @@ use Spryker\Zed\Ratepay\Business\Internal\Install;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory;
 use Spryker\Zed\Ratepay\Business\Order\Saver;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CancelPaymentTransaction;
-use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CapturePaymentTransaction;
+use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\ConfirmDeliveryTransaction;
+use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\ConfirmPaymentTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\InitPaymentTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\InstallmentCalculationTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\InstallmentConfigurationTransaction;
-use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\PreAuthorizePaymentTransaction;
-use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\PreCheckPaymentTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\RefundPaymentTransaction;
+use Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\RequestPaymentTransaction;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Elv;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Installment;
 use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice;
@@ -69,11 +69,11 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\PreCheckPaymentTransaction
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\RequestPaymentTransaction
      */
-    public function createPreCheckPaymentTransactionHandler()
+    public function createRequestPaymentTransactionHandler()
     {
-        $transactionHandler = new PreCheckPaymentTransaction(
+        $transactionHandler = new RequestPaymentTransaction(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
             $this->createConverterFactory(),
             $this->getQueryContainer()
@@ -85,11 +85,11 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\PreAuthorizePaymentTransaction
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\ConfirmPaymentTransaction
      */
-    public function createPreAuthorizePaymentTransactionHandler()
+    public function createConfirmPaymentTransactionHandler()
     {
-        $transactionHandler = new PreAuthorizePaymentTransaction(
+        $transactionHandler = new ConfirmPaymentTransaction(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
             $this->createConverterFactory(),
             $this->getQueryContainer()
@@ -101,11 +101,11 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CapturePaymentTransaction
+     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\ConfirmDeliveryTransaction
      */
-    public function createCapturePaymentTransactionHandler()
+    public function createConfirmDeliveryTransactionHandler()
     {
-        $transactionHandler = new CapturePaymentTransaction(
+        $transactionHandler = new ConfirmDeliveryTransaction(
             $this->createAdapter($this->getConfig()->getTransactionGatewayUrl()),
             $this->createConverterFactory(),
             $this->getQueryContainer()

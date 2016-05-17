@@ -9,9 +9,9 @@ namespace Unit\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 class OrderTransactionTest extends BaseTransactionTest
 {
 
-    public function testPreAuthorizePayment()
+    public function testConfirmPayment()
     {
-        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\PreAuthorizePaymentTransaction');
+        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\ConfirmPaymentTransaction');
         $transactionHandler->registerMethodMapper($this->mockMethodInvoice());
 
         $responseTransfer = $transactionHandler->request($this->mockOrderTransfer());
@@ -39,9 +39,9 @@ class OrderTransactionTest extends BaseTransactionTest
         );
     }
 
-    public function testCapturePayment()
+    public function testDeliveryConfirmation()
     {
-        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CapturePaymentTransaction');
+        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\ConfirmDeliveryTransaction');
         $transactionHandler->registerMethodMapper($this->mockMethodInvoice());
 
         $responseTransfer = $transactionHandler->request($this->mockOrderTransfer());

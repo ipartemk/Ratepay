@@ -31,9 +31,9 @@ class QuoteTransactionTest extends BaseTransactionTest
         );
     }
 
-    public function testPreCheckPayment()
+    public function testRequestPayment()
     {
-        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\PreCheckPaymentTransaction');
+        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\RequestPaymentTransaction');
         $transactionHandler->registerMethodMapper($this->mockMethodInvoice());
 
         $ratepayResponseTransfer = $transactionHandler->request($this->mockQuoteTransfer());

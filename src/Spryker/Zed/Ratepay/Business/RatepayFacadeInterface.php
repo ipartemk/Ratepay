@@ -45,7 +45,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Performs pre-check payment request to Ratepay Getaway.
+     * - Performs check the customer and order details payment request to RatePAY Gateway.
      *
      * @api
      *
@@ -53,11 +53,11 @@ interface RatepayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function preCheckPayment(QuoteTransfer $quoteTransfer);
+    public function requestPayment(QuoteTransfer $quoteTransfer);
 
     /**
      * Specification:
-     * - Performs payment confirmation request to Ratepay Getaway.
+     * - Performs the payment confirmation request to RatePAY Gateway.
      *
      * @api
      *
@@ -65,11 +65,11 @@ interface RatepayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function preAuthorizePayment(OrderTransfer $orderTransfer);
+    public function confirmPayment(OrderTransfer $orderTransfer);
 
     /**
      * Specification:
-     * - Performs capture payment request to Ratepay Getaway.
+     * - Performs the delivery confirmation request to RatePAY Gateway.
      *
      * @api
      *
@@ -78,11 +78,11 @@ interface RatepayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function capturePayment(OrderTransfer $orderTransfer, array $orderItems);
+    public function confirmDelivery(OrderTransfer $orderTransfer, array $orderItems);
 
     /**
      * Specification:
-     * - Performs cancel payment request to Ratepay Getaway.
+     * - Performs cancel payment request to RatePAY Gateway.
      *
      * @api
      *
@@ -95,7 +95,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Performs refund payment request to Ratepay Getaway.
+     * - Performs refund payment request to RatePAY Gateway.
      *
      * @api
      *
@@ -108,7 +108,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Performs installment payment method calculator configuration request to Ratepay Getaway.
+     * - Performs installment payment method calculator configuration request to RatePAY Gateway.
      *
      * @api
      *
@@ -120,7 +120,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Performs installment payment method calculator calculation request to Ratepay Getaway.
+     * - Performs installment payment method calculator calculation request to RatePAY Gateway.
      *
      * @api
      *
@@ -132,7 +132,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Checks if the pre-authorization API request got success response from Ratepay Getaway.
+     * - Checks if the payment confirmation API request got success response from RatePAY Gateway.
      *
      * @api
      *
@@ -140,11 +140,11 @@ interface RatepayFacadeInterface
      *
      * @return bool
      */
-    public function isPreAuthorizationApproved(OrderTransfer $orderTransfer);
+    public function isPaymentConfirmed(OrderTransfer $orderTransfer);
 
     /**
      * Specification:
-     * - Checks if the capture API request got success response from Ratepay Getaway.
+     * - Checks if the delivery confirmation API request got success response from RatePAY Gateway.
      *
      * @api
      *
@@ -152,11 +152,11 @@ interface RatepayFacadeInterface
      *
      * @return bool
      */
-    public function isCaptureApproved(OrderTransfer $orderTransfer);
+    public function isDeliveryConfirmed(OrderTransfer $orderTransfer);
 
     /**
      * Specification:
-     * - Checks if the payment refund API request got success response from Ratepay Getaway.
+     * - Checks if the payment refund API request got success response from RatePAY Gateway.
      *
      * @api
      *
@@ -168,7 +168,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Checks if the payment cancellation API request got success response from Ratepay Getaway.
+     * - Checks if the payment cancellation API request got success response from RatePAY Gateway.
      *
      * @api
      *

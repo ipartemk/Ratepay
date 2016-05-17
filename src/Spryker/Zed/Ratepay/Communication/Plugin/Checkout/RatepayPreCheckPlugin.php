@@ -31,7 +31,7 @@ class RatepayPreCheckPlugin extends AbstractPlugin implements CheckoutPreConditi
         QuoteTransfer $quoteTransfer,
         CheckoutResponseTransfer $checkoutResponseTransfer
     ) {
-        $ratepayResponseTransfer = $this->getFacade()->preCheckPayment($quoteTransfer);
+        $ratepayResponseTransfer = $this->getFacade()->requestPayment($quoteTransfer);
         $this->checkForErrors($ratepayResponseTransfer, $checkoutResponseTransfer);
 
         return $checkoutResponseTransfer;

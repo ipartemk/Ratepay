@@ -29,7 +29,7 @@ class ConfirmDeliveryPlugin extends BaseCommandPlugin implements CommandByOrderI
     {
         $orderTransfer = $this->getOrderTransfer($orderEntity);
         $orderTransferItems = $this->getOrderItemsTransfer($orderItems);
-        $this->getFacade()->capturePayment($orderTransfer, $orderTransferItems);
+        $this->getFacade()->confirmDelivery($orderTransfer, $orderTransferItems);
 
         return [];
     }

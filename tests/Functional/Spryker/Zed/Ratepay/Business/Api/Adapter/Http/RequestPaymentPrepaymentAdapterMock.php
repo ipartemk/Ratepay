@@ -6,7 +6,7 @@
  */
 namespace Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http;
 
-class PreCheckPrepaymentAdapterMock extends AbstractAdapterMock
+class RequestPaymentPrepaymentAdapterMock extends AbstractAdapterMock
 {
 
     /**

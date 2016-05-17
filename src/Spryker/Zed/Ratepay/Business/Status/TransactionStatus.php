@@ -48,7 +48,7 @@ class TransactionStatus implements TransactionStatusInterface
      *
      * @return bool
      */
-    public function isPreAuthorizationApproved(OrderTransfer $orderTransfer)
+    public function isPaymentConfirmed(OrderTransfer $orderTransfer)
     {
         $payment = $this->loadOrderPayment($orderTransfer);
         return in_array(
@@ -65,7 +65,7 @@ class TransactionStatus implements TransactionStatusInterface
      *
      * @return bool
      */
-    public function isCaptureApproved(OrderTransfer $orderTransfer)
+    public function isDeliveryConfirmed(OrderTransfer $orderTransfer)
     {
         $payment = $this->loadOrderPayment($orderTransfer);
         return in_array(

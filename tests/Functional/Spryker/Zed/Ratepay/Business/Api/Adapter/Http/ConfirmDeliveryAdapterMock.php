@@ -6,7 +6,7 @@
  */
 namespace Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http;
 
-class PreAuthorizeAdapterMock extends AbstractAdapterMock
+class ConfirmDeliveryAdapterMock extends AbstractAdapterMock
 {
 
     /**
@@ -17,18 +17,16 @@ class PreAuthorizeAdapterMock extends AbstractAdapterMock
         return '<response xmlns="urn://www.ratepay.com/payment/1_0" version="1.0">
             <head>
                 <system-id>Spryker www.spryker.dev</system-id>
-                <transaction-id>44-201604182752934</transaction-id>
-                <transaction-short-id>FYLB.66N1.B5CS.DY2J</transaction-short-id>
-                <operation>PAYMENT_CONFIRM</operation>
-                <response-type>PAYMENT_PERMISSION</response-type>
-                <external>
-                    <order-id>DE--76</order-id>
-                </external>
+                <transaction-id>20-201604182752942</transaction-id>
+                <transaction-short-id>R15F.5NPF.T2PJ.2O50</transaction-short-id>
+                <operation>CONFIRMATION_DELIVER</operation>
+                <response-type>STATUS_RESPONSE</response-type>
+                <external />
                 <processing>
-                    <timestamp>2016-04-18T11:26:26.000</timestamp>
+                    <timestamp>2016-04-18T11:28:49.000</timestamp>
                     <status code="OK">Successfully</status>
                     <reason code="303">No RMS reason code</reason>
-                    <result code="400">Transaction result successful</result>
+                    <result code="404">Confirmation deliver successful</result>
                 </processing>
             </head>
             <content />
@@ -43,18 +41,20 @@ class PreAuthorizeAdapterMock extends AbstractAdapterMock
         return '<response xmlns="urn://www.ratepay.com/payment/1_0" version="1.0">
             <head>
                 <system-id>Spryker www.spryker.dev</system-id>
-                <transaction-id>48-201604182753838</transaction-id>
-                <transaction-short-id>FZOV.YVGL.NU3E.ZR5Y-234242</transaction-short-id>
-                <operation>PAYMENT_CONFIRM</operation>
-                <response-type>STATUS_ERROR</response-type>
+                <transaction-id>20-201604182752942</transaction-id>
+                <transaction-short-id>R15F.5NPF.T2PJ.2O50</transaction-short-id>
+                <operation>CONFIRMATION_DELIVER</operation>
+                 <response-type>STATUS_ERROR</response-type>
                 <external />
                 <processing>
-                    <timestamp>2016-04-18T15:00:58.000</timestamp>
+                    <timestamp>2016-04-18T11:54:08.000</timestamp>
                     <status code="ERROR">Error</status>
-                    <reason code="200">Validation failed: cvc-pattern-valid: Value \'FZOV.YVGL.NU3E.ZR5Y-234242\' is not facet-valid with respect to pattern for type \'transactionShortIdType\'. (some more validation errors present)</reason>
+                    <reason code="200">Validation failed</reason>
                     <result code="150">Processing failed</result>
+                    <customer-message>Error message 1.</customer-message>
                 </processing>
             </head>
+            <content />
         </response>';
     }
 

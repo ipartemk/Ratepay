@@ -6,7 +6,7 @@
  */
 namespace Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http;
 
-class PreCheckInvoiceAdapterMock extends AbstractAdapterMock
+class RequestPaymentInstallmentAdapterMock extends AbstractAdapterMock
 {
 
     /**
@@ -44,7 +44,7 @@ class PreCheckInvoiceAdapterMock extends AbstractAdapterMock
                         </address>
                     </addresses>
                 </customer>
-                <payment method="INVOICE" currency="EUR">
+                <payment method="INSTALLMENT" currency="EUR">
                     <amount>28.5</amount>
                     <descriptor>DG0496020Y0</descriptor>
                 </payment>

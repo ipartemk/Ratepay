@@ -1,15 +1,16 @@
 <?php
+
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Functional\Spryker\Zed\Ratepay\Business\Payment\Capture;
+namespace Functional\Spryker\Zed\Ratepay\Business\Payment\ConfirmPayment;
 
-use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\CaptureAdapterMock;
-use Functional\Spryker\Zed\Ratepay\Business\Payment\PrepaymentAbstractTest;
+use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\ConfirmPaymentAdapterMock;
+use Functional\Spryker\Zed\Ratepay\Business\Payment\ElvAbstractTest;
 
-class PrepaymentTest extends PrepaymentAbstractTest
+class ElvTest extends ElvAbstractTest
 {
 
     /**
@@ -26,19 +27,19 @@ class PrepaymentTest extends PrepaymentAbstractTest
     }
 
     /**
-     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\CaptureAdapterMock
+     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\ConfirmPaymentAdapterMock
      */
     protected function getPaymentSuccessResponseAdapterMock()
     {
-        return new CaptureAdapterMock();
+        return new ConfirmPaymentAdapterMock();
     }
 
     /**
-     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\CaptureAdapterMock
+     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\ConfirmPaymentAdapterMock
      */
     protected function getPaymentFailureResponseAdapterMock()
     {
-        return (new CaptureAdapterMock())->expectFailure();
+        return (new ConfirmPaymentAdapterMock())->expectFailure();
     }
 
     /**
@@ -48,7 +49,7 @@ class PrepaymentTest extends PrepaymentAbstractTest
      */
     protected function runFacadeMethod($facade)
     {
-        return $facade->capturePayment($this->orderTransfer, $this->orderTransfer->getItems()->getArrayCopy());
+        return $facade->confirmPayment($this->orderTransfer);
     }
 
 }
