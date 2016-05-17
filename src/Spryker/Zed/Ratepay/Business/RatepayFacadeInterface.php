@@ -45,7 +45,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Performs check the customer and order details payment request to Ratepay gateway.
+     * - Performs check the customer and order details payment request to RatePAY Gateway.
      *
      * @api
      *
@@ -57,7 +57,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Performs the payment confirmation request to Ratepay gateway.
+     * - Performs the payment confirmation request to RatePAY Gateway.
      *
      * @api
      *
@@ -69,7 +69,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Performs the delivery confirmation request to Ratepay gateway.
+     * - Performs the delivery confirmation request to RatePAY Gateway.
      *
      * @api
      *
@@ -82,7 +82,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Performs cancel payment request to Ratepay Getaway.
+     * - Performs cancel payment request to RatePAY Gateway.
      *
      * @api
      *
@@ -95,7 +95,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Performs refund payment request to Ratepay Getaway.
+     * - Performs refund payment request to RatePAY Gateway.
      *
      * @api
      *
@@ -108,7 +108,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Performs installment payment method calculator configuration request to Ratepay Getaway.
+     * - Performs installment payment method calculator configuration request to RatePAY Gateway.
      *
      * @api
      *
@@ -120,7 +120,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Performs installment payment method calculator calculation request to Ratepay Getaway.
+     * - Performs installment payment method calculator calculation request to RatePAY Gateway.
      *
      * @api
      *
@@ -132,7 +132,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Checks if the payment confirmation API request got success response from Ratepay gateway.
+     * - Checks if the payment confirmation API request got success response from RatePAY Gateway.
      *
      * @api
      *
@@ -144,7 +144,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Checks if the delivery confirmation API request got success response from Ratepay gateway.
+     * - Checks if the delivery confirmation API request got success response from RatePAY Gateway.
      *
      * @api
      *
@@ -156,7 +156,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Checks if the payment refund API request got success response from Ratepay Getaway.
+     * - Checks if the payment refund API request got success response from RatePAY Gateway.
      *
      * @api
      *
@@ -168,7 +168,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Checks if the payment cancellation API request got success response from Ratepay Getaway.
+     * - Checks if the payment cancellation API request got success response from RatePAY Gateway.
      *
      * @api
      *
