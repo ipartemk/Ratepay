@@ -30,16 +30,6 @@ class RatepayStub implements RatepayStubInterface
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
-     */
-    public function preauthorizePayment(QuoteTransfer $quoteTransfer)
-    {
-        return $this->zedRequestClient->call('/ratepay/gateway/preauthorize-payment', $quoteTransfer);
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
      * @return \Generated\Shared\Transfer\RatepayInstallmentConfigurationResponseTransfer
      */
     public function installmentConfiguration(QuoteTransfer $quoteTransfer)

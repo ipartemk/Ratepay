@@ -139,7 +139,6 @@ class BasePaymentTest extends Test
         $invoiceMethod->method('getPaymentData')
             ->willReturn($paymentTransfer);
 
-
         return $invoiceMethod;
     }
 
@@ -263,8 +262,7 @@ class BasePaymentTest extends Test
         $modelPartHead->setOrderId(1)
             ->setOperation(Constants::REQUEST_MODEL_PAYMENT_REQUEST)
             ->setTransactionId('tr1')
-            ->setTransactionShortId('tr1_short')
-        ;
+            ->setTransactionShortId('tr1_short');
 
         return $modelPartHead;
     }

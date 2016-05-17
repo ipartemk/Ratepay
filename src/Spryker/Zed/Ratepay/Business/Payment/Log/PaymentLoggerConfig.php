@@ -10,6 +10,7 @@ use Spryker\Shared\Log\Config\LoggerConfigInterface;
 
 class PaymentLoggerConfig implements LoggerConfigInterface
 {
+
     /**
      * @return string
      */
@@ -35,4 +36,5 @@ class PaymentLoggerConfig implements LoggerConfigInterface
     {
         return [];
     }
+
 }

@@ -1,17 +1,16 @@
 <?php
-
 /**
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Functional\Spryker\Zed\Ratepay\Business\Payment\PreCheck;
+namespace Functional\Spryker\Zed\Ratepay\Business\Payment\RequestPayment;
 
-use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\PreCheckInvoiceAdapterMock;
-use Functional\Spryker\Zed\Ratepay\Business\Payment\InvoiceAbstractTest;
+use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\RequestPaymentPrepaymentAdapterMock;
+use Functional\Spryker\Zed\Ratepay\Business\Payment\PrepaymentAbstractTest;
 use Spryker\Shared\Ratepay\RatepayConstants;
 
-class InvoiceTest extends InvoiceAbstractTest
+class PrepaymentTest extends PrepaymentAbstractTest
 {
 
     /**
@@ -25,19 +24,19 @@ class InvoiceTest extends InvoiceAbstractTest
     }
 
     /**
-     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\PreCheckInvoiceAdapterMock
+     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\RequestPaymentPrepaymentAdapterMock
      */
     protected function getPaymentSuccessResponseAdapterMock()
     {
-        return new PreCheckInvoiceAdapterMock();
+        return new RequestPaymentPrepaymentAdapterMock();
     }
 
     /**
-     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\PreCheckInvoiceAdapterMock
+     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\RequestPaymentPrepaymentAdapterMock
      */
     protected function getPaymentFailureResponseAdapterMock()
     {
-        return (new PreCheckInvoiceAdapterMock())->expectFailure();
+        return (new RequestPaymentPrepaymentAdapterMock())->expectFailure();
     }
 
     /**
@@ -47,7 +46,7 @@ class InvoiceTest extends InvoiceAbstractTest
      */
     protected function runFacadeMethod($facade)
     {
-        return $facade->preCheckPayment($this->quoteTransfer);
+        return $facade->requestPayment($this->quoteTransfer);
     }
 
     /**
@@ -57,7 +56,7 @@ class InvoiceTest extends InvoiceAbstractTest
     {
         parent::testPaymentWithSuccessResponse();
 
-        $this->assertEquals(RatepayConstants::METHOD_INVOICE, $this->responseTransfer->getPaymentMethod());
+        $this->assertEquals(RatepayConstants::METHOD_PREPAYMENT, $this->responseTransfer->getPaymentMethod());
         $this->assertEquals($this->expectedResponseTransfer->getPaymentMethod(), $this->responseTransfer->getPaymentMethod());
     }
 

@@ -22,7 +22,7 @@ class IsPaymentConfirmedPlugin extends AbstractCheckPlugin
      */
     protected function callFacade(OrderTransfer $orderTransfer)
     {
-        return $this->getFacade()->isPreAuthorizationApproved($orderTransfer);
+        return $this->getFacade()->isPaymentConfirmed($orderTransfer);
     }
 
 }

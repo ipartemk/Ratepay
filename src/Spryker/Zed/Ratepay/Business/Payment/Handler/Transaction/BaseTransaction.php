@@ -21,6 +21,7 @@ use Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
 
 abstract class BaseTransaction
 {
+
     use LoggerTrait;
 
     /**

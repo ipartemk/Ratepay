@@ -45,7 +45,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Performs pre-check payment request to Ratepay Getaway.
+     * - Performs check the customer and order details payment request to Ratepay gateway.
      *
      * @api
      *
@@ -53,11 +53,11 @@ interface RatepayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function preCheckPayment(QuoteTransfer $quoteTransfer);
+    public function requestPayment(QuoteTransfer $quoteTransfer);
 
     /**
      * Specification:
-     * - Performs payment confirmation request to Ratepay Getaway.
+     * - Performs the payment confirmation request to Ratepay gateway.
      *
      * @api
      *
@@ -65,11 +65,11 @@ interface RatepayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function preAuthorizePayment(OrderTransfer $orderTransfer);
+    public function confirmPayment(OrderTransfer $orderTransfer);
 
     /**
      * Specification:
-     * - Performs capture payment request to Ratepay Getaway.
+     * - Performs the delivery confirmation request to Ratepay gateway.
      *
      * @api
      *
@@ -78,7 +78,7 @@ interface RatepayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function capturePayment(OrderTransfer $orderTransfer, array $orderItems);
+    public function confirmDelivery(OrderTransfer $orderTransfer, array $orderItems);
 
     /**
      * Specification:
@@ -132,7 +132,7 @@ interface RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Checks if the pre-authorization API request got success response from Ratepay Getaway.
+     * - Checks if the payment confirmation API request got success response from Ratepay gateway.
      *
      * @api
      *
@@ -140,11 +140,11 @@ interface RatepayFacadeInterface
      *
      * @return bool
      */
-    public function isPreAuthorizationApproved(OrderTransfer $orderTransfer);
+    public function isPaymentConfirmed(OrderTransfer $orderTransfer);
 
     /**
      * Specification:
-     * - Checks if the capture API request got success response from Ratepay Getaway.
+     * - Checks if the delivery confirmation API request got success response from Ratepay gateway.
      *
      * @api
      *
@@ -152,7 +152,7 @@ interface RatepayFacadeInterface
      *
      * @return bool
      */
-    public function isCaptureApproved(OrderTransfer $orderTransfer);
+    public function isDeliveryConfirmed(OrderTransfer $orderTransfer);
 
     /**
      * Specification:

@@ -8,15 +8,17 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Log;
 
 use Spryker\Shared\Log\LoggerFactory;
 
-trait  LoggerTrait
+trait LoggerTrait
 {
+
     /**
      * @return \Psr\Log\LoggerInterface|null
      */
     protected function getLogger()
     {
         $loggerConfig = new PaymentLoggerConfig();
-        
+
         return LoggerFactory::getInstance($loggerConfig);
     }
+
 }

@@ -22,7 +22,7 @@ class IsDeliveryConfirmedPlugin extends AbstractCheckPlugin
      */
     protected function callFacade(OrderTransfer $orderTransfer)
     {
-        return $this->getFacade()->isCaptureApproved($orderTransfer);
+        return $this->getFacade()->isDeliveryConfirmed($orderTransfer);
     }
 
 }

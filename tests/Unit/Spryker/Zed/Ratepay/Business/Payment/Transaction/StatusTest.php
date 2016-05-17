@@ -20,7 +20,7 @@ class StatusTest extends \PHPUnit_Framework_TestCase
     /**
      * @return bool
      */
-    public function testPreAuthorizationApproved()
+    public function testPaymentConfirmed()
     {
         $constantResults = [
             ApiConstants::REQUEST_MODEL_PAYMENT_INIT => false,
@@ -34,7 +34,7 @@ class StatusTest extends \PHPUnit_Framework_TestCase
             $statusTransaction = $this->createStatusTransaction(
                 $this->getQueryContainerMock(ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[$constant])
             );
-            $this->assertEquals($expectedResult, $statusTransaction->isPreAuthorizationApproved($this->getOrderTransfer()));
+            $this->assertEquals($expectedResult, $statusTransaction->isPaymentConfirmed($this->getOrderTransfer()));
         }
 
     }
@@ -42,7 +42,7 @@ class StatusTest extends \PHPUnit_Framework_TestCase
     /**
      * @return bool
      */
-    public function testCaptureApproved()
+    public function testDeliveryConfirmed()
     {
         $constantResults = [
             ApiConstants::REQUEST_MODEL_PAYMENT_INIT => false,
@@ -56,7 +56,7 @@ class StatusTest extends \PHPUnit_Framework_TestCase
             $statusTransaction = $this->createStatusTransaction(
                 $this->getQueryContainerMock(ApiConstants::REQUEST_CODE_SUCCESS_MATRIX[$constant])
             );
-            $this->assertEquals($expectedResult, $statusTransaction->isCaptureApproved($this->getOrderTransfer()));
+            $this->assertEquals($expectedResult, $statusTransaction->isDeliveryConfirmed($this->getOrderTransfer()));
         }
     }
 

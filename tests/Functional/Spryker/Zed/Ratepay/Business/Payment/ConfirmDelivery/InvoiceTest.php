@@ -4,12 +4,12 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Functional\Spryker\Zed\Ratepay\Business\Payment\PreAuthorize;
+namespace Functional\Spryker\Zed\Ratepay\Business\Payment\ConfirmDelivery;
 
-use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\PreAuthorizeAdapterMock;
-use Functional\Spryker\Zed\Ratepay\Business\Payment\InstallmentAbstractTest;
+use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\ConfirmDeliveryAdapterMock;
+use Functional\Spryker\Zed\Ratepay\Business\Payment\InvoiceAbstractTest;
 
-class InstallmentTest extends InstallmentAbstractTest
+class InvoiceTest extends InvoiceAbstractTest
 {
 
     /**
@@ -26,19 +26,19 @@ class InstallmentTest extends InstallmentAbstractTest
     }
 
     /**
-     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\PreAuthorizeAdapterMock
+     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\ConfirmDeliveryAdapterMock
      */
     protected function getPaymentSuccessResponseAdapterMock()
     {
-        return new PreAuthorizeAdapterMock();
+        return new ConfirmDeliveryAdapterMock();
     }
 
     /**
-     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\PreAuthorizeAdapterMock
+     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\ConfirmDeliveryAdapterMock
      */
     protected function getPaymentFailureResponseAdapterMock()
     {
-        return (new PreAuthorizeAdapterMock())->expectFailure();
+        return (new ConfirmDeliveryAdapterMock())->expectFailure();
     }
 
     /**
@@ -48,7 +48,7 @@ class InstallmentTest extends InstallmentAbstractTest
      */
     protected function runFacadeMethod($facade)
     {
-        return $facade->preAuthorizePayment($this->orderTransfer);
+        return $facade->confirmDelivery($this->orderTransfer, $this->orderTransfer->getItems()->getArrayCopy());
     }
 
 }

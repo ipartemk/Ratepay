@@ -57,7 +57,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Performs the pre-check payment request to Ratepay gateway.
+     * - Performs check the customer and order details payment request to Ratepay gateway.
      *
      * @api
      *
@@ -65,11 +65,11 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function preCheckPayment(QuoteTransfer $quoteTransfer)
+    public function requestPayment(QuoteTransfer $quoteTransfer)
     {
         return $this
             ->getFactory()
-            ->createPreCheckPaymentTransactionHandler()
+            ->createRequestPaymentTransactionHandler()
             ->request($quoteTransfer);
     }
 
@@ -83,17 +83,17 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function preAuthorizePayment(OrderTransfer $orderTransfer)
+    public function confirmPayment(OrderTransfer $orderTransfer)
     {
         return $this
             ->getFactory()
-            ->createPreAuthorizePaymentTransactionHandler()
+            ->createConfirmPaymentTransactionHandler()
             ->request($orderTransfer);
     }
 
     /**
      * Specification:
-     * - Performs the capture payment request to Ratepay gateway.
+     * - Performs the delivery confirmation request to Ratepay gateway.
      *
      * @api
      *
@@ -102,11 +102,11 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    public function capturePayment(OrderTransfer $orderTransfer, array $orderItems)
+    public function confirmDelivery(OrderTransfer $orderTransfer, array $orderItems)
     {
         return $this
             ->getFactory()
-            ->createCapturePaymentTransactionHandler()
+            ->createConfirmDeliveryTransactionHandler()
             ->request($orderTransfer, $orderItems);
     }
 
@@ -186,7 +186,7 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Checks if the pre-authorization API request got success response from Ratepay gateway.
+     * - Checks if the payment confirmation API request got success response from Ratepay gateway.
      *
      * @api
      *
@@ -194,17 +194,17 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      *
      * @return bool
      */
-    public function isPreAuthorizationApproved(OrderTransfer $orderTransfer)
+    public function isPaymentConfirmed(OrderTransfer $orderTransfer)
     {
         return $this
             ->getFactory()
             ->createStatusTransaction()
-            ->isPreAuthorizationApproved($orderTransfer);
+            ->isPaymentConfirmed($orderTransfer);
     }
 
     /**
      * Specification:
-     * - Checks if the capture API request got success response from Ratepay gateway.
+     * - Checks if the delivery confirmation API request got success response from Ratepay gateway.
      *
      * @api
      *
@@ -212,12 +212,12 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      *
      * @return bool
      */
-    public function isCaptureApproved(OrderTransfer $orderTransfer)
+    public function isDeliveryConfirmed(OrderTransfer $orderTransfer)
     {
         return $this
             ->getFactory()
             ->createStatusTransaction()
-            ->isCaptureApproved($orderTransfer);
+            ->isDeliveryConfirmed($orderTransfer);
     }
 
     /**

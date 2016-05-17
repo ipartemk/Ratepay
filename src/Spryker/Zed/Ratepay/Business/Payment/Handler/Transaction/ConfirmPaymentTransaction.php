@@ -9,7 +9,7 @@ namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 use Generated\Shared\Transfer\OrderTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 
-class CapturePaymentTransaction extends BaseTransaction implements OrderTransactionInterface
+class ConfirmPaymentTransaction extends BaseTransaction implements OrderTransactionInterface
 {
 
     /**
@@ -23,15 +23,14 @@ class CapturePaymentTransaction extends BaseTransaction implements OrderTransact
         $paymentMethod = $this->getPaymentMethod($orderTransfer);
         $request = $this
             ->getMethodMapper($paymentMethod->getPaymentType())
-            ->deliveryConfirm($orderTransfer, $orderItems);
+            ->paymentConfirm($orderTransfer);
 
         $response = $this->sendRequest((string)$request);
-        $this->logInfo(ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM, $request, $response);
+        $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM, $request, $response);
 
         if ($response->isSuccessful()) {
             $paymentMethod->setResultCode($response->getResultCode())->save();
         }
-
         return $this->converterFactory
             ->getTransferObjectConverter($response)
             ->convert();

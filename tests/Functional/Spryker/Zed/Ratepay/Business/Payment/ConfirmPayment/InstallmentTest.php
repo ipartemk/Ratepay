@@ -4,12 +4,12 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Functional\Spryker\Zed\Ratepay\Business\Payment\Capture;
+namespace Functional\Spryker\Zed\Ratepay\Business\Payment\ConfirmPayment;
 
-use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\CaptureAdapterMock;
-use Functional\Spryker\Zed\Ratepay\Business\Payment\ElvAbstractTest;
+use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\ConfirmPaymentAdapterMock;
+use Functional\Spryker\Zed\Ratepay\Business\Payment\InstallmentAbstractTest;
 
-class ElvTest extends ElvAbstractTest
+class InstallmentTest extends InstallmentAbstractTest
 {
 
     /**
@@ -26,19 +26,19 @@ class ElvTest extends ElvAbstractTest
     }
 
     /**
-     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\CaptureAdapterMock
+     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\ConfirmPaymentAdapterMock
      */
     protected function getPaymentSuccessResponseAdapterMock()
     {
-        return new CaptureAdapterMock();
+        return new ConfirmPaymentAdapterMock();
     }
 
     /**
-     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\CaptureAdapterMock
+     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\ConfirmPaymentAdapterMock
      */
     protected function getPaymentFailureResponseAdapterMock()
     {
-        return (new CaptureAdapterMock())->expectFailure();
+        return (new ConfirmPaymentAdapterMock())->expectFailure();
     }
 
     /**
@@ -48,7 +48,7 @@ class ElvTest extends ElvAbstractTest
      */
     protected function runFacadeMethod($facade)
     {
-        return $facade->capturePayment($this->orderTransfer, $this->orderTransfer->getItems()->getArrayCopy());
+        return $facade->confirmPayment($this->orderTransfer);
     }
 
 }

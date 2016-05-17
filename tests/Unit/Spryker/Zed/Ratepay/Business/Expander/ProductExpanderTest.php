@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\LocalizedAttributesTransfer;
 use Generated\Shared\Transfer\ProductConcreteTransfer;
 use Spryker\Zed\Ratepay\Business\Expander\ProductExpander;
-use Spryker\Zed\Ratepay\Dependency\Facade\RatepayToProductBridge;
 
 class ProductExpanderTest extends \PHPUnit_Framework_TestCase
 {

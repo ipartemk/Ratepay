@@ -28,7 +28,7 @@ class ConfirmPaymentPlugin extends BaseCommandPlugin implements CommandByOrderIn
     public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
         $orderTransfer = $this->getOrderTransfer($orderEntity);
-        $this->getFacade()->preAuthorizePayment($orderTransfer);
+        $this->getFacade()->confirmPayment($orderTransfer);
 
         return [];
     }
