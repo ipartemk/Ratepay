@@ -7,6 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\RatepayRequestInstallmentCalculationTransfer;
 use Generated\Shared\Transfer\RatepayRequestTransfer;
 
 class InstallmentCalculationMapper extends BaseMapper
@@ -54,13 +55,17 @@ class InstallmentCalculationMapper extends BaseMapper
                 ->requireGrandTotal()
                 ->getGrandTotal()
         );
-        $this->requestTransfer->getInstallmentCalculation()
+        $this->requestTransfer->setInstallmentCalculation(new RatepayRequestInstallmentCalculationTransfer())->getInstallmentCalculation()
             ->setSubType($this->ratepayPaymentTransfer->getInstallmentCalculationType())
             ->setAmount($grandTotal)
             ->setCalculationRate($this->ratepayPaymentTransfer->getInterestRate())
             ->setMonth($this->ratepayPaymentTransfer->getInterestMonth())
             ->setPaymentFirstday($this->ratepayPaymentTransfer->getInstallmentPaymentFirstDay())
             ->setCalculationStart($this->ratepayPaymentTransfer->getInstallmentCalculationStart());
+
+        $this->requestTransfer->getHead()
+            ->setOperationSubstring($this->ratepayPaymentTransfer->getInstallmentCalculationType());
+
     }
 
 }

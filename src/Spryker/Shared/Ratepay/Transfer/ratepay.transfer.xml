@@ -226,7 +226,9 @@
         <property name="billingAddress" type="RatepayRequestAddress" />
         <property name="payment" type="RatepayRequestPayment" />
         <property name="shoppingBasket" type="RatepayRequestShoppingBasket" />
-
+        <property name="installmentCalculation" type="RatepayRequestInstallmentCalculation" />
+        <property name="installmentPayment" type="RatepayRequestInstallmentPayment" />
+        <property name="installmentDetails" type="RatepayRequestInstallmentDetails" />
     </transfer>
 
     <transfer name="RatepayRequestHead">
@@ -309,4 +311,25 @@
         <property name="descriptionAddition" type="string" />
     </transfer>
 
+    <transfer name="RatepayRequestInstallmentCalculation">
+        <property name="subType" type="string" />
+        <property name="amount" type="float" />
+        <property name="calculationRate" type="float" />
+        <property name="month" type="int" />
+        <property name="paymentFirstday" type="int" />
+        <property name="calculationStart" type="string" />
+    </transfer>
+
+    <transfer name="RatepayRequestInstallmentPayment">
+        <property name="debitPayType" type="string" />
+        <property name="amount" type="float" />
+    </transfer>
+
+    <transfer name="RatepayRequestInstallmentDetails">
+        <property name="ratesNumber" type="int" />
+        <property name="amount" type="float" />
+        <property name="lastAmount" type="float" />
+        <property name="interestRate" type="float" />
+        <property name="paymentFirstday" type="int" />
+    </transfer>
 </transfer>

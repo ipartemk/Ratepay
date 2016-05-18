@@ -6,10 +6,10 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Payment;
 
+use Spryker\Zed\Ratepay\Business\Api\Builder\Head;
+use Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasket;
 use Spryker\Zed\Ratepay\Business\Api\Constants;
 use Spryker\Zed\Ratepay\Business\Api\Model\Base;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasket;
 
 class Cancel extends Base
 {
@@ -25,13 +25,13 @@ class Cancel extends Base
     const OPERATION_SUBTYPE = 'cancellation';
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasket
+     * @var \Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasket
      */
     protected $basket;
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head $head
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasket $shoppingBasket
+     * @param \Spryker\Zed\Ratepay\Business\Api\Builder\Head $head
+     * @param \Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasket $shoppingBasket
      */
     public function __construct(Head $head, ShoppingBasket $shoppingBasket)
     {
@@ -44,7 +44,7 @@ class Cancel extends Base
      */
     protected function buildData()
     {
-        $this->getHead()->getStorage()->setOperationSubstring(static::OPERATION_SUBTYPE);
+        $this->getHead()->setOperationSubstring(static::OPERATION_SUBTYPE);
         $paymentRequestData = parent::buildData();
         $paymentRequestData['content'] = [
             $this->getShoppingBasket()->getRootTag() => $this->getShoppingBasket(),
@@ -54,7 +54,7 @@ class Cancel extends Base
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasket
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasket
      */
     public function getShoppingBasket()
     {

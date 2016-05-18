@@ -7,7 +7,8 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentDetail;
+use Generated\Shared\Transfer\RatepayRequestInstallmentDetailsTransfer;
+use Generated\Shared\Transfer\RatepayRequestTransfer;
 
 class InstallmentDetailMapper extends BaseMapper
 {
@@ -23,24 +24,23 @@ class InstallmentDetailMapper extends BaseMapper
     protected $ratepayPaymentTransfer;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentDetail
+     * @var \Generated\Shared\Transfer\RatepayRequestTransfer
      */
-    protected $installmentDetail;
+    protected $requestTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentDetail $installmentDetail
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
      */
     public function __construct(
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer,
-        InstallmentDetail $installmentDetail
+        RatepayRequestTransfer $requestTransfer
     ) {
-
         $this->quoteTransfer = $quoteTransfer;
         $this->ratepayPaymentTransfer = $ratepayPaymentTransfer;
-        $this->installmentDetail = $installmentDetail;
+        $this->requestTransfer = $requestTransfer;
     }
 
     /**
@@ -48,7 +48,7 @@ class InstallmentDetailMapper extends BaseMapper
      */
     public function map()
     {
-        $this->installmentDetail->getStorage()
+        $this->requestTransfer->setInstallmentDetails(new RatepayRequestInstallmentDetailsTransfer())->getInstallmentDetails()
             ->setRatesNumber($this->ratepayPaymentTransfer->getInstallmentNumberRates())
             ->setAmount($this->centsToDecimal($this->ratepayPaymentTransfer->getInstallmentRate()))
             ->setLastAmount($this->centsToDecimal($this->ratepayPaymentTransfer->getInstallmentLastRate()))

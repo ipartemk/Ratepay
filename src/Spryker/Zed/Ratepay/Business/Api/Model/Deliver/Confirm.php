@@ -6,10 +6,10 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Deliver;
 
+use Spryker\Zed\Ratepay\Business\Api\Builder\Head;
+use Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasket;
 use Spryker\Zed\Ratepay\Business\Api\Constants;
 use Spryker\Zed\Ratepay\Business\Api\Model\Base;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasket;
 
 class Confirm extends Base
 {
@@ -20,13 +20,13 @@ class Confirm extends Base
     const OPERATION = Constants::REQUEST_MODEL_DELIVER_CONFIRM;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasket
+     * @var \Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasket
      */
     protected $basket;
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head $head
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasket $shoppingBasket
+     * @param \Spryker\Zed\Ratepay\Business\Api\Builder\Head $head
+     * @param \Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasket $shoppingBasket
      */
     public function __construct(Head $head, ShoppingBasket $shoppingBasket)
     {
@@ -39,7 +39,7 @@ class Confirm extends Base
      */
     protected function buildData()
     {
-        $this->getHead()->getStorage()->setOperation(static::OPERATION);
+        $this->getHead()->setOperation(static::OPERATION);
         $paymentRequestData = parent::buildData();
         $paymentRequestData['content'] = [
             $this->getShoppingBasket()->getRootTag() => $this->getShoppingBasket(),
@@ -49,7 +49,7 @@ class Confirm extends Base
     }
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasket $basket
+     * @param \Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasket $basket
      *
      * @return $this
      */
@@ -60,7 +60,7 @@ class Confirm extends Base
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasket
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasket
      */
     public function getShoppingBasket()
     {

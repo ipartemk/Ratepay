@@ -7,7 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Model;
 
 use Spryker\Shared\Ratepay\RatepayConstants;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head;
+use Spryker\Zed\Ratepay\Business\Api\Builder\Head;
 
 abstract class Base extends AbstractRequest
 {
@@ -17,12 +17,12 @@ abstract class Base extends AbstractRequest
     const OPERATION = '';
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head
+     * @var \Spryker\Zed\Ratepay\Business\Api\Builder\Head
      */
     protected $head;
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head $head
+     * @param \Spryker\Zed\Ratepay\Business\Api\Builder\Head $head
      */
     public function __construct(Head $head)
     {
@@ -34,7 +34,7 @@ abstract class Base extends AbstractRequest
      */
     protected function buildData()
     {
-        $this->getHead()->getStorage()->setOperation(static::OPERATION);
+        $this->getHead()->setOperation(static::OPERATION);
         return [
             '@version' => RatepayConstants::RATEPAY_REQUEST_VERSION,
             '@xmlns' => RatepayConstants::RATEPAY_REQUEST_XMLNS_URN,
@@ -51,7 +51,7 @@ abstract class Base extends AbstractRequest
     }
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head $head
+     * @param \Spryker\Zed\Ratepay\Business\Api\Builder\Head $head
      *
      * @return $this
      */
@@ -62,7 +62,7 @@ abstract class Base extends AbstractRequest
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\Head
      */
     public function getHead()
     {

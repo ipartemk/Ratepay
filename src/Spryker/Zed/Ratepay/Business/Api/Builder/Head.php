@@ -4,7 +4,7 @@
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
-namespace Spryker\Zed\Ratepay\Business\Api\Model\Builder;
+namespace Spryker\Zed\Ratepay\Business\Api\Builder;
 
 use Spryker\Shared\Ratepay\RatepayConstants;
 
@@ -16,7 +16,7 @@ class Head extends AbstractBuilder implements BuilderInterface
     /**
      * @return array
      */
-    protected function buildData()
+    public function buildData()
     {
         $return = [
             'system-id' => $this->requestTransfer->getHead()->getSystemId(),
@@ -68,11 +68,23 @@ class Head extends AbstractBuilder implements BuilderInterface
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head
+     * @param string $operation
+     *
+     * @return void
      */
-    public function getStorage()
+    public function setOperation($operation)
     {
-        return $this->requestTransfer->getHead();
+        $this->requestTransfer->getHead()->setOperation($operation);
+    }
+
+    /**
+     * @param string $subOperation
+     *
+     * @return void
+     */
+    public function setOperationSubstring($subOperation)
+    {
+        $this->requestTransfer->getHead()->setOperationSubstring($subOperation);
     }
 
 }

@@ -8,10 +8,17 @@ namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayRequestTransfer;
+use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay;
+use Spryker\Shared\Transfer\TransferInterface;
+use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
-class MapperFactory
+/**
+ * @method \Spryker\Zed\Ratepay\RatepayConfig getConfig()
+ */
+class MapperFactory extends AbstractBusinessFactory
 {
 
     /**
@@ -25,6 +32,42 @@ class MapperFactory
     public function __construct(RatepayRequestTransfer $requestTransfer)
     {
         $this->requestTransfer = $requestTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Spryker\Shared\Transfer\TransferInterface $paymentData
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Mapper\QuoteHeadMapper
+     */
+    public function getQuoteHeadMapper(
+        QuoteTransfer $quoteTransfer,
+        TransferInterface $paymentData
+    ) {
+        return new QuoteHeadMapper(
+            $quoteTransfer,
+            $paymentData,
+            $this->getConfig(),
+            $this->requestTransfer
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay $paymentData
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Mapper\OrderHeadMapper
+     */
+    public function getOrderHeadMapper(
+        OrderTransfer $orderTransfer,
+        SpyPaymentRatepay $paymentData
+    ) {
+        return new OrderHeadMapper(
+            $orderTransfer,
+            $paymentData,
+            $this->getConfig(),
+            $this->requestTransfer
+        );
     }
 
     /**
@@ -54,7 +97,6 @@ class MapperFactory
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer
     ) {
-
         return new BankAccountMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,
@@ -70,7 +112,6 @@ class MapperFactory
     public function getBasketItemMapper(
         ItemTransfer $itemTransfer
     ) {
-
         return new BasketItemMapper(
             $itemTransfer,
             $this->requestTransfer
@@ -87,7 +128,6 @@ class MapperFactory
         $quoteTransfer,
         $ratepayPaymentTransfer
     ) {
-
         return new BasketMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,
@@ -107,7 +147,6 @@ class MapperFactory
         $ratepayPaymentTransfer,
         array $orderItems
     ) {
-
         return new PartialBasketMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,
@@ -126,7 +165,6 @@ class MapperFactory
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer
     ) {
-
         return new CustomerMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,
@@ -144,7 +182,6 @@ class MapperFactory
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer
     ) {
-
         return new PaymentMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,
@@ -162,7 +199,6 @@ class MapperFactory
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer
     ) {
-
         return new InstallmentCalculationMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,
@@ -180,7 +216,6 @@ class MapperFactory
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer
     ) {
-
         return new InstallmentDetailMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,
@@ -198,7 +233,6 @@ class MapperFactory
         QuoteTransfer $quoteTransfer,
         $ratepayPaymentTransfer
     ) {
-
         return new InstallmentPaymentMapper(
             $quoteTransfer,
             $ratepayPaymentTransfer,

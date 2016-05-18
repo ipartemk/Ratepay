@@ -25,9 +25,11 @@ interface MethodInterface
     public function getPaymentData(QuoteTransfer $quoteTransfer);
 
     /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
      * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init
      */
-    public function paymentInit();
+    public function paymentInit($quoteTransfer);
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer

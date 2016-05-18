@@ -7,10 +7,14 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\RatepayRequestCustomerTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 
 class CustomerMapper extends BaseMapper
 {
+
+    const ALLOW_CREDIT_INQUIRY_YES = 'yes';
+    const ALLOW_CREDIT_INQUIRY_NO = 'no';
 
     /**
      * @var \Generated\Shared\Transfer\QuoteTransfer
@@ -52,8 +56,8 @@ class CustomerMapper extends BaseMapper
         $billingAddress = $this->quoteTransfer->requireBillingAddress()->getBillingAddress();
         $shippingAddress = $this->quoteTransfer->requireBillingAddress()->getShippingAddress();
 
-        $this->requestTransfer->getCustomer()
-            ->setAllowCreditInquiry($this->ratepayPaymentTransfer->getCustomerAllowCreditInquiry())
+        $this->requestTransfer->setCustomer(new RatepayRequestCustomerTransfer())->getCustomer()
+            ->setAllowCreditInquiry($this->prepareAllowCreditInquiry())
             ->setGender($this->ratepayPaymentTransfer->requireGender()->getGender())
             ->setDob($this->ratepayPaymentTransfer->requireDateOfBirth()->getDateOfBirth())
             ->setIpAddress($this->ratepayPaymentTransfer->requireIpAddress()->getIpAddress())
@@ -75,6 +79,15 @@ class CustomerMapper extends BaseMapper
             $this->requestTransfer
         );
         $addressMapper->map();
+    }
+
+    /**
+     * @return string
+     */
+    protected function prepareAllowCreditInquiry()
+    {
+        return ($this->ratepayPaymentTransfer->getCustomerAllowCreditInquiry() === false)
+            ? self::ALLOW_CREDIT_INQUIRY_NO : self::ALLOW_CREDIT_INQUIRY_YES;
     }
 
 }

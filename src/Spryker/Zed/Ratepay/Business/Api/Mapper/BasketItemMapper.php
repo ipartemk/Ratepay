@@ -7,6 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\ItemTransfer;
+use Generated\Shared\Transfer\RatepayRequestShoppingBasketItemTransfer;
 use Generated\Shared\Transfer\RatepayRequestTransfer;
 
 class BasketItemMapper extends BaseMapper
@@ -44,7 +45,7 @@ class BasketItemMapper extends BaseMapper
             ->getUnitGrossPriceWithProductOptions();
         $itemPrice = $this->centsToDecimal($itemPrice);
 
-        $this->requestTransfer->getShoppingBasket()->getItems()[0]
+        $itemTransfer = (new RatepayRequestShoppingBasketItemTransfer())
             ->setItemName($this->itemTransfer->requireName()->getName())
             ->setArticleNumber($this->itemTransfer->requireSku()->getSku())
             ->setUniqueArticleNumber($this->itemTransfer->requireGroupKey()->getGroupKey())
@@ -56,7 +57,7 @@ class BasketItemMapper extends BaseMapper
 
         $itemDiscount = $this->getBasketItemDiscount();
         if ($itemDiscount) {
-            $this->requestTransfer->getShoppingBasket()->getItems()[0]->setDiscount($itemDiscount);
+            $itemTransfer->setDiscount($itemDiscount);
         }
 
         $productOptions = [];
@@ -64,7 +65,8 @@ class BasketItemMapper extends BaseMapper
             $productOptions[] = $productOption->getLabelOptionValue();
         }
 
-        $this->requestTransfer->getShoppingBasket()->getItems()[0]->setProductOptions($productOptions);
+        $itemTransfer->setProductOptions($productOptions);
+        $this->requestTransfer->getShoppingBasket()->addItems($itemTransfer);
     }
 
     /**

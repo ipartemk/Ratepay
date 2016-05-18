@@ -57,7 +57,7 @@ class Installment extends AbstractMethod
          * @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
          */
         $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_CONFIGURATION_REQUEST);
-        $this->mapConfigurationData($quoteTransfer, $paymentData, $request);
+        $this->mapConfigurationData($quoteTransfer, $paymentData);
 
         return $request;
     }
@@ -75,7 +75,7 @@ class Installment extends AbstractMethod
          * @var \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation $request
          */
         $request = $this->modelFactory->build(ApiConstants::REQUEST_MODEL_CALCULATION_REQUEST);
-        $this->mapCalculationData($quoteTransfer, $paymentData, $request);
+        $this->mapCalculationData($quoteTransfer, $paymentData);
 
         return $request;
     }
@@ -83,55 +83,47 @@ class Installment extends AbstractMethod
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $paymentData
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
      *
      * @return void
      */
-    protected function mapPaymentData($quoteTransfer, $paymentData, $request)
+    protected function mapPaymentData($quoteTransfer, $paymentData)
     {
-        parent::mapPaymentData($quoteTransfer, $paymentData, $request);
+        parent::mapPaymentData($quoteTransfer, $paymentData);
 
         $this->mapperFactory
-            ->getInstallmentPaymentMapper($quoteTransfer, $paymentData, $request->getPayment())
+            ->getInstallmentPaymentMapper($quoteTransfer, $paymentData)
             ->map();
         $this->mapperFactory
-            ->getInstallmentDetailMapper($quoteTransfer, $paymentData, $request->getPayment()->getStorage()->getInstallmentDetails())
+            ->getInstallmentDetailMapper($quoteTransfer, $paymentData)
             ->map();
         if ($paymentData->getDebitPayType() == RatepayConstants::DEBIT_PAY_TYPE_DIRECT_DEBIT) {
-            $this->mapBankAccountData($quoteTransfer, $paymentData, $request);
+            $this->mapBankAccountData($quoteTransfer, $paymentData);
         }
     }
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $paymentData
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
      *
      * @return void
      */
-    protected function mapConfigurationData($quoteTransfer, $paymentData, $request)
+    protected function mapConfigurationData($quoteTransfer, $paymentData)
     {
-        $request->getHead()->getStorage()
-            ->setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId())
-            ->setCustomerId($quoteTransfer->getCustomer()->getIdCustomer());
+        $this->mapperFactory->getQuoteHeadMapper($quoteTransfer, $paymentData)->map();
     }
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $paymentData
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation $request
      *
      * @return void
      */
-    protected function mapCalculationData($quoteTransfer, $paymentData, $request)
+    protected function mapCalculationData($quoteTransfer, $paymentData)
     {
-        $request->getHead()->getStorage()
-            ->setTransactionId($paymentData->getTransactionId())->setTransactionShortId($paymentData->getTransactionShortId())
-            ->setCustomerId($quoteTransfer->getCustomer()->getIdCustomer())
-            ->setOperationSubstring($paymentData->getInstallmentCalculationType());
+        $this->mapperFactory->getQuoteHeadMapper($quoteTransfer, $paymentData)->map();
 
         $this->mapperFactory
-            ->getInstallmentCalculationMapper($quoteTransfer, $paymentData, $request->getInstallmentCalculation())
+            ->getInstallmentCalculationMapper($quoteTransfer, $paymentData)
             ->map();
     }
 

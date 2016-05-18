@@ -7,9 +7,9 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentDetail;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\Payment;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail as InstallmentDetailPart;
+use Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer;
+use Generated\Shared\Transfer\RatepayRequestInstallmentPaymentTransfer;
+use Generated\Shared\Transfer\RatepayRequestTransfer;
 
 class InstallmentPaymentMapper extends BaseMapper
 {
@@ -20,29 +20,29 @@ class InstallmentPaymentMapper extends BaseMapper
     protected $quoteTransfer;
 
     /**
-     * @var \Generated\Shared\Transfer\RatepayPaymentElvTransfer|\Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer
+     * @var \Generated\Shared\Transfer\RatepayRequestTransfer
+     */
+    protected $requestTransfer;
+
+    /**
+     * @var \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer
      */
     protected $ratepayPaymentTransfer;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Payment
-     */
-    protected $payment;
-
-    /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Payment $payment
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
      */
     public function __construct(
         QuoteTransfer $quoteTransfer,
-        $ratepayPaymentTransfer,
-        Payment $payment
+        RatepayPaymentInstallmentTransfer $ratepayPaymentTransfer,
+        RatepayRequestTransfer $requestTransfer
     ) {
 
         $this->quoteTransfer = $quoteTransfer;
+        $this->requestTransfer = $requestTransfer;
         $this->ratepayPaymentTransfer = $ratepayPaymentTransfer;
-        $this->payment = $payment;
     }
 
     /**
@@ -50,9 +50,8 @@ class InstallmentPaymentMapper extends BaseMapper
      */
     public function map()
     {
-        $this->payment->getStorage()
+        $this->requestTransfer->setInstallmentPayment(new RatepayRequestInstallmentPaymentTransfer())->getInstallmentPayment()
             ->setDebitPayType($this->ratepayPaymentTransfer->getDebitPayType())
-            ->setInstallmentDetails(new InstallmentDetail(new InstallmentDetailPart()))
             ->setAmount(
                 $this->centsToDecimal(
                     $this->quoteTransfer

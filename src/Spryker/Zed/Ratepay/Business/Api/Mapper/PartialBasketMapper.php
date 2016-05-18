@@ -6,6 +6,7 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
+use Generated\Shared\Transfer\RatepayRequestShoppingBasketTransfer;
 use Generated\Shared\Transfer\RatepayRequestTransfer;
 
 class PartialBasketMapper extends BaseMapper
@@ -59,7 +60,8 @@ class PartialBasketMapper extends BaseMapper
         foreach ($this->basketItems as $basketItem) {
             $grandTotal += $basketItem->getSumGrossPriceWithProductOptionAndDiscountAmounts();
         }
-        $this->requestTransfer->getShoppingBasket()
+
+        $this->requestTransfer->setShoppingBasket(new RatepayRequestShoppingBasketTransfer())->getShoppingBasket()
             ->setAmount($this->centsToDecimal($grandTotal))
             ->setCurrency($this->ratepayPaymentTransfer->requireCurrencyIso3()->getCurrencyIso3());
     }

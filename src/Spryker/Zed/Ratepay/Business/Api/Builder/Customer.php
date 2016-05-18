@@ -4,11 +4,13 @@
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
-namespace Spryker\Zed\Ratepay\Business\Api\Model\Builder;
+namespace Spryker\Zed\Ratepay\Business\Api\Builder;
+
+use Spryker\Zed\Ratepay\Business\Api\Constants;
 
 /**
  * Class Customer
- * @package Spryker\Zed\Ratepay\Business\Api\Model\Builder
+ * @package Spryker\Zed\Ratepay\Business\Api\Builder
  */
 class Customer extends AbstractBuilder implements BuilderInterface
 {
@@ -18,7 +20,7 @@ class Customer extends AbstractBuilder implements BuilderInterface
     /**
      * @return array
      */
-    protected function buildData()
+    public function buildData()
     {
         $customerData = [
             'first-name' => $this->requestTransfer->getCustomer()->getFirstName(),
@@ -34,15 +36,15 @@ class Customer extends AbstractBuilder implements BuilderInterface
                 ]
             ],
             'addresses' => [
-                $this->requestTransfer->getBillingAddress(),
-                $this->requestTransfer->getShippingAddress(),
+                (new Address($this->requestTransfer, Constants::REQUEST_MODEL_ADDRESS_TYPE_BILLING)),
+                (new Address($this->requestTransfer, Constants::REQUEST_MODEL_ADDRESS_TYPE_DELIVERY)),
             ],
-            'customer-allow-credit-inquiry' => $this->requestTransfer->getCustomer()->getAllowCreditInquiry(),
+            'customer-allow-credit-inquiry' => $this->requestTransfer->getCustomer()->getAllowCreditInquiry()
         ];
 
-        $bankAccount = $this->requestTransfer->getBankAccount();
-        if ($bankAccount !== null) {
-            $customerData[$bankAccount->getRootTag()] = $bankAccount;
+        if ($this->requestTransfer->getBankAccount() !== null) {
+            $bankAccountBuilder = new BankAccount($this->requestTransfer);
+            $customerData[$bankAccountBuilder->getRootTag()] = $bankAccountBuilder;
         }
 
         return $customerData;
@@ -54,14 +56,6 @@ class Customer extends AbstractBuilder implements BuilderInterface
     public function getRootTag()
     {
         return static::ROOT_TAG;
-    }
-
-    /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer
-     */
-    public function getStorage()
-    {
-        return $this->requestTransfer->getCustomer();
     }
 
 }

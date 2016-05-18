@@ -6,6 +6,7 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Model;
 
+use Spryker\Zed\Ratepay\Business\Api\Builder\BuilderInterface;
 use Spryker\Zed\Ratepay\Business\Api\SimpleXMLElement;
 
 abstract class AbstractRequest implements RequestInterface
@@ -44,7 +45,7 @@ abstract class AbstractRequest implements RequestInterface
     protected function keyValueToXml($key, $value, SimpleXMLElement &$xml)
     {
         if ($value !== null) {
-            if ($value instanceof AbstractRequest) {
+            if ($value instanceof BuilderInterface) {
                 if (is_numeric($key)) {
                     $key = $value->getRootTag();
                 }

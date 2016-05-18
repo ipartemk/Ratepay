@@ -13,9 +13,9 @@ use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 use Spryker\Zed\Messenger\Business\Model\MessengerInterface;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\Http\Guzzle;
 use Spryker\Zed\Ratepay\Business\Api\ApiFactory;
+use Spryker\Zed\Ratepay\Business\Api\Builder\BuilderFactory;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
 use Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\BuilderFactory;
 use Spryker\Zed\Ratepay\Business\Expander\ProductExpander;
 use Spryker\Zed\Ratepay\Business\Internal\Install;
 use Spryker\Zed\Ratepay\Business\Order\MethodMapperFactory;
@@ -159,7 +159,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
             $this->getQueryContainer()
         );
 
-        $transactionHandler->registerMethodMapper($this->createInstallment());
+        $transactionHandler->registerMethodMapper($this->createInstallment($this->createRequestTransfer()));
 
         return $transactionHandler;
     }
@@ -175,7 +175,7 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
             $this->getQueryContainer()
         );
 
-        $transactionHandler->registerMethodMapper($this->createInstallment());
+        $transactionHandler->registerMethodMapper($this->createInstallment($this->createRequestTransfer()));
 
         return $transactionHandler;
     }
@@ -186,10 +186,12 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
      */
     protected function registerAllMethodMappers($transactionHandler)
     {
-        $transactionHandler->registerMethodMapper($this->createInvoice());
-        $transactionHandler->registerMethodMapper($this->createElv());
-        $transactionHandler->registerMethodMapper($this->createPrepayment());
-        $transactionHandler->registerMethodMapper($this->createInstallment());
+        $requestTransfer = $this->createRequestTransfer();
+
+        $transactionHandler->registerMethodMapper($this->createInvoice($requestTransfer));
+        $transactionHandler->registerMethodMapper($this->createElv($requestTransfer));
+        $transactionHandler->registerMethodMapper($this->createPrepayment($requestTransfer));
+        $transactionHandler->registerMethodMapper($this->createInstallment($requestTransfer));
     }
 
     /**
@@ -203,12 +205,14 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
+     *
      * @return Api\Model\RequestModelFactoryInterface
      */
-    public function createApiRequestFactory()
+    public function createApiRequestFactory($requestTransfer)
     {
         $factory = new ApiFactory(
-            $this->createBuilderFactory()
+            $this->createBuilderFactory($requestTransfer)
         );
 
         return $factory->createRequestModelFactory();
@@ -253,73 +257,81 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
+     *
      * @return \Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory
      */
-    protected function createMapperFactory()
+    protected function createMapperFactory($requestTransfer)
     {
         return new MapperFactory(
-            $this->createRequestTransfer()
+            $requestTransfer
         );
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\BuilderFactory
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\BuilderFactory
      */
-    protected function createBuilderFactory()
+    protected function createBuilderFactory($requestTransfer)
     {
         return new BuilderFactory(
-            $this->createRequestTransfer()
+            $requestTransfer
         );
     }
 
     /**
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
+     *
      * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Invoice
      */
-    public function createInvoice()
+    public function createInvoice($requestTransfer)
     {
         return new Invoice(
-            $this->createApiRequestFactory(),
-            $this->createMapperFactory(),
-            $this->createBuilderFactory(),
+            $this->createApiRequestFactory($requestTransfer),
+            $this->createMapperFactory($requestTransfer),
             $this->getQueryContainer()
         );
     }
 
     /**
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
+     *
      * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Elv
      */
-    public function createElv()
+    public function createElv($requestTransfer)
     {
         return new Elv(
-            $this->createApiRequestFactory(),
-            $this->createMapperFactory(),
-            $this->createBuilderFactory(),
+            $this->createApiRequestFactory($requestTransfer),
+            $this->createMapperFactory($requestTransfer),
             $this->getQueryContainer()
         );
     }
 
     /**
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
+     *
      * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment
      */
-    public function createPrepayment()
+    public function createPrepayment($requestTransfer)
     {
         return new Prepayment(
-            $this->createApiRequestFactory(),
-            $this->createMapperFactory(),
-            $this->createBuilderFactory(),
+            $this->createApiRequestFactory($requestTransfer),
+            $this->createMapperFactory($requestTransfer),
             $this->getQueryContainer()
         );
     }
 
     /**
+     * @param \Generated\Shared\Transfer\RatepayRequestTransfer $requestTransfer
+     *
      * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Installment
      */
-    public function createInstallment()
+    public function createInstallment($requestTransfer)
     {
         return new Installment(
-            $this->createApiRequestFactory(),
-            $this->createMapperFactory(),
-            $this->createBuilderFactory(),
+            $this->createApiRequestFactory($requestTransfer),
+            $this->createMapperFactory($requestTransfer),
             $this->getQueryContainer()
         );
     }

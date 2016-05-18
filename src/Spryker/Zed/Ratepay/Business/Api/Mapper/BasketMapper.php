@@ -6,10 +6,20 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
+use Generated\Shared\Transfer\RatepayRequestShoppingBasketTransfer;
 use Generated\Shared\Transfer\RatepayRequestTransfer;
 
 class BasketMapper extends BaseMapper
 {
+
+    const DEFAULT_DISCOUNT_NODE_VALUE = 'Discount';
+    const DEFAULT_DISCOUNT_TAX_RATE = 0;
+    const DEFAULT_DISCOUNT_UNIT_PRICE = 0;
+
+    const DEFAULT_SHIPPING_NODE_VALUE = 'Shipping costs';
+    const DEFAULT_SHIPPING_TAX_RATE = 0;
+
+    const BASKET_DISCOUNT_COEFFICIENT = -1;
 
     /**
      * @var \Generated\Shared\Transfer\QuoteTransfer|\Generated\Shared\Transfer\OrderTransfer
@@ -50,10 +60,17 @@ class BasketMapper extends BaseMapper
         $shippingUnitPrice = $this->centsToDecimal($totalsTransfer->requireExpenseTotal()->getExpenseTotal());
 
         $grandTotal = $this->centsToDecimal($totalsTransfer->requireGrandTotal()->getGrandTotal());
-        $this->requestTransfer->getShoppingBasket()
+        $this->requestTransfer->setShoppingBasket(new RatepayRequestShoppingBasketTransfer())->getShoppingBasket()
             ->setAmount($grandTotal)
             ->setCurrency($this->ratepayPaymentTransfer->requireCurrencyIso3()->getCurrencyIso3())
-            ->setShippingUnitPrice($shippingUnitPrice);
+
+            ->setShippingUnitPrice($shippingUnitPrice)
+            ->setShippingTitle(self::DEFAULT_SHIPPING_NODE_VALUE)
+            ->setShippingTaxRate(self::DEFAULT_SHIPPING_TAX_RATE)
+
+            ->setDiscountTitle(self::DEFAULT_DISCOUNT_NODE_VALUE)
+            ->setDiscountUnitPrice(self::DEFAULT_DISCOUNT_UNIT_PRICE * self::BASKET_DISCOUNT_COEFFICIENT)
+            ->setDiscountTaxRate(self::DEFAULT_DISCOUNT_TAX_RATE);
     }
 
 }

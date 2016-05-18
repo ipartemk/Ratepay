@@ -12,7 +12,6 @@ use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
-use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PyamentRequest;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;
 use Spryker\Zed\Ratepay\Business\Exception\NoMethodMapperException;
 use Spryker\Zed\Ratepay\Business\Payment\Log\LoggerTrait;
@@ -74,7 +73,7 @@ abstract class BaseTransaction
 
         $paymentMethod = $this->getMethodMapper($paymentMethod);
         $request = $paymentMethod
-            ->paymentInit();
+            ->paymentInit($quoteTransfer);
         $response = $this->sendRequest((string)$request);
         $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_INIT, $request, $response);
 
@@ -169,31 +168,31 @@ abstract class BaseTransaction
      */
     protected function logInfo($message, $request, $response)
     {
-        $context = [
-            'order_id' => $request->getHead()->getStorage()->getOrderId(),
-
-            'payment_method' => null,
-            'request_type' => $request->getHead()->getStorage()->getOperation(),
-            'request_transaction_id' => $request->getHead()->getStorage()->getTransactionId(),
-            'request_transaction_short_id' => $request->getHead()->getStorage()->getTransactionShortId(),
-            'request_body' => (string)$request,
-
-            'response_type' => $response->getResponseType(),
-            'response_result_code' => $response->getResultCode(),
-            'response_result_text' => $response->getResultText(),
-            'response_transaction_id' => $response->getTransactionId(),
-            'response_transaction_short_id' => $response->getTransactionShortId(),
-            'response_reason_code' => $response->getReasonCode(),
-            'response_reason_text' => $response->getReasonText(),
-            'response_status_code' => $response->getStatusCode(),
-            'response_status_text' => $response->getStatusText(),
-            'response_customer_message' => $response->getCustomerMessage(),
-        ];
-        if ($request instanceof PyamentRequest) {
-            $context['payment_method'] = $request->getPayment()->getStorage()->getMethod();
-        }
-
-        $this->getLogger()->info($message, $context);
+//        $context = [
+//            'order_id' => $request->getHead()->getStorage()->getOrderId(),
+//
+//            'payment_method' => null,
+//            'request_type' => $request->getHead()->getStorage()->getOperation(),
+//            'request_transaction_id' => $request->getHead()->getStorage()->getTransactionId(),
+//            'request_transaction_short_id' => $request->getHead()->getStorage()->getTransactionShortId(),
+//            'request_body' => (string)$request,
+//
+//            'response_type' => $response->getResponseType(),
+//            'response_result_code' => $response->getResultCode(),
+//            'response_result_text' => $response->getResultText(),
+//            'response_transaction_id' => $response->getTransactionId(),
+//            'response_transaction_short_id' => $response->getTransactionShortId(),
+//            'response_reason_code' => $response->getReasonCode(),
+//            'response_reason_text' => $response->getReasonText(),
+//            'response_status_code' => $response->getStatusCode(),
+//            'response_status_text' => $response->getStatusText(),
+//            'response_customer_message' => $response->getCustomerMessage(),
+//        ];
+//        if ($request instanceof PaymentRequest) {
+//            $context['payment_method'] = $request->getPayment()->getStorage()->getMethod();
+//        }
+//
+//        $this->getLogger()->info($message, $context);
     }
 
 }

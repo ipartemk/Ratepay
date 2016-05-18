@@ -7,8 +7,8 @@
 namespace Spryker\Zed\Ratepay\Business\Api;
 
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
+use Spryker\Zed\Ratepay\Business\Api\Builder\BuilderFactory;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\BuilderFactory;
 use Spryker\Zed\Ratepay\Business\Api\Model\Deliver\Confirm as DeliverConfirm;
 
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation as PaymentCalculation;
@@ -27,14 +27,14 @@ class ApiFactory extends AbstractBusinessFactory
 {
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Builder\BuilderFactory
+     * @var \Spryker\Zed\Ratepay\Business\Api\Builder\BuilderFactory
      */
     protected $builderFactory;
 
     /**
      * ApiFactory constructor.
      *
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\BuilderFactory $builderFactory
+     * @param \Spryker\Zed\Ratepay\Business\Api\Builder\BuilderFactory $builderFactory
      */
     public function __construct(BuilderFactory $builderFactory)
     {

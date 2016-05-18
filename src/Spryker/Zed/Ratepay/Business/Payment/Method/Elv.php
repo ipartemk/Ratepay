@@ -42,14 +42,13 @@ class Elv extends AbstractMethod
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\RatepayPaymentElvTransfer $paymentData
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request $request
      *
      * @return void
      */
-    protected function mapPaymentData($quoteTransfer, $paymentData, $request)
+    protected function mapPaymentData($quoteTransfer, $paymentData)
     {
-        parent::mapPaymentData($quoteTransfer, $paymentData, $request);
-        $this->mapBankAccountData($quoteTransfer, $paymentData, $request);
+        parent::mapPaymentData($quoteTransfer, $paymentData);
+        $this->mapBankAccountData($quoteTransfer, $paymentData);
     }
 
     /**

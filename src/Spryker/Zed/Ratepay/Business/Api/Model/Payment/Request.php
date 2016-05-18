@@ -6,12 +6,12 @@
 
 namespace Spryker\Zed\Ratepay\Business\Api\Model\Payment;
 
+use Spryker\Zed\Ratepay\Business\Api\Builder\Customer;
+use Spryker\Zed\Ratepay\Business\Api\Builder\Head;
+use Spryker\Zed\Ratepay\Business\Api\Builder\Payment;
+use Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasket;
 use Spryker\Zed\Ratepay\Business\Api\Constants;
 use Spryker\Zed\Ratepay\Business\Api\Model\Base;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\Customer;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\Payment;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasket;
 
 class Request extends Base
 {
@@ -19,25 +19,25 @@ class Request extends Base
     const OPERATION = Constants::REQUEST_MODEL_PAYMENT_REQUEST;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Customer
+     * @var \Spryker\Zed\Ratepay\Business\Api\Builder\Customer
      */
     protected $customer;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasket
+     * @var \Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasket
      */
     protected $basket;
 
     /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Payment
+     * @var \Spryker\Zed\Ratepay\Business\Api\Builder\Payment
      */
     protected $payment;
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head $head
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Customer $customer
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasket $basket
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Payment $payment
+     * @param \Spryker\Zed\Ratepay\Business\Api\Builder\Head $head
+     * @param \Spryker\Zed\Ratepay\Business\Api\Builder\Customer $customer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasket $basket
+     * @param \Spryker\Zed\Ratepay\Business\Api\Builder\Payment $payment
      */
     public function __construct(
         Head $head,
@@ -68,7 +68,7 @@ class Request extends Base
     }
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Customer $customer
+     * @param \Spryker\Zed\Ratepay\Business\Api\Builder\Customer $customer
      *
      * @return $this
      */
@@ -80,7 +80,7 @@ class Request extends Base
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Customer
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\Customer
      */
     public function getCustomer()
     {
@@ -88,7 +88,7 @@ class Request extends Base
     }
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasket $basket
+     * @param \Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasket $basket
      *
      * @return $this
      */
@@ -100,7 +100,7 @@ class Request extends Base
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasket
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasket
      */
     public function getShoppingBasket()
     {
@@ -108,7 +108,7 @@ class Request extends Base
     }
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Payment $payment
+     * @param \Spryker\Zed\Ratepay\Business\Api\Builder\Payment $payment
      *
      * @return $this
      */
@@ -120,7 +120,7 @@ class Request extends Base
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Payment
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\Payment
      */
     public function getPayment()
     {

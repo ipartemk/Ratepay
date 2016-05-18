@@ -4,7 +4,7 @@
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
-namespace Spryker\Zed\Ratepay\Business\Api\Model\Builder;
+namespace Spryker\Zed\Ratepay\Business\Api\Builder;
 
 class BankAccount extends AbstractBuilder implements BuilderInterface
 {
@@ -14,7 +14,7 @@ class BankAccount extends AbstractBuilder implements BuilderInterface
     /**
      * @return array
      */
-    protected function buildData()
+    public function buildData()
     {
         $return = [
             'owner' => $this->requestTransfer->getBankAccount()->getOwner(),
@@ -30,14 +30,6 @@ class BankAccount extends AbstractBuilder implements BuilderInterface
     public function getRootTag()
     {
         return static::ROOT_TAG;
-    }
-
-    /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount
-     */
-    public function getStorage()
-    {
-        return $this->requestTransfer->getBankAccount();
     }
 
 }

@@ -7,6 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\AddressTransfer;
+use Generated\Shared\Transfer\RatepayRequestAddressTransfer;
 use Generated\Shared\Transfer\RatepayRequestTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 
@@ -47,9 +48,11 @@ class AddressMapper extends BaseMapper
     public function map()
     {
         if ($this->type == ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_DELIVERY) {
-            $requestAddressTransfer = $this->requestTransfer->getShippingAddress();
+            $requestAddressTransfer = $this->requestTransfer
+                ->setShippingAddress(new RatepayRequestAddressTransfer())
+                ->getShippingAddress();
         } else {
-            $requestAddressTransfer = $this->requestTransfer->getBillingAddress()
+            $requestAddressTransfer = $this->requestTransfer->setBillingAddress(new RatepayRequestAddressTransfer())->getBillingAddress()
                 ->setFirstName($this->addressTransfer->requireFirstName()->getFirstName())
                 ->setLastName($this->addressTransfer->requireLastName()->getLastName());
         }

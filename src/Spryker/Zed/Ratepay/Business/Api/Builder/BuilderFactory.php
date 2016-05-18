@@ -4,16 +4,15 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\Ratepay\Business\Api\Model\Builder;
+namespace Spryker\Zed\Ratepay\Business\Api\Builder;
 
 use Generated\Shared\Transfer\RatepayRequestTransfer;
-use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
+use Spryker\Zed\Ratepay\Business\Api\Constants;
 
 /**
  * @method \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface getQueryContainer()
- * @method \Spryker\Zed\Ratepay\RatepayConfig getConfig()
  */
-class BuilderFactory extends AbstractBusinessFactory
+class BuilderFactory
 {
 
     /**
@@ -30,7 +29,7 @@ class BuilderFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Customer
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\Customer
      */
     public function createCustomer()
     {
@@ -40,17 +39,18 @@ class BuilderFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Address
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\Address
      */
     public function createCustomerAddress()
     {
         return new Address(
-            $this->requestTransfer
+            $this->requestTransfer,
+            Constants::REQUEST_MODEL_ADDRESS_TYPE_BILLING
         );
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\BankAccount
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\BankAccount
      */
     public function createBankAccount()
     {
@@ -60,22 +60,17 @@ class BuilderFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\Head
      */
     public function createHead()
     {
-        $this->requestTransfer->getHead()
-            ->setSystemId($this->getConfig()->getSystemId())
-            ->setProfileId($this->getConfig()->getProfileId())
-            ->setSecurityCode($this->getConfig()->getSecurityCode());
-
         return new Head(
             $this->requestTransfer
         );
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\Payment
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\Payment
      */
     public function createPayment()
     {
@@ -85,7 +80,7 @@ class BuilderFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasket
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasket
      */
     public function createShoppingBasket()
     {
@@ -95,17 +90,18 @@ class BuilderFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\ShoppingBasketItem
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\ShoppingBasketItem
      */
     public function createShoppingBasketItem()
     {
         return new ShoppingBasketItem(
-            $this->requestTransfer
+            $this->requestTransfer,
+            0
         );
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentCalculation
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\InstallmentCalculation
      */
     public function createInstallmentCalculation()
     {

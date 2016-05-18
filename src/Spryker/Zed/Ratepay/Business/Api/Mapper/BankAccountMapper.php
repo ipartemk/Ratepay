@@ -7,6 +7,7 @@
 namespace Spryker\Zed\Ratepay\Business\Api\Mapper;
 
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\RatepayRequestBankAccountTransfer;
 
 class BankAccountMapper extends BaseMapper
 {
@@ -47,7 +48,7 @@ class BankAccountMapper extends BaseMapper
      */
     public function map()
     {
-        $this->requestTransfer->getBankAccount()
+        $this->requestTransfer->setBankAccount(new RatepayRequestBankAccountTransfer())->getBankAccount()
             ->setOwner($this->ratepayPaymentTransfer->getBankAccountHolder())
             ->setIban($this->ratepayPaymentTransfer->getBankAccountIban())
             ->setBicSwift($this->ratepayPaymentTransfer->getBankAccountBic());

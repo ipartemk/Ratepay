@@ -4,7 +4,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\Ratepay\Business\Api\Model\Builder;
+namespace Spryker\Zed\Ratepay\Business\Api\Builder;
 
 class Payment extends AbstractBuilder implements BuilderInterface
 {
@@ -14,7 +14,7 @@ class Payment extends AbstractBuilder implements BuilderInterface
     /**
      * @return array
      */
-    protected function buildData()
+    public function buildData()
     {
         $return = [
             '@method' => $this->requestTransfer->getPayment()->getMethod(),
@@ -23,9 +23,12 @@ class Payment extends AbstractBuilder implements BuilderInterface
             'debit-pay-type' => $this->requestTransfer->getPayment()->getDebitPayType(),
         ];
 
-        if ($this->requestTransfer->getPayment()->getInstallmentDetails()) {
-            $return['installment-details'] = $this->requestTransfer->getPayment()->getInstallmentDetails();
+        if ($this->requestTransfer->getInstallmentPayment()) {
+            $return['amount'] = $this->requestTransfer->getInstallmentPayment()->getAmount();
+            $return['debit-pay-type'] = $this->requestTransfer->getInstallmentPayment()->getDebitPayType();
+            $return['installment-details'] = (new InstallmentDetail($this->requestTransfer));
         }
+
         return $return;
     }
 
@@ -35,14 +38,6 @@ class Payment extends AbstractBuilder implements BuilderInterface
     public function getRootTag()
     {
         return static::ROOT_TAG;
-    }
-
-    /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment
-     */
-    public function getStorage()
-    {
-        return $this->requestTransfer->getPayment();
     }
 
 }

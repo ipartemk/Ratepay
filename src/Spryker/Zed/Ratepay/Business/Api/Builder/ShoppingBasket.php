@@ -4,23 +4,17 @@
  * Copyright © 2016-present Spryker Systems GmbH. All rights reserved.
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
-namespace Spryker\Zed\Ratepay\Business\Api\Model\Builder;
+namespace Spryker\Zed\Ratepay\Business\Api\Builder;
 
 class ShoppingBasket extends AbstractBuilder implements BuilderInterface
 {
 
     const ROOT_TAG = 'shopping-basket';
 
-    const DEFAULT_DISCOUNT_NODE_VALUE = 'Discount';
-
-    const DEFAULT_SHIPPING_NODE_VALUE = 'Shipping costs';
-
-    const BASKET_DISCOUNT_COEFFICIENT = -1;
-
     /**
      * @return array
      */
-    protected function buildData()
+    public function buildData()
     {
         $return = [
             '@amount' => $this->requestTransfer->getShoppingBasket()->getAmount(),
@@ -38,15 +32,15 @@ class ShoppingBasket extends AbstractBuilder implements BuilderInterface
 
         if ($this->requestTransfer->getShoppingBasket()->getDiscountUnitPrice()) {
             $return['discount'] = [
-                '@unit-price-gross' => $this->requestTransfer->getShoppingBasket()->getDiscountUnitPrice() * self::BASKET_DISCOUNT_COEFFICIENT,
+                '@unit-price-gross' => $this->requestTransfer->getShoppingBasket()->getDiscountUnitPrice(),
                 '@tax-rate' => $this->requestTransfer->getShoppingBasket()->getDiscountTaxRate(),
                 '#' => $this->requestTransfer->getShoppingBasket()->getDiscountTitle(),
             ];
         }
 
-        $items = $this->requestTransfer->getShoppingBasket()->getItems();
-        foreach ($items as $item) {
-            $return['items'][] = $item;
+        $items = $this->requestTransfer->getShoppingBasket()->getItems()->getArrayCopy();
+        foreach (array_keys($items) as $itemNumber) {
+            $return['items'][] = (new ShoppingBasketItem($this->requestTransfer, $itemNumber));
         }
 
         return $return;
@@ -58,14 +52,6 @@ class ShoppingBasket extends AbstractBuilder implements BuilderInterface
     public function getRootTag()
     {
         return static::ROOT_TAG;
-    }
-
-    /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket
-     */
-    public function getStorage()
-    {
-        return $this->requestTransfer->getShoppingBasket();
     }
 
 }

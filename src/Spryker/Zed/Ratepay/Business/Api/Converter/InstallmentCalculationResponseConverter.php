@@ -52,8 +52,8 @@ class InstallmentCalculationResponseConverter extends BaseConverter
 
         $responseTransfer = new RatepayInstallmentCalculationResponseTransfer();
         $responseTransfer
-            ->setBaseResponse($baseResponse)
-            ->setSubtype($this->request->getInstallmentCalculation()->getStorage()->getSubType());
+            ->setBaseResponse($baseResponse);
+//            ->setSubtype($this->request->getInstallmentCalculation()->getSubType());
 
         $successCode = Constants::REQUEST_CODE_SUCCESS_MATRIX[Constants::REQUEST_MODEL_CALCULATION_REQUEST];
         if ($successCode == $baseResponse->getResultCode()) {
