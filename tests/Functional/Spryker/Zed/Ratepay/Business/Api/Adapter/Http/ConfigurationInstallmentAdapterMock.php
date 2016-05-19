@@ -10,7 +10,7 @@ class ConfigurationInstallmentAdapterMock extends AbstractAdapterMock
 {
 
     /**
-     * @return array
+     * @return string
      */
     public function getSuccessResponse()
     {
@@ -54,7 +54,7 @@ class ConfigurationInstallmentAdapterMock extends AbstractAdapterMock
 
 
     /**
-     * @return array
+     * @return string
      */
     public function getFailureResponse()
     {

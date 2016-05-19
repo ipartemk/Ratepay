@@ -7,7 +7,8 @@
 namespace Functional\Spryker\Zed\Ratepay\Business\Payment\ConfigurationCalculation;
 
 use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\ConfigurationInstallmentAdapterMock;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
+use Generated\Shared\Transfer\RatepayRequestTransfer;
+use Spryker\Zed\Ratepay\Business\Api\Builder\Head;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Configuration;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\ConfigurationResponse;
 
@@ -87,7 +88,9 @@ class InstallmentConfigurationTest extends InstallmentAbstractTest
      */
     protected function getConfigurationRequest()
     {
-        return new Configuration(new Head('MyTestsystem', 'INTEGRATION_TE_DACH', '4c0a11923fa3433fb168f9c7176429e9'));
+        return new Configuration(
+            new Head(new RatepayRequestTransfer())
+        );
     }
 
 }

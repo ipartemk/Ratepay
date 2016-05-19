@@ -7,8 +7,9 @@
 namespace Functional\Spryker\Zed\Ratepay\Business\Payment\ConfigurationCalculation;
 
 use Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\CalculationByTimeInstallmentAdapterMock;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation;
+use Generated\Shared\Transfer\RatepayRequestTransfer;
+use Spryker\Zed\Ratepay\Business\Api\Builder\Head;
+use Spryker\Zed\Ratepay\Business\Api\Builder\InstallmentCalculation;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse;
 
@@ -87,9 +88,11 @@ class InstallmentCalculationByTimeTest extends InstallmentAbstractTest
      */
     protected function getCalculationRequest()
     {
+        $requestTransfer = new RatepayRequestTransfer();
+
         return new Calculation(
-            new Head('MyTestsystem', 'INTEGRATION_TE_DACH', '4c0a11923fa3433fb168f9c7176429e9'),
-            new InstallmentCalculation()
+            new Head($requestTransfer),
+            new InstallmentCalculation($requestTransfer)
         );
     }
 

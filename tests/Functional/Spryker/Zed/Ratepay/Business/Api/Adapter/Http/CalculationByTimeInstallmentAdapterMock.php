@@ -10,7 +10,7 @@ class CalculationByTimeInstallmentAdapterMock extends AbstractAdapterMock
 {
 
     /**
-     * @return array
+     * @return string
      */
     public function getSuccessResponse()
     {
@@ -48,7 +48,7 @@ class CalculationByTimeInstallmentAdapterMock extends AbstractAdapterMock
 
 
     /**
-     * @return array
+     * @return string
      */
     public function getFailureResponse()
     {

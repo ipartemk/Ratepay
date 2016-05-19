@@ -370,12 +370,19 @@ class RatepayBusinessFactory extends AbstractBusinessFactory
         return $this->getProvidedDependency(RatepayDependencyProvider::FACADE_GLOSSARY);
     }
 
+    //todo: fix temporary solution.
+    static $requestTransfer = null;
     /**
      * @return \Generated\Shared\Transfer\RatepayRequestTransfer
      */
     protected function createRequestTransfer()
     {
-        return new RatepayRequestTransfer();
+        if (self::$requestTransfer === null) {
+            self::$requestTransfer = new RatepayRequestTransfer();
+        }
+
+        return self::$requestTransfer;
+//        return new RatepayRequestTransfer();
     }
 
 }
