@@ -6,28 +6,23 @@
 
 namespace Unit\Spryker\Zed\Ratepay\Business\Api\Converter;
 
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentDetail;
-
 class InstallmentDetailMapperTest extends AbstractMapperTest
 {
 
     public function testMapper()
     {
-        $installmentDetail = new InstallmentDetail();
-
         $this->mapperFactory
             ->getInstallmentDetailMapper(
                 $this->mockQuoteTransfer(),
-                $this->mockRatepayPaymentInstallmentTransfer(),
-                $installmentDetail
+                $this->mockRatepayPaymentInstallmentTransfer()
             )
             ->map();
 
-        $this->assertEquals(3, $installmentDetail->getRatesNumber());
-        $this->assertEquals(12, $installmentDetail->getAmount());
-        $this->assertEquals(14.5, $installmentDetail->getLastAmount());
-        $this->assertEquals(0.14, $installmentDetail->getInterestRate());
-        $this->assertEquals(28, $installmentDetail->getPaymentFirstday());
+        $this->assertEquals(3, $this->requestTransfer->getInstallmentDetails()->getRatesNumber());
+        $this->assertEquals(12, $this->requestTransfer->getInstallmentDetails()->getAmount());
+        $this->assertEquals(14.5, $this->requestTransfer->getInstallmentDetails()->getLastAmount());
+        $this->assertEquals(0.14, $this->requestTransfer->getInstallmentDetails()->getInterestRate());
+        $this->assertEquals(28, $this->requestTransfer->getInstallmentDetails()->getPaymentFirstday());
     }
 
 }

@@ -47,23 +47,32 @@ class AddressMapper extends BaseMapper
      */
     public function map()
     {
-        if ($this->type == ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_DELIVERY) {
-            $requestAddressTransfer = $this->requestTransfer
-                ->setShippingAddress(new RatepayRequestAddressTransfer())
-                ->getShippingAddress();
-        } else {
-            $requestAddressTransfer = $this->requestTransfer->setBillingAddress(new RatepayRequestAddressTransfer())->getBillingAddress()
-                ->setFirstName($this->addressTransfer->requireFirstName()->getFirstName())
-                ->setLastName($this->addressTransfer->requireLastName()->getLastName());
-        }
-
-        $requestAddressTransfer
+        $this->prepareAddressTransfer()
             ->setCity($this->addressTransfer->requireCity()->getCity())
             ->setCountryCode($this->addressTransfer->requireIso2Code()->getIso2Code())
             ->setStreet($this->addressTransfer->requireAddress1()->getAddress1())
             ->setStreetAdditional($this->addressTransfer->getAddress3()) // This is optional.
             ->setStreetNumber($this->addressTransfer->requireAddress2()->getAddress2())
             ->setZipCode($this->addressTransfer->requireZipCode()->getZipCode());
+    }
+
+    /**
+     * @return RatepayRequestAddressTransfer
+     */
+    protected function prepareAddressTransfer()
+    {
+        if ($this->type == ApiConstants::REQUEST_MODEL_ADDRESS_TYPE_DELIVERY) {
+            $requestAddressTransfer = $this->requestTransfer->setShippingAddress(new RatepayRequestAddressTransfer())->getShippingAddress()
+                ->setFirstName($this->addressTransfer->requireFirstName()->getFirstName())
+                ->setLastName($this->addressTransfer->requireLastName()->getLastName());
+
+            return $requestAddressTransfer;
+        }
+
+        $requestAddressTransfer = $this->requestTransfer->setBillingAddress(new RatepayRequestAddressTransfer())
+            ->getBillingAddress();
+
+        return $requestAddressTransfer;
     }
 
 }

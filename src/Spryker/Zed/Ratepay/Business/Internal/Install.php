@@ -75,23 +75,41 @@ class Install extends AbstractInstaller
             }
 
             foreach ($data['translations'] as $localeName => $text) {
-                $locale = new LocaleTransfer();
-                $locale->setLocaleName($localeName);
-                $results[$keyName]['translation'][$localeName]['text'] = $text;
-                $results[$keyName]['translation'][$localeName]['created'] = false;
-                $results[$keyName]['translation'][$localeName]['updated'] = false;
-
-                if (!$this->glossary->hasTranslation($keyName, $locale)) {
-                    $this->glossary->createAndTouchTranslation($keyName, $locale, $text, true);
-                    $results[$keyName]['translation'][$localeName]['created'] = true;
-                } else {
-                    $this->glossary->updateAndTouchTranslation($keyName, $locale, $text, true);
-                    $results[$keyName]['translation'][$localeName]['updated'] = true;
-                }
+                $results[$keyName]['translation'][$localeName] = $this->addTranslation($localeName, $keyName, $text);
             }
         }
 
         return $results;
+    }
+
+    /**
+     * @param string $localeName
+     * @param string $keyName
+     * @param string $text
+     *
+     * @return array
+     */
+    protected function addTranslation($localeName, $keyName, $text)
+    {
+        $locale = new LocaleTransfer();
+        $locale->setLocaleName($localeName);
+        $translation = [];
+
+        $translation['text'] = $text;
+        $translation['created'] = false;
+        $translation['updated'] = false;
+
+        if (!$this->glossary->hasTranslation($keyName, $locale)) {
+            $this->glossary->createAndTouchTranslation($keyName, $locale, $text, true);
+            $translation['created'] = true;
+
+            return $translation;
+        }
+
+        $this->glossary->updateAndTouchTranslation($keyName, $locale, $text, true);
+        $translation['updated'] = true;
+
+        return $translation;
     }
 
 }

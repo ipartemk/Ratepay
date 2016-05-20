@@ -7,23 +7,55 @@
 namespace Unit\Spryker\Zed\Ratepay\Business\Payment;
 
 use Codeception\TestCase\Test;
+use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\PaymentTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\RatepayPaymentElvTransfer;
+use Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer;
 use Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer;
+use Generated\Shared\Transfer\RatepayRequestTransfer;
+use Generated\Shared\Transfer\TotalsTransfer;
 use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepayQuery;
 use Spryker\Shared\Ratepay\RatepayConstants;
+use Spryker\Zed\Ratepay\Business\Api\Builder\Head;
+use Spryker\Zed\Ratepay\Business\Api\Builder\InstallmentCalculation;
+use Spryker\Zed\Ratepay\Business\Api\Builder\Payment;
 use Spryker\Zed\Ratepay\Business\Api\Constants;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
+use Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation;
 use Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface;
 use Unit\Spryker\Zed\Ratepay\Business\Api\Response\Response;
 
 class BasePaymentTest extends Test
 {
+
+    /**
+     * @var \Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory
+     */
+    protected $mapperFactory;
+
+    /**
+     * @var \Generated\Shared\Transfer\RatepayRequestTransfer
+     */
+    protected $requestTransfer;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->requestTransfer = new RatepayRequestTransfer();
+        $this->mapperFactory = new MapperFactory($this->requestTransfer);
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        unset($this->requestTransfer);
+        unset($this->mapperFactory);
+    }
 
     /**
      * @param string $className
@@ -49,18 +81,18 @@ class BasePaymentTest extends Test
 
         $converterFactory = new ConverterFactory();
 
-        $paymentLogger = $this->getMockBuilder('\Spryker\Zed\Ratepay\Business\Payment\Model\PaymentLogger')
-            ->disableOriginalConstructor()
+        $transactionHandler = $this->getMockBuilder($className)
+            ->setConstructorArgs([
+                $executionAdapter,
+                $converterFactory,
+                $this->mockRatepayQueryContainer()
+            ])
+            ->setMethods(['logInfo'])
             ->getMock();
-        $paymentLogger->method('info')
+        $transactionHandler->method('logInfo')
             ->willReturn(null);
 
-        return new $className(
-            $executionAdapter,
-            $converterFactory,
-            $paymentLogger,
-            $this->mockRatepayQueryContainer()
-        );
+        return $transactionHandler;
     }
 
     /**
@@ -107,7 +139,25 @@ class BasePaymentTest extends Test
         $quoteTransfer = new QuoteTransfer();
         $quoteTransfer->setPayment($paymentTransfer);
 
+        $quoteTransfer->setCustomer($this->mockCustomerTransfer());
+
+        $total = new TotalsTransfer();
+        $total->setGrandTotal(9900)
+            ->setExpenseTotal(8900);
+        $quoteTransfer->setTotals($total);
+
         return $quoteTransfer;
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\CustomerTransfer
+     */
+    protected function mockCustomerTransfer()
+    {
+        $customerTransfer = new CustomerTransfer();
+        $customerTransfer->setEmail("email@site.com");
+
+        return $customerTransfer;
     }
 
     /**
@@ -254,41 +304,55 @@ class BasePaymentTest extends Test
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Head
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\Head
      */
     protected function mockModelPartHead()
     {
-        $modelPartHead = new Head('s1', 'p1', 'c1');
-        $modelPartHead->setOrderId(1)
+        $this->mapperFactory
+            ->getQuoteHeadMapper(
+                $this->mockQuoteTransfer(),
+                $this->mockPaymentElvTransfer()
+            )->map();
+
+        $this->requestTransfer->getHead()->setOrderId(1)
             ->setOperation(Constants::REQUEST_MODEL_PAYMENT_REQUEST)
             ->setTransactionId('tr1')
             ->setTransactionShortId('tr1_short');
 
-        return $modelPartHead;
+        return new Head($this->requestTransfer);
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\Payment
      */
     protected function mockModelPartPayment()
     {
-        $modelPartPayment = new Payment();
-        $modelPartPayment->setMethod('');
+        $this->mapperFactory
+            ->getPaymentMapper(
+                $this->mockQuoteTransfer(),
+                $this->mockPaymentElvTransfer()
+            )->map();
 
-        return $modelPartPayment;
+        $this->requestTransfer->getPayment()->setMethod('');
+
+        return new Payment($this->requestTransfer);
     }
 
     /**
      * @param string $subType
      *
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation
+     * @return \Spryker\Zed\Ratepay\Business\Api\Builder\InstallmentCalculation
      */
     protected function mockModelPartInstallmentCalculation($subType = 'calculation_by_rate')
     {
-        $modelPartInstallmentCalculation = new InstallmentCalculation();
-        $modelPartInstallmentCalculation->setSubType($subType);
+        $this->mapperFactory
+            ->getInstallmentCalculationMapper(
+                $this->mockQuoteTransfer(),
+                $this->mockRatepayPaymentInstallmentTransfer()
+            )->map();
+        $this->requestTransfer->getInstallmentCalculation()->setSubType($subType);
 
-        return $modelPartInstallmentCalculation;
+        return new InstallmentCalculation($this->requestTransfer);
     }
 
     /**
@@ -300,6 +364,58 @@ class BasePaymentTest extends Test
         $orderTransfer->setIdSalesOrder(1);
 
         return $orderTransfer;
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\RatepayPaymentElvTransfer
+     */
+    protected function mockPaymentElvTransfer()
+    {
+        $ratepayPaymentTransfer = new RatepayPaymentElvTransfer();
+        $ratepayPaymentTransfer->setBankAccountIban("iban")
+            ->setBankAccountBic("bic")
+            ->setBankAccountHolder("holder")
+            ->setCurrencyIso3("iso3")
+            ->setGender("m")
+            ->setDateOfBirth("1980-01-02")
+            ->setIpAddress("127.1.2.3")
+            ->setCustomerAllowCreditInquiry(true)
+            ->setPaymentType("invoice");
+
+        return $ratepayPaymentTransfer;
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer
+     */
+    protected function mockRatepayPaymentInstallmentTransfer()
+    {
+        $ratepayPaymentInstallmentTransfer = new RatepayPaymentInstallmentTransfer();
+        $ratepayPaymentInstallmentTransfer
+            ->setInstallmentCalculationType('calculation-by-rate')
+            ->setInstallmentGrandTotalAmount(12570)
+            ->setInstallmentRate(1200)
+            ->setInstallmentInterestRate(14)
+            ->setInstallmentLastRate(1450)
+            ->setInstallmentMonth(3)
+            ->setInterestRate(14)
+            ->setInterestMonth(3)
+            ->setInstallmentNumberRates(3)
+            ->setInstallmentPaymentFirstDay(28)
+            ->setInstallmentCalculationStart("2016-05-15")
+
+            ->setBankAccountIban("iban")
+            ->setBankAccountBic("bic")
+            ->setBankAccountHolder("holder")
+            ->setCurrencyIso3("iso3")
+            ->setGender("m")
+            ->setDateOfBirth("1980-01-02")
+            ->setIpAddress("127.1.2.3")
+            ->setCustomerAllowCreditInquiry(true)
+            ->setPaymentType("invoice")
+            ->setDebitPayType("invoice");
+
+        return $ratepayPaymentInstallmentTransfer;
     }
 
 }

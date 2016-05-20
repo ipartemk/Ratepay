@@ -72,14 +72,14 @@ class ElvTest extends AbstractMethodMapperTest
      */
     protected function testPaymentSpecificRequestData($request)
     {
-        $this->assertEquals('ELV', $request->getPayment()->getMethod());
+        $this->assertEquals('ELV', $this->requestTransfer->getPayment()->getMethod());
 
-        $this->assertNull($request->getPayment()->getInstallmentDetails());
-        $this->assertNull($request->getPayment()->getDebitPayType());
+        $this->assertNull($this->requestTransfer->getPayment()->getInstallmentDetails());
+        $this->assertNull($this->requestTransfer->getPayment()->getDebitPayType());
 
-        $this->assertEquals('TestHolder', $request->getCustomer()->getBankAccount()->getOwner());
-        $this->assertEquals('XXXXXXXXXXX', $request->getCustomer()->getBankAccount()->getBicSwift());
-        $this->assertEquals('XXXX XXXX XXXX XXXX XXXX XX', $request->getCustomer()->getBankAccount()->getIban());
+        $this->assertEquals('TestHolder', $this->requestTransfer->getBankAccount()->getOwner());
+        $this->assertEquals('XXXXXXXXXXX', $this->requestTransfer->getBankAccount()->getBicSwift());
+        $this->assertEquals('XXXX XXXX XXXX XXXX XXXX XX', $this->requestTransfer->getBankAccount()->getIban());
     }
 
 }

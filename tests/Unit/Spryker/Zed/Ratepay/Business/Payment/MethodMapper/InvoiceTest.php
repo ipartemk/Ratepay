@@ -68,10 +68,10 @@ class InvoiceTest extends AbstractMethodMapperTest
      */
     protected function testPaymentSpecificRequestData($request)
     {
-        $this->assertEquals('INVOICE', $request->getPayment()->getMethod());
+        $this->assertEquals('INVOICE', $this->requestTransfer->getPayment()->getMethod());
 
-        $this->assertNull($request->getPayment()->getInstallmentDetails());
-        $this->assertNull($request->getPayment()->getDebitPayType());
+        $this->assertNull($this->requestTransfer->getPayment()->getInstallmentDetails());
+        $this->assertNull($this->requestTransfer->getPayment()->getDebitPayType());
     }
 
 }

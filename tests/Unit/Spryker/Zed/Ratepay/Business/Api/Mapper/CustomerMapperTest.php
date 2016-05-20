@@ -6,47 +6,26 @@
 
 namespace Unit\Spryker\Zed\Ratepay\Business\Api\Converter;
 
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer;
-
 class CustomerMapperTest extends AbstractMapperTest
 {
 
     public function testMapper()
     {
-        $customer = $this->mockCustomer();
-
         $this->mapperFactory
             ->getCustomerMapper(
                 $this->mockQuoteTransfer(),
-                $this->mockPaymentElvTransfer(),
-                $customer
+                $this->mockPaymentElvTransfer()
             )
             ->map();
 
-        $this->assertEquals('yes', $customer->getAllowCreditInquiry());
-        $this->assertEquals('m', $customer->getGender());
-        $this->assertEquals('1980-01-02', $customer->getDob());
-        $this->assertEquals('127.1.2.3', $customer->getIpAddress());
-        $this->assertEquals('fn', $customer->getFirstName());
-        $this->assertEquals('ln', $customer->getLastName());
-        $this->assertEquals('email@site.com', $customer->getEmail());
-        $this->assertEquals('0491234567', $customer->getPhone());
-    }
-
-    /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Parts\Customer
-     */
-    protected function mockCustomer()
-    {
-        $billingAddress = new Address();
-        $shippingAddress = new Address();
-        $customer = new Customer(
-            $billingAddress,
-            $shippingAddress
-        );
-
-        return $customer;
+        $this->assertEquals('yes', $this->requestTransfer->getCustomer()->getAllowCreditInquiry());
+        $this->assertEquals('m', $this->requestTransfer->getCustomer()->getGender());
+        $this->assertEquals('1980-01-02', $this->requestTransfer->getCustomer()->getDob());
+        $this->assertEquals('127.1.2.3', $this->requestTransfer->getCustomer()->getIpAddress());
+        $this->assertEquals('fn', $this->requestTransfer->getCustomer()->getFirstName());
+        $this->assertEquals('ln', $this->requestTransfer->getCustomer()->getLastName());
+        $this->assertEquals('email@site.com', $this->requestTransfer->getCustomer()->getEmail());
+        $this->assertEquals('0491234567', $this->requestTransfer->getCustomer()->getPhone());
     }
 
 }

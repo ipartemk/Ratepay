@@ -6,9 +6,10 @@
 
 namespace Unit\Spryker\Zed\Ratepay\Business\Api\Converter;
 
+use Generated\Shared\Transfer\RatepayRequestTransfer;
+use Spryker\Zed\Ratepay\Business\Api\Builder\Head;
+use Spryker\Zed\Ratepay\Business\Api\Builder\InstallmentCalculation;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\Head;
-use Spryker\Zed\Ratepay\Business\Api\Model\Builder\InstallmentCalculation;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Configuration;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;
@@ -24,10 +25,16 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
      */
     protected $converterFactory;
 
+    /**
+     * @var \Generated\Shared\Transfer\RatepayRequestTransfer
+     */
+    protected $requestTransfer;
+
     protected function setUp()
     {
         parent::setUp();
 
+        $this->requestTransfer = new RatepayRequestTransfer();
         $this->converterFactory = new ConverterFactory();
     }
 
@@ -128,7 +135,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
     protected function getConfigurationRequest()
     {
         return new Configuration(
-            new Head('MyTestsystem', 'INTEGRATION_TE_DACH', '4c0a11923fa3433fb168f9c7176429e9')
+            new Head($this->requestTransfer)
         );
     }
 
@@ -138,8 +145,8 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
     protected function getCalculationRequest()
     {
         return new Calculation(
-            new Head('MyTestsystem', 'INTEGRATION_TE_DACH', '4c0a11923fa3433fb168f9c7176429e9'),
-            new InstallmentCalculation()
+            new Head($this->requestTransfer),
+            new InstallmentCalculation($this->requestTransfer)
         );
     }
 

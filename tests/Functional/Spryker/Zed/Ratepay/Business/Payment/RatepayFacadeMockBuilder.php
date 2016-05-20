@@ -16,12 +16,17 @@ class RatepayFacadeMockBuilder
 {
 
     /**
+     * @var null|\Generated\Shared\Transfer\RatepayRequestTransfer
+     */
+    static protected $requestTransfer = null;
+
+    /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface $adapter
      * @param \PHPUnit_Framework_TestCase $testCase
      *
      * @return \Spryker\Zed\Ratepay\Business\RatepayFacade
      */
-    public  function build(AdapterInterface $adapter, \PHPUnit_Framework_TestCase $testCase)
+    public function build(AdapterInterface $adapter, \PHPUnit_Framework_TestCase $testCase)
     {
 
         // Mock business factory to override return value of createExecutionAdapter to
@@ -52,14 +57,12 @@ class RatepayFacadeMockBuilder
      *
      * @return \PHPUnit_Framework_MockObject_MockObject|\Spryker\Zed\Ratepay\Business\RatepayBusinessFactory
      */
-    protected  function getBusinessFactoryMock(AdapterInterface $adapter, \PHPUnit_Framework_TestCase $testCase)
+    protected function getBusinessFactoryMock(AdapterInterface $adapter, \PHPUnit_Framework_TestCase $testCase)
     {
         $businessFactoryMock = $testCase->getMock(
             'Spryker\Zed\Ratepay\Business\RatepayBusinessFactory',
             ['createAdapter', 'createRequestTransfer']
         );
-
-        $created = new RatepayRequestTransfer();
 
         $businessFactoryMock->setConfig(new RatepayConfig());
         $businessFactoryMock
@@ -69,14 +72,11 @@ class RatepayFacadeMockBuilder
         $businessFactoryMock
             ->expects($testCase->any())
             ->method('createRequestTransfer')
-//            ->will($testCase->returnValue(self::createRequestTransfer()));
-            ->will($testCase->returnValue($created));
+            ->will($testCase->returnValue($this->createRequestTransfer()));
 
         return $businessFactoryMock;
     }
 
-    //todo: fix temporary solution.
-    static $requestTransfer = null;
     /**
      * @return \Generated\Shared\Transfer\RatepayRequestTransfer
      */

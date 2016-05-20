@@ -7,14 +7,19 @@
 namespace Unit\Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\ItemTransfer;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasketItem;
 
 class BasketItemMapperTest extends AbstractMapperTest
 {
 
     public function testMapper()
     {
-        $basketItem = new ShoppingBasketItem();
+        $this->mapperFactory
+            ->getBasketMapper(
+                $this->mockQuoteTransfer(),
+                $this->mockPaymentElvTransfer()
+            )
+            ->map();
+
         $itemTransfer = new ItemTransfer();
         $itemTransfer->setName("q1")
             ->setSku("q2")
@@ -27,18 +32,17 @@ class BasketItemMapperTest extends AbstractMapperTest
 
         $this->mapperFactory
             ->getBasketItemMapper(
-                $itemTransfer,
-                $basketItem
+                $itemTransfer
             )
             ->map();
 
-        $this->assertEquals("q1", $basketItem->getItemName());
-        $this->assertEquals("q2", $basketItem->getArticleNumber());
-        $this->assertEquals("q3", $basketItem->getUniqueArticleNumber());
-        $this->assertEquals("q4", $basketItem->getQuantity());
-        $this->assertEquals("q5", $basketItem->getTaxRate());
-        $this->assertEquals(12, $basketItem->getUnitPriceGross());
-        $this->assertEquals(14, $basketItem->getDiscount());
+        $this->assertEquals("q1", $this->requestTransfer->getShoppingBasket()->getItems()[0]->getItemName());
+        $this->assertEquals("q2", $this->requestTransfer->getShoppingBasket()->getItems()[0]->getArticleNumber());
+        $this->assertEquals("q3", $this->requestTransfer->getShoppingBasket()->getItems()[0]->getUniqueArticleNumber());
+        $this->assertEquals("q4", $this->requestTransfer->getShoppingBasket()->getItems()[0]->getQuantity());
+        $this->assertEquals("q5", $this->requestTransfer->getShoppingBasket()->getItems()[0]->getTaxRate());
+        $this->assertEquals(12, $this->requestTransfer->getShoppingBasket()->getItems()[0]->getUnitPriceGross());
+        $this->assertEquals(14, $this->requestTransfer->getShoppingBasket()->getItems()[0]->getDiscount());
     }
 
 }

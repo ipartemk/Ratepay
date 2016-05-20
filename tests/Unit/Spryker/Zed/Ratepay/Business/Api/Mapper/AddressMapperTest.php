@@ -7,7 +7,6 @@
 namespace Unit\Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\AddressTransfer;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Address;
 
 class AddressMapperTest extends AbstractMapperTest
 {
@@ -22,33 +21,29 @@ class AddressMapperTest extends AbstractMapperTest
             ->setZipCode("zip")
             ->setFirstName("fn")
             ->setLastName("ln");
-        $address = new Address();
         $this->mapperFactory
             ->getAddressMapper(
                 $addressTransfer,
-                'BILLING',
-                $address
+                'BILLING'
             )
             ->map();
 
-        $this->assertEquals("s1", $address->getCity());
-        $this->assertEquals("iso2", $address->getCountryCode());
-        $this->assertEquals("addr1", $address->getStreet());
-        $this->assertEquals("addr2", $address->getStreetNumber());
-        $this->assertEquals("zip", $address->getZipCode());
-        $this->assertNull($address->getFirstName());
-        $this->assertNull($address->getLastName());
-
+        $this->assertEquals("s1", $this->requestTransfer->getBillingAddress()->getCity());
+        $this->assertEquals("iso2", $this->requestTransfer->getBillingAddress()->getCountryCode());
+        $this->assertEquals("addr1", $this->requestTransfer->getBillingAddress()->getStreet());
+        $this->assertEquals("addr2", $this->requestTransfer->getBillingAddress()->getStreetNumber());
+        $this->assertEquals("zip", $this->requestTransfer->getBillingAddress()->getZipCode());
+        $this->assertNull($this->requestTransfer->getBillingAddress()->getFirstName());
+        $this->assertNull($this->requestTransfer->getBillingAddress()->getLastName());
         $this->mapperFactory
             ->getAddressMapper(
                 $addressTransfer,
-                'DELIVERY',
-                $address
+                'DELIVERY'
             )
             ->map();
 
-        $this->assertEquals("fn", $address->getFirstName());
-        $this->assertEquals("ln", $address->getLastName());
+        $this->assertEquals("fn", $this->requestTransfer->getShippingAddress()->getFirstName());
+        $this->assertEquals("ln", $this->requestTransfer->getShippingAddress()->getLastName());
     }
 
 }

@@ -6,26 +6,21 @@
 
 namespace Unit\Spryker\Zed\Ratepay\Business\Api\Converter;
 
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\BankAccount;
-
 class BankAccountMapperTest extends AbstractMapperTest
 {
 
     public function testMapper()
     {
-        $bankAccount = new BankAccount();
-
         $this->mapperFactory
             ->getBankAccountMapper(
                 $this->mockQuoteTransfer(),
-                $this->mockPaymentElvTransfer(),
-                $bankAccount
+                $this->mockPaymentElvTransfer()
             )
             ->map();
 
-        $this->assertEquals("iban", $bankAccount->getIban());
-        $this->assertEquals("bic", $bankAccount->getBicSwift());
-        $this->assertEquals("holder", $bankAccount->getOwner());
+        $this->assertEquals("iban", $this->requestTransfer->getBankAccount()->getIban());
+        $this->assertEquals("bic", $this->requestTransfer->getBankAccount()->getBicSwift());
+        $this->assertEquals("holder", $this->requestTransfer->getBankAccount()->getOwner());
     }
 
 }

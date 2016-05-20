@@ -7,15 +7,12 @@
 namespace Unit\Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\ItemTransfer;
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\ShoppingBasket;
 
 class PartialBasketMapperTest extends AbstractMapperTest
 {
 
     public function testMapper()
     {
-        $basket = new ShoppingBasket();
-
         $this->mapperFactory
             ->getPartialBasketMapper(
                 $this->mockQuoteTransfer(),
@@ -24,13 +21,12 @@ class PartialBasketMapperTest extends AbstractMapperTest
                     (new ItemTransfer())->setSumGrossPriceWithProductOptionAndDiscountAmounts(9900),
                     (new ItemTransfer())->setSumGrossPriceWithProductOptionAndDiscountAmounts(1500),
                     (new ItemTransfer())->setSumGrossPriceWithProductOptionAndDiscountAmounts(100),
-                ],
-                $basket
+                ]
             )
             ->map();
 
-        $this->assertEquals(115, $basket->getAmount());
-        $this->assertEquals("iso3", $basket->getCurrency());
+        $this->assertEquals(115, $this->requestTransfer->getShoppingBasket()->getAmount());
+        $this->assertEquals("iso3", $this->requestTransfer->getShoppingBasket()->getCurrency());
     }
 
 }

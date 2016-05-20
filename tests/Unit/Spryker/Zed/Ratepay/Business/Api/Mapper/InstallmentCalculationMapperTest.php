@@ -6,29 +6,31 @@
 
 namespace Unit\Spryker\Zed\Ratepay\Business\Api\Converter;
 
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\InstallmentCalculation;
-
 class InstallmentCalculationMapperTest extends AbstractMapperTest
 {
 
     public function testMapper()
     {
-        $calculation = new InstallmentCalculation();
+        $this->mapperFactory
+            ->getQuoteHeadMapper(
+                $this->mockQuoteTransfer(),
+                $this->mockRatepayPaymentInstallmentTransfer()
+            )
+            ->map();
 
         $this->mapperFactory
             ->getInstallmentCalculationMapper(
                 $this->mockQuoteTransfer(),
-                $this->mockRatepayPaymentInstallmentTransfer(),
-                $calculation
+                $this->mockRatepayPaymentInstallmentTransfer()
             )
             ->map();
 
-        $this->assertEquals('calculation-by-rate', $calculation->getSubType());
-        $this->assertEquals(99, $calculation->getAmount());
-        $this->assertEquals(14, $calculation->getCalculationRate());
-        $this->assertEquals(3, $calculation->getMonth());
-        $this->assertEquals(28, $calculation->getPaymentFirstday());
-        $this->assertEquals('2016-05-15', $calculation->getCalculationStart());
+        $this->assertEquals('calculation-by-rate', $this->requestTransfer->getInstallmentCalculation()->getSubType());
+        $this->assertEquals(99, $this->requestTransfer->getInstallmentCalculation()->getAmount());
+        $this->assertEquals(14, $this->requestTransfer->getInstallmentCalculation()->getCalculationRate());
+        $this->assertEquals(3, $this->requestTransfer->getInstallmentCalculation()->getMonth());
+        $this->assertEquals(28, $this->requestTransfer->getInstallmentCalculation()->getPaymentFirstday());
+        $this->assertEquals('2016-05-15', $this->requestTransfer->getInstallmentCalculation()->getCalculationStart());
 
     }
 

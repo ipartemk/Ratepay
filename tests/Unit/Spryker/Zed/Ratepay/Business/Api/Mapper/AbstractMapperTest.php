@@ -12,9 +12,14 @@ use Generated\Shared\Transfer\PaymentTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayPaymentElvTransfer;
 use Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer;
+use Generated\Shared\Transfer\RatepayRequestTransfer;
 use Generated\Shared\Transfer\TotalsTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Mapper\MapperFactory;
 
+/**
+ * Class AbstractMapperTest
+ * @package Unit\Spryker\Zed\Ratepay\Business\Api\Converter
+ */
 abstract class AbstractMapperTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -23,11 +28,17 @@ abstract class AbstractMapperTest extends \PHPUnit_Framework_TestCase
      */
     protected $mapperFactory;
 
+    /**
+     * @var \Generated\Shared\Transfer\RatepayRequestTransfer
+     */
+    protected $requestTransfer;
+
     protected function setUp()
     {
         parent::setUp();
 
-        $this->mapperFactory = new MapperFactory();
+        $this->requestTransfer = new RatepayRequestTransfer();
+        $this->mapperFactory = new MapperFactory($this->requestTransfer);
     }
 
     abstract public function testMapper();

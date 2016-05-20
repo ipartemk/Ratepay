@@ -6,26 +6,21 @@
 
 namespace Unit\Spryker\Zed\Ratepay\Business\Api\Converter;
 
-use Spryker\Zed\Ratepay\Business\Api\Model\Parts\Payment;
-
 class PaymentMapperTest extends AbstractMapperTest
 {
 
     public function testMapper()
     {
-        $payment = new Payment();
-
         $this->mapperFactory
             ->getPaymentMapper(
                 $this->mockQuoteTransfer(),
-                $this->mockPaymentElvTransfer(),
-                $payment
+                $this->mockPaymentElvTransfer()
             )
             ->map();
 
-        $this->assertEquals(99, $payment->getAmount());
-        $this->assertEquals('iso3', $payment->getCurrency());
-        $this->assertEquals('invoice', $payment->getMethod());
+        $this->assertEquals(99, $this->requestTransfer->getPayment()->getAmount());
+        $this->assertEquals('iso3', $this->requestTransfer->getPayment()->getCurrency());
+        $this->assertEquals('invoice', $this->requestTransfer->getPayment()->getMethod());
 
     }
 
