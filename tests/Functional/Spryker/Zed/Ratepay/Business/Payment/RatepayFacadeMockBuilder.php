@@ -7,6 +7,7 @@
 
 namespace Functional\Spryker\Zed\Ratepay\Business\Payment;
 
+use Generated\Shared\Transfer\RatepayRequestTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
 use Spryker\Zed\Ratepay\Persistence\RatepayQueryContainer;
 use Spryker\Zed\Ratepay\RatepayConfig;
@@ -20,17 +21,12 @@ class RatepayFacadeMockBuilder
      *
      * @return \Spryker\Zed\Ratepay\Business\RatepayFacade
      */
-    public static function build(AdapterInterface $adapter, \PHPUnit_Framework_TestCase $testCase)
+    public  function build(AdapterInterface $adapter, \PHPUnit_Framework_TestCase $testCase)
     {
 
         // Mock business factory to override return value of createExecutionAdapter to
         // place a mocked adapter that doesn't establish an actual connection.
-        $businessFactoryMock = self::getBusinessFactoryMock($testCase);
-        $businessFactoryMock->setConfig(new RatepayConfig());
-        $businessFactoryMock
-            ->expects($testCase->any())
-            ->method('createAdapter')
-            ->will($testCase->returnValue($adapter));
+        $businessFactoryMock = $this->getBusinessFactoryMock($adapter, $testCase);
 
         // Business factory always requires a valid query container. Since we're creating
         // functional/integration tests there's no need to mock the database layer.
@@ -51,18 +47,46 @@ class RatepayFacadeMockBuilder
     }
 
     /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface $adapter
      * @param \PHPUnit_Framework_TestCase $testCase
      *
      * @return \PHPUnit_Framework_MockObject_MockObject|\Spryker\Zed\Ratepay\Business\RatepayBusinessFactory
      */
-    protected static function getBusinessFactoryMock(\PHPUnit_Framework_TestCase $testCase)
+    protected  function getBusinessFactoryMock(AdapterInterface $adapter, \PHPUnit_Framework_TestCase $testCase)
     {
         $businessFactoryMock = $testCase->getMock(
             'Spryker\Zed\Ratepay\Business\RatepayBusinessFactory',
-            ['createAdapter']
+            ['createAdapter', 'createRequestTransfer']
         );
 
+        $created = new RatepayRequestTransfer();
+
+        $businessFactoryMock->setConfig(new RatepayConfig());
+        $businessFactoryMock
+            ->expects($testCase->any())
+            ->method('createAdapter')
+            ->will($testCase->returnValue($adapter));
+        $businessFactoryMock
+            ->expects($testCase->any())
+            ->method('createRequestTransfer')
+//            ->will($testCase->returnValue(self::createRequestTransfer()));
+            ->will($testCase->returnValue($created));
+
         return $businessFactoryMock;
+    }
+
+    //todo: fix temporary solution.
+    static $requestTransfer = null;
+    /**
+     * @return \Generated\Shared\Transfer\RatepayRequestTransfer
+     */
+    protected function createRequestTransfer()
+    {
+        if (self::$requestTransfer === null) {
+            self::$requestTransfer = new RatepayRequestTransfer();
+        }
+
+        return self::$requestTransfer;
     }
 
 }

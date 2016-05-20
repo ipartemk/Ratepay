@@ -17,46 +17,6 @@ class InstallmentCalculationByTimeTest extends InstallmentAbstractTest
 {
 
     /**
-     * @return void
-     */
-    public function testPaymentWithSuccessResponse()
-    {
-        $adapterMock = $this->getPaymentSuccessResponseAdapterMock();
-        $facade = $this->getFacadeMock($adapterMock);
-        $this->responseTransfer = $facade->installmentCalculation($this->quoteTransfer);
-
-        $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer', $this->responseTransfer);
-
-        $expectedResponse = $this->sendRequest($adapterMock, $adapterMock->getSuccessResponse());
-
-        $expectedResponseTransfer = $this->converterFactory
-            ->getInstallmentCalculationResponseConverter($expectedResponse, $this->getCalculationRequest())
-            ->convert();
-
-        $this->assertEquals($expectedResponseTransfer, $this->responseTransfer);
-    }
-
-    /**
-     * @return void
-     */
-    public function testPaymentWithFailureResponse()
-    {
-        $adapterMock = $this->getPaymentFailureResponseAdapterMock();
-        $facade = $this->getFacadeMock($adapterMock);
-        $this->responseTransfer = $facade->installmentCalculation($this->quoteTransfer);
-
-        $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer', $this->responseTransfer);
-
-        $expectedResponse = $this->sendRequest($adapterMock, $adapterMock->getFailureResponse());
-
-        $expectedResponseTransfer = $this->converterFactory
-            ->getInstallmentCalculationResponseConverter($expectedResponse, $this->getCalculationRequest())
-            ->convert();
-
-        $this->assertEquals($expectedResponseTransfer, $this->responseTransfer);
-    }
-
-    /**
      * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\CalculationByTimeInstallmentAdapterMock
      */
     protected function getPaymentSuccessResponseAdapterMock()
@@ -73,14 +33,13 @@ class InstallmentCalculationByTimeTest extends InstallmentAbstractTest
     }
 
     /**
-     * @param \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\AbstractAdapterMock $adapterMock
-     * @param string $request
+     * @param \Spryker\Zed\Ratepay\Business\RatepayFacade $facade
      *
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
      */
-    protected function sendRequest($adapterMock, $request)
+    protected function runFacadeMethod($facade)
     {
-        return new CalculationResponse($adapterMock->sendRequest($request));
+        return $facade->installmentCalculation($this->quoteTransfer);
     }
 
     /**
@@ -94,6 +53,36 @@ class InstallmentCalculationByTimeTest extends InstallmentAbstractTest
             new Head($requestTransfer),
             new InstallmentCalculation($requestTransfer)
         );
+    }
+
+    /**
+     * @param \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\AbstractAdapterMock $adapterMock
+     * @param string $request
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse
+     */
+    protected function sendRequest($adapterMock, $request)
+    {
+        return new CalculationResponse($adapterMock->sendRequest($request));
+    }
+
+    /**
+     * @return void
+     */
+    protected function testResponseInstance()
+    {
+        $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer', $this->responseTransfer);
+    }
+
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse $expectedResponse
+     * @return void
+     */
+    protected function convertResponseToTransfer($expectedResponse)
+    {
+        $this->expectedResponseTransfer = $this->converterFactory
+            ->getInstallmentCalculationResponseConverter($expectedResponse, $this->getCalculationRequest())
+            ->convert();
     }
 
 }

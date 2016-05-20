@@ -17,47 +17,7 @@ class InstallmentCalculationByRateTest extends InstallmentAbstractTest
 {
 
     /**
-     * @return void
-     */
-    public function testPaymentWithSuccessResponse()
-    {
-        $adapterMock = $this->getPaymentSuccessResponseAdapterMock();
-        $facade = $this->getFacadeMock($adapterMock);
-        $this->responseTransfer = $facade->installmentCalculation($this->quoteTransfer);
-
-        $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer', $this->responseTransfer);
-
-        $expectedResponse = $this->sendRequest($adapterMock, $adapterMock->getSuccessResponse());
-
-        $expectedResponseTransfer = $this->converterFactory
-            ->getInstallmentCalculationResponseConverter($expectedResponse, $this->getCalculationRequest())
-            ->convert();
-
-        $this->assertEquals($expectedResponseTransfer, $this->responseTransfer);
-    }
-
-    /**
-     * @return void
-     */
-    public function testPaymentWithFailureResponse()
-    {
-        $adapterMock = $this->getPaymentFailureResponseAdapterMock();
-        $facade = $this->getFacadeMock($adapterMock);
-        $this->responseTransfer = $facade->installmentCalculation($this->quoteTransfer);
-
-        $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer', $this->responseTransfer);
-
-        $expectedResponse = $this->sendRequest($adapterMock, $adapterMock->getFailureResponse());
-
-        $expectedResponseTransfer = $this->converterFactory
-            ->getInstallmentCalculationResponseConverter($expectedResponse, $this->getCalculationRequest())
-            ->convert();
-
-        $this->assertEquals($expectedResponseTransfer, $this->responseTransfer);
-    }
-
-    /**
-     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\CalculationByTimeInstallmentAdapterMock
+     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\CalculationByRateInstallmentAdapterMock
      */
     protected function getPaymentSuccessResponseAdapterMock()
     {
@@ -65,11 +25,34 @@ class InstallmentCalculationByRateTest extends InstallmentAbstractTest
     }
 
     /**
-     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\CalculationByTimeInstallmentAdapterMock
+     * @return \Functional\Spryker\Zed\Ratepay\Business\Api\Adapter\Http\CalculationByRateInstallmentAdapterMock
      */
     protected function getPaymentFailureResponseAdapterMock()
     {
         return (new CalculationByRateInstallmentAdapterMock())->expectFailure();
+    }
+
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\RatepayFacade $facade
+     *
+     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
+     */
+    protected function runFacadeMethod($facade)
+    {
+        return $facade->installmentCalculation($this->quoteTransfer);
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation
+     */
+    protected function getCalculationRequest()
+    {
+        $requestTransfer = new RatepayRequestTransfer();
+
+        return new Calculation(
+            new Head($requestTransfer),
+            new InstallmentCalculation($requestTransfer)
+        );
     }
 
     /**
@@ -84,16 +67,22 @@ class InstallmentCalculationByRateTest extends InstallmentAbstractTest
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Payment\Calculation
+     * @return void
      */
-    protected function getCalculationRequest()
+    protected function testResponseInstance()
     {
-        $requestTransfer = new RatepayRequestTransfer();
+        $this->assertInstanceOf('\Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer', $this->responseTransfer);
+    }
 
-        return new Calculation(
-            new Head($requestTransfer),
-            new InstallmentCalculation($requestTransfer)
-        );
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\CalculationResponse $expectedResponse
+     * @return void
+     */
+    protected function convertResponseToTransfer($expectedResponse)
+    {
+        $this->expectedResponseTransfer = $this->converterFactory
+            ->getInstallmentCalculationResponseConverter($expectedResponse, $this->getCalculationRequest())
+            ->convert();
     }
 
 }

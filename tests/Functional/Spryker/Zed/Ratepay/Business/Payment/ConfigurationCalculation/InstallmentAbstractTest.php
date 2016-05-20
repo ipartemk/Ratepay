@@ -6,47 +6,17 @@
 
 namespace Functional\Spryker\Zed\Ratepay\Business\Payment\ConfigurationCalculation;
 
-use Functional\Spryker\Zed\Ratepay\Business\AbstractBusinessTest;
-use Functional\Spryker\Zed\Ratepay\Business\Payment\RatepayFacadeMockBuilder;
+use Functional\Spryker\Zed\Ratepay\Business\Payment\AbstractFacadeTest;
 use Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer;
-use Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay;
 use Spryker\Shared\Ratepay\RatepayConstants;
-use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
-use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
 
-abstract class InstallmentAbstractTest extends AbstractBusinessTest
+abstract class InstallmentAbstractTest extends AbstractFacadeTest
 {
 
     /**
      * @const Payment method code.
      */
     const PAYMENT_METHOD = RatepayConstants::METHOD_INSTALLMENT;
-
-    /**
-     * @var \Generated\Shared\Transfer\RatepayResponseTransfer
-     */
-    protected $responseTransfer;
-
-    /**
-     * @var \Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
-     */
-    protected $converterFactory;
-
-    /**
-     * @var \Orm\Zed\Sales\Persistence\SpySalesOrder
-     */
-    protected $orderEntity;
-
-    /**
-     * @return void
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->quoteTransfer = $this->getQuoteTransfer();
-        $this->converterFactory = new ConverterFactory();
-    }
 
     /**
      * @param \Generated\Shared\Transfer\PaymentTransfer $payment
@@ -79,16 +49,6 @@ abstract class InstallmentAbstractTest extends AbstractBusinessTest
     }
 
     /**
-     * @param \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface $adapter
-     *
-     * @return \Spryker\Zed\Ratepay\Business\RatepayFacade
-     */
-    protected function getFacadeMock(AdapterInterface $adapter)
-    {
-        return (new RatepayFacadeMockBuilder())->build($adapter, $this);
-    }
-
-    /**
      *
      * @param \Orm\Zed\Ratepay\Persistence\SpyPaymentRatepay|\Generated\Shared\Transfer\RatepayPaymentInstallmentTransfer$ratepayPaymentEntity
      *
@@ -109,12 +69,60 @@ abstract class InstallmentAbstractTest extends AbstractBusinessTest
             ->setDeviceFingerprint('122356');
     }
 
-    protected function setUpPaymentTestData()
+    /**
+     * @return void
+     */
+    public function testPaymentWithSuccessResponse()
     {
-        $this->paymentEntity = (new SpyPaymentRatepay())
-            ->setFkSalesOrder($this->orderEntity->getIdSalesOrder());
-        $this->setRatepayPaymentEntityData($this->paymentEntity);
-        $this->paymentEntity->save();
+        $adapterMock = $this->getPaymentSuccessResponseAdapterMock();
+        $facade = $this->getFacadeMock($adapterMock);
+        $this->responseTransfer = $this->runFacadeMethod($facade);
+
+        $this->testResponseInstance();
+
+        $expectedResponse = $this->sendRequest($adapterMock, $adapterMock->getSuccessResponse());
+        $this->convertResponseToTransfer($expectedResponse);
+
+        $this->assertEquals($this->expectedResponseTransfer, $this->responseTransfer);
+
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getResultCode(), $this->responseTransfer->getBaseResponse()->getResultCode());
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getResultText(), $this->responseTransfer->getBaseResponse()->getResultText());
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getReasonCode(), $this->responseTransfer->getBaseResponse()->getReasonCode());
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getReasonText(), $this->responseTransfer->getBaseResponse()->getReasonText());
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getTransactionShortId(), $this->responseTransfer->getBaseResponse()->getTransactionShortId());
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getTransactionId(), $this->responseTransfer->getBaseResponse()->getTransactionId());
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getCustomerMessage(), $this->responseTransfer->getBaseResponse()->getCustomerMessage());
+
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getSuccessful(), $this->responseTransfer->getBaseResponse()->getSuccessful());
+        $this->assertTrue($this->expectedResponseTransfer->getBaseResponse()->getSuccessful());
+    }
+
+    /**
+     * @return void
+     */
+    public function testPaymentWithFailureResponse()
+    {
+        $adapterMock = $this->getPaymentFailureResponseAdapterMock();
+        $facade = $this->getFacadeMock($adapterMock);
+        $this->responseTransfer = $this->runFacadeMethod($facade);
+
+        $this->testResponseInstance();
+
+        $expectedResponse = $this->sendRequest($adapterMock, $adapterMock->getFailureResponse());
+        $this->convertResponseToTransfer($expectedResponse);
+
+        $this->assertEquals($this->expectedResponseTransfer, $this->responseTransfer);
+
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getResultCode(), $this->responseTransfer->getBaseResponse()->getResultCode());
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getResultText(), $this->responseTransfer->getBaseResponse()->getResultText());
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getReasonCode(), $this->responseTransfer->getBaseResponse()->getReasonCode());
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getReasonText(), $this->responseTransfer->getBaseResponse()->getReasonText());
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getTransactionShortId(), $this->responseTransfer->getBaseResponse()->getTransactionShortId());
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getTransactionId(), $this->responseTransfer->getBaseResponse()->getTransactionId());
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getCustomerMessage(), $this->responseTransfer->getBaseResponse()->getCustomerMessage());
+
+        $this->assertSame($this->expectedResponseTransfer->getBaseResponse()->getSuccessful(), $this->responseTransfer->getBaseResponse()->getSuccessful());
+        $this->assertFalse($this->expectedResponseTransfer->getBaseResponse()->getSuccessful());
     }
 
 }

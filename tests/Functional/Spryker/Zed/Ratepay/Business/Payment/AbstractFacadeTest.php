@@ -31,12 +31,12 @@ abstract class AbstractFacadeTest extends AbstractBusinessTest
     protected $orderEntity;
 
     /**
-     * @var \Generated\Shared\Transfer\RatepayResponseTransfer
+     * @var \Generated\Shared\Transfer\RatepayResponseTransfer|\Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer
      */
     protected $responseTransfer;
 
     /**
-     * @var \Generated\Shared\Transfer\RatepayResponseTransfer
+     * @var \Generated\Shared\Transfer\RatepayResponseTransfer|\Generated\Shared\Transfer\RatepayInstallmentCalculationResponseTransfer
      */
     protected $expectedResponseTransfer;
 
@@ -131,12 +131,10 @@ abstract class AbstractFacadeTest extends AbstractBusinessTest
         $facade = $this->getFacadeMock($adapterMock);
         $this->responseTransfer = $this->runFacadeMethod($facade);
 
-        $this->assertInstanceOf('Generated\Shared\Transfer\RatepayResponseTransfer', $this->responseTransfer);
+        $this->testResponseInstance();
 
         $expectedResponse = $this->sendRequest($adapterMock, $adapterMock->getSuccessResponse());
-        $this->expectedResponseTransfer = $this->converterFactory
-            ->getTransferObjectConverter($expectedResponse)
-            ->convert();
+        $this->convertResponseToTransfer($expectedResponse);
 
         $this->assertEquals($this->expectedResponseTransfer, $this->responseTransfer);
 
@@ -161,12 +159,10 @@ abstract class AbstractFacadeTest extends AbstractBusinessTest
         $facade = $this->getFacadeMock($adapterMock);
         $this->responseTransfer = $this->runFacadeMethod($facade);
 
-        $this->assertInstanceOf('Generated\Shared\Transfer\RatepayResponseTransfer', $this->responseTransfer);
+        $this->testResponseInstance();
 
         $expectedResponse = $this->sendRequest($adapterMock, $adapterMock->getFailureResponse());
-        $this->expectedResponseTransfer = $this->converterFactory
-            ->getTransferObjectConverter($expectedResponse)
-            ->convert();
+        $this->convertResponseToTransfer($expectedResponse);
 
         $this->assertEquals($this->expectedResponseTransfer, $this->responseTransfer);
 
@@ -180,6 +176,22 @@ abstract class AbstractFacadeTest extends AbstractBusinessTest
 
         $this->assertSame($this->expectedResponseTransfer->getSuccessful(), $this->responseTransfer->getSuccessful());
         $this->assertFalse($this->expectedResponseTransfer->getSuccessful());
+    }
+
+    protected function testResponseInstance()
+    {
+        $this->assertInstanceOf('Generated\Shared\Transfer\RatepayResponseTransfer', $this->responseTransfer);
+    }
+
+    /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse $expectedResponse
+     * @return void
+     */
+    protected function convertResponseToTransfer($expectedResponse)
+    {
+        $this->expectedResponseTransfer = $this->converterFactory
+            ->getTransferObjectConverter($expectedResponse)
+            ->convert();
     }
 
     /**
