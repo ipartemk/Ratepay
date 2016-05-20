@@ -61,7 +61,7 @@ class CustomerMapper extends BaseMapper
             ->setFirstName($billingAddress->getFirstName())
             ->setLastName($billingAddress->getLastName())
             ->setEmail($customerTransfer->requireEmail()->getEmail())
-            ->setPhone($this->quoteTransfer->requireBillingAddress()->getBillingAddress()->requirePhone()->getPhone());
+            ->setPhone($this->ratepayPaymentTransfer->requirePhone()->getPhone());
 
         $addressMapper = new AddressMapper(
             $billingAddress,

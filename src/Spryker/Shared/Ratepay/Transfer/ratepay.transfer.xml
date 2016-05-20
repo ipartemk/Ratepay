@@ -19,6 +19,7 @@
 
         <!-- These should be here, because then they are easily mapped to Symfony forms data source -->
         <property name="dateOfBirth" type="string"/>
+        <property name="phone" type="string"/>
         <property name="customerAllowCreditInquiry" type="bool" />
     </transfer>
 
@@ -40,6 +41,7 @@
 
         <!-- These should be here, because then they are easily mapped to Symfony forms data source -->
         <property name="dateOfBirth" type="string"/>
+        <property name="phone" type="string"/>
         <property name="customerAllowCreditInquiry" type="bool" />
     </transfer>
 
@@ -57,6 +59,7 @@
 
         <!-- These should be here, because then they are easily mapped to Symfony forms data source -->
         <property name="dateOfBirth" type="string"/>
+        <property name="phone" type="string"/>
         <property name="customerAllowCreditInquiry" type="bool" />
     </transfer>
 
@@ -76,6 +79,7 @@
 
         <!-- These should be here, because then they are easily mapped to Symfony forms data source -->
         <property name="dateOfBirth" type="string"/>
+        <property name="phone" type="string"/>
         <property name="customerAllowCreditInquiry" type="int" />
 
         <property name="debitPayType" type="string"/>
