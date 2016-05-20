@@ -37,6 +37,9 @@ payment.ratepay.prepayment:
 payment.ratepay.date_of_birth:
   translations:
     en_US: 'Date of birth'
+payment.ratepay.phone:
+  translations:
+    en_US: 'Phone number'
 payment.ratepay.customer_allow_credit_inquiry:
   translations:
     en_US: 'Customer allow credit inquiry'
