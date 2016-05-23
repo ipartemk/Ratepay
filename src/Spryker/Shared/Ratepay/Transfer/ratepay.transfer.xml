@@ -164,6 +164,14 @@
         <property name="paymentFirstDay" type="int" />
     </transfer>
 
+    <transfer name="RatepayPaymentListResponse">
+        <property name="baseResponse" type="RatepayResponse"/>
+    </transfer>
+
+    <transfer name="RatepayProfileResponse">
+        <property name="baseResponse" type="RatepayResponse"/>
+    </transfer>
+
     <transfer name="Payment">
         <property name="paymentSelection" type="string"/>
         <property name="ratepayInvoice" type="RatepayPaymentInvoice"/>
