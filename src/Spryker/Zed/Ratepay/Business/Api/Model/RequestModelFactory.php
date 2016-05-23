@@ -16,11 +16,11 @@ class RequestModelFactory implements RequestModelFactoryInterface
 
     /**
      * @param string $modelType
-     * @param callable $builder
+     * @param object $builder
      *
      * @return $this
      */
-    public function registerBuilder($modelType, callable $builder)
+    public function registerBuilder($modelType, $builder)
     {
         $this->builders[$modelType] = $builder;
         return $this;
@@ -34,7 +34,8 @@ class RequestModelFactory implements RequestModelFactoryInterface
     public function build($modelType)
     {
         $builder = $this->builders[$modelType];
-        return $builder();
+
+        return $builder;
     }
 
 }

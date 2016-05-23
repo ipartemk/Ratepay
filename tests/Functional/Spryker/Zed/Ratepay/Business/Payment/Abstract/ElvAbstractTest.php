@@ -61,6 +61,7 @@ abstract class ElvAbstractTest extends AbstractFacadeTest
             ->setCurrencyIso3('EUR')
             ->setCustomerAllowCreditInquiry(true)
             ->setGender('M')
+            ->setPhone('123456789')
             ->setIpAddress('127.0.0.1')
             ->setPaymentType('ELV')
             ->setTransactionId('58-201604122719694')

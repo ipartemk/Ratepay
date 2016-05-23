@@ -16,11 +16,6 @@ class RatepayFacadeMockBuilder
 {
 
     /**
-     * @var null|\Generated\Shared\Transfer\RatepayRequestTransfer
-     */
-    static protected $requestTransfer = null;
-
-    /**
      * @param \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface $adapter
      * @param \PHPUnit_Framework_TestCase $testCase
      *
@@ -82,11 +77,7 @@ class RatepayFacadeMockBuilder
      */
     protected function createRequestTransfer()
     {
-        if (self::$requestTransfer === null) {
-            self::$requestTransfer = new RatepayRequestTransfer();
-        }
-
-        return self::$requestTransfer;
+        return new RatepayRequestTransfer();
     }
 
 }

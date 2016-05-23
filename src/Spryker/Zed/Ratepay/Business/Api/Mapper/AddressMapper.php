@@ -57,7 +57,7 @@ class AddressMapper extends BaseMapper
     }
 
     /**
-     * @return RatepayRequestAddressTransfer
+     * @return \Generated\Shared\Transfer\RatepayRequestAddressTransfer
      */
     protected function prepareAddressTransfer()
     {

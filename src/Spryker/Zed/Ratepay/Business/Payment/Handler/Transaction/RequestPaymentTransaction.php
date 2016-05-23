@@ -12,6 +12,8 @@ use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 class RequestPaymentTransaction extends BaseTransaction implements QuoteTransactionInterface
 {
 
+    const TRANSACTION_TYPE = ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST;
+
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -19,18 +21,16 @@ class RequestPaymentTransaction extends BaseTransaction implements QuoteTransact
      */
     public function request(QuoteTransfer $quoteTransfer)
     {
-        $this->initPayment($quoteTransfer);
-
-        $paymentMethod = $quoteTransfer
+        $paymentMethodName = $quoteTransfer
             ->requirePayment()
             ->getPayment()
             ->requirePaymentMethod()
             ->getPaymentMethod();
 
-        $request = $this->getMethodMapper($paymentMethod)
+        $request = $this->getMethodMapper($paymentMethodName)
             ->paymentRequest($quoteTransfer);
         $response = $this->sendRequest((string)$request);
-        $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST, $request, $response);
+        $this->logInfo($request, $response, $paymentMethodName);
 
         $responseTransfer = $this->converterFactory
             ->getTransferObjectConverter($response)

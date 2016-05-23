@@ -7,10 +7,8 @@
 namespace Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction;
 
 use Generated\Shared\Transfer\OrderTransfer;
-use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\RatepayResponseTransfer;
 use Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface;
-use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 use Spryker\Zed\Ratepay\Business\Api\Converter\ConverterFactory;
 use Spryker\Zed\Ratepay\Business\Api\Model\Response\BaseResponse;
 use Spryker\Zed\Ratepay\Business\Exception\NoMethodMapperException;
@@ -22,6 +20,8 @@ abstract class BaseTransaction
 {
 
     use LoggerTrait;
+
+    const TRANSACTION_TYPE = null;
 
     /**
      * @var \Spryker\Zed\Ratepay\Business\Api\Adapter\AdapterInterface
@@ -56,39 +56,6 @@ abstract class BaseTransaction
         $this->executionAdapter = $executionAdapter;
         $this->converterFactory = $converterFactory;
         $this->queryContainer = $queryContainer;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Generated\Shared\Transfer\RatepayResponseTransfer
-     */
-    protected function initPayment(QuoteTransfer $quoteTransfer)
-    {
-        $paymentMethod = $quoteTransfer
-            ->requirePayment()
-            ->getPayment()
-            ->requirePaymentMethod()
-            ->getPaymentMethod();
-
-        $paymentMethod = $this->getMethodMapper($paymentMethod);
-        $request = $paymentMethod
-            ->paymentInit($quoteTransfer);
-        $response = $this->sendRequest((string)$request);
-        $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_INIT, $request, $response);
-
-        $initResponseTransfer = $this->converterFactory
-            ->getTransferObjectConverter($response)
-            ->convert();
-        if ($initResponseTransfer->getSuccessful()) {
-            $paymentMethod
-                ->getPaymentData($quoteTransfer)
-                ->setTransactionId($initResponseTransfer->requireTransactionId()->getTransactionId())
-                ->setTransactionShortId($initResponseTransfer->requireTransactionShortId()->getTransactionShortId())
-                ->setResultCode($initResponseTransfer->requireResultCode()->getResultCode());
-        }
-
-        return $initResponseTransfer;
     }
 
     /**
@@ -160,39 +127,39 @@ abstract class BaseTransaction
     }
 
     /**
-     * @param string $message
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Base $request
      * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response
+     * @param string $paymentMethod
+     * @param int|null $orderId
      *
      * @return void
      */
-    protected function logInfo($message, $request, $response)
+    protected function logInfo($request, $response, $paymentMethod, $orderId = null)
     {
-//        $context = [
-//            'order_id' => $request->getHead()->getStorage()->getOrderId(),
-//
-//            'payment_method' => null,
-//            'request_type' => $request->getHead()->getStorage()->getOperation(),
-//            'request_transaction_id' => $request->getHead()->getStorage()->getTransactionId(),
-//            'request_transaction_short_id' => $request->getHead()->getStorage()->getTransactionShortId(),
-//            'request_body' => (string)$request,
-//
-//            'response_type' => $response->getResponseType(),
-//            'response_result_code' => $response->getResultCode(),
-//            'response_result_text' => $response->getResultText(),
-//            'response_transaction_id' => $response->getTransactionId(),
-//            'response_transaction_short_id' => $response->getTransactionShortId(),
-//            'response_reason_code' => $response->getReasonCode(),
-//            'response_reason_text' => $response->getReasonText(),
-//            'response_status_code' => $response->getStatusCode(),
-//            'response_status_text' => $response->getStatusText(),
-//            'response_customer_message' => $response->getCustomerMessage(),
-//        ];
-//        if ($request instanceof PaymentRequest) {
-//            $context['payment_method'] = $request->getPayment()->getStorage()->getMethod();
-//        }
-//
-//        $this->getLogger()->info($message, $context);
+        $headData = $request->getHead()->buildData();
+
+        $context = [
+            'order_id' => $orderId,
+
+            'payment_method' => $paymentMethod,
+            'request_type' => static::TRANSACTION_TYPE,
+            'request_transaction_id' =>(isset($headData['transaction-id'])) ? $headData['transaction-id'] : null,
+            'request_transaction_short_id' => (isset($headData['transaction-short-id'])) ? $headData['transaction-short-id'] : null,
+            'request_body' => (string)$request,
+
+            'response_type' => $response->getResponseType(),
+            'response_result_code' => $response->getResultCode(),
+            'response_result_text' => $response->getResultText(),
+            'response_transaction_id' => $response->getTransactionId(),
+            'response_transaction_short_id' => $response->getTransactionShortId(),
+            'response_reason_code' => $response->getReasonCode(),
+            'response_reason_text' => $response->getReasonText(),
+            'response_status_code' => $response->getStatusCode(),
+            'response_status_text' => $response->getStatusText(),
+            'response_customer_message' => $response->getCustomerMessage(),
+        ];
+
+        $this->getLogger()->info(static::TRANSACTION_TYPE, $context);
     }
 
 }

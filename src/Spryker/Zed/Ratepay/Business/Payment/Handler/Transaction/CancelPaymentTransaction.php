@@ -12,6 +12,8 @@ use Spryker\Zed\Ratepay\Business\Api\Constants as ApiConstants;
 class CancelPaymentTransaction extends BaseTransaction implements OrderTransactionInterface
 {
 
+    const TRANSACTION_TYPE = ApiConstants::REQUEST_MODEL_PAYMENT_CANCEL;
+
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      * @param \Generated\Shared\Transfer\ItemTransfer[] $orderItems
@@ -26,7 +28,7 @@ class CancelPaymentTransaction extends BaseTransaction implements OrderTransacti
             ->paymentCancel($orderTransfer, $orderItems);
 
         $response = $this->sendRequest((string)$request);
-        $this->logInfo(ApiConstants::REQUEST_MODEL_PAYMENT_CANCEL, $request, $response);
+        $this->logInfo($request, $response, $paymentMethod->getPaymentType(), $paymentMethod->getFkSalesOrder());
 
         if ($response->isSuccessful()) {
             $paymentMethod->setResultCode($response->getResultCode())->save();

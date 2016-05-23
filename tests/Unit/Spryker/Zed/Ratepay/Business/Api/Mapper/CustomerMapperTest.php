@@ -25,7 +25,7 @@ class CustomerMapperTest extends AbstractMapperTest
         $this->assertEquals('fn', $this->requestTransfer->getCustomer()->getFirstName());
         $this->assertEquals('ln', $this->requestTransfer->getCustomer()->getLastName());
         $this->assertEquals('email@site.com', $this->requestTransfer->getCustomer()->getEmail());
-        $this->assertEquals('0491234567', $this->requestTransfer->getCustomer()->getPhone());
+        $this->assertEquals('123456789', $this->requestTransfer->getCustomer()->getPhone());
     }
 
 }

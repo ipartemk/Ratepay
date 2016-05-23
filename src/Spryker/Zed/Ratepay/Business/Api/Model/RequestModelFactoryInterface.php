@@ -15,7 +15,7 @@ interface RequestModelFactoryInterface
      *
      * @return $this
      */
-    public function registerBuilder($modelType, callable $builder);
+    public function registerBuilder($modelType, $builder);
 
     /**
      * @param string $modelType

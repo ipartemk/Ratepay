@@ -54,6 +54,7 @@ class PrepaymentTest extends AbstractMethodMapperTest
             ->setCurrencyIso3('EUR')
             ->setCustomerAllowCreditInquiry(true)
             ->setGender('M')
+            ->setPhone('123456789')
             ->setIpAddress('127.0.0.1')
             ->setPaymentType('PREPAYMENT')
             ->setTransactionId('58-201604122719694')

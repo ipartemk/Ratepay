@@ -79,6 +79,7 @@ class BaseMethodMapperTest extends \PHPUnit_Framework_TestCase
         $paymentTransfer->setResultCode("200");
         $paymentTransfer->setDeviceFingerprint("fp");
         $paymentTransfer->setGender("M");
+        $paymentTransfer->setPhone("123456789");
         $paymentTransfer->setDateOfBirth("1980-01-02");
         $paymentTransfer->setCustomerAllowCreditInquiry(1);
         $paymentTransfer->setIpAddress("127.1.2.3");

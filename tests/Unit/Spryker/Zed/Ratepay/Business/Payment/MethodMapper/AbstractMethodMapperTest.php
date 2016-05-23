@@ -139,7 +139,7 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
         $this->assertEquals('billingDoe', $this->requestTransfer->getCustomer()->getLastName());
         $this->assertEquals('M', $this->requestTransfer->getCustomer()->getGender());
         $this->assertEquals('yes', $this->requestTransfer->getCustomer()->getAllowCreditInquiry());
-        $this->assertEquals('billing12345678', $this->requestTransfer->getCustomer()->getPhone());
+        $this->assertEquals('123456789', $this->requestTransfer->getCustomer()->getPhone());
         $this->assertNotNull($this->requestTransfer->getCustomer()->getIpAddress());
 
         //basket and items

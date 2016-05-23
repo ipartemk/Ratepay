@@ -20,9 +20,6 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Refund as PaymentRefund;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PaymentRequest;
 use Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactory;
 
-/**
- * @method \Spryker\Zed\Ratepay\Persistence\RatepayQueryContainerInterface getQueryContainer()
- */
 class ApiFactory extends AbstractBusinessFactory
 {
 
@@ -47,55 +44,15 @@ class ApiFactory extends AbstractBusinessFactory
      */
     public function createRequestModelFactory()
     {
-        static $factory;
-        if ($factory === null) {
-            $factory = new RequestModelFactory();
-            $factory
-                ->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_PAYMENT_INIT,
-                    function () {
-                        return $this->createInitModel();
-                    }
-                )
-                ->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST,
-                    function () {
-                        return $this->createPaymentRequestModel();
-                    }
-                )
-                ->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM,
-                    function () {
-                        return $this->createPaymentConfirmModel();
-                    }
-                )
-                ->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM,
-                    function () {
-                        return $this->createDeliverConfirmModel();
-                    }
-                )->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_PAYMENT_CANCEL,
-                    function () {
-                        return $this->cancelPayment();
-                    }
-                )->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_PAYMENT_REFUND,
-                    function () {
-                        return $this->refundPayment();
-                    }
-                )->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_CONFIGURATION_REQUEST,
-                    function () {
-                        return $this->configurationRequest();
-                    }
-                )->registerBuilder(
-                    ApiConstants::REQUEST_MODEL_CALCULATION_REQUEST,
-                    function () {
-                        return $this->calculationRequest();
-                    }
-                );
-        }
+        $factory = (new RequestModelFactory())
+            ->registerBuilder(ApiConstants::REQUEST_MODEL_PAYMENT_INIT, $this->createInitModel())
+            ->registerBuilder(ApiConstants::REQUEST_MODEL_PAYMENT_REQUEST, $this->createPaymentRequestModel())
+            ->registerBuilder(ApiConstants::REQUEST_MODEL_PAYMENT_CONFIRM, $this->createPaymentConfirmModel())
+            ->registerBuilder(ApiConstants::REQUEST_MODEL_DELIVER_CONFIRM, $this->createDeliverConfirmModel())
+            ->registerBuilder(ApiConstants::REQUEST_MODEL_PAYMENT_CANCEL, $this->cancelPayment())
+            ->registerBuilder(ApiConstants::REQUEST_MODEL_PAYMENT_REFUND, $this->refundPayment())
+            ->registerBuilder(ApiConstants::REQUEST_MODEL_CONFIGURATION_REQUEST, $this->configurationRequest())
+            ->registerBuilder(ApiConstants::REQUEST_MODEL_CALCULATION_REQUEST, $this->calculationRequest());
 
         return $factory;
     }
