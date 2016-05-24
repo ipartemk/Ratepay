@@ -19,6 +19,7 @@ use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Init as PaymentInit;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Refund as PaymentRefund;
 use Spryker\Zed\Ratepay\Business\Api\Model\Payment\Request as PaymentRequest;
 use Spryker\Zed\Ratepay\Business\Api\Model\RequestModelFactory;
+use Spryker\Zed\Ratepay\Business\Api\Model\Service\Profile as ProfileRequest;
 
 class ApiFactory extends AbstractBusinessFactory
 {
@@ -52,7 +53,8 @@ class ApiFactory extends AbstractBusinessFactory
             ->registerBuilder(ApiConstants::REQUEST_MODEL_PAYMENT_CANCEL, $this->cancelPayment())
             ->registerBuilder(ApiConstants::REQUEST_MODEL_PAYMENT_REFUND, $this->refundPayment())
             ->registerBuilder(ApiConstants::REQUEST_MODEL_CONFIGURATION_REQUEST, $this->configurationRequest())
-            ->registerBuilder(ApiConstants::REQUEST_MODEL_CALCULATION_REQUEST, $this->calculationRequest());
+            ->registerBuilder(ApiConstants::REQUEST_MODEL_CALCULATION_REQUEST, $this->calculationRequest())
+            ->registerBuilder(ApiConstants::REQUEST_MODEL_PROFILE, $this->profileRequest());
 
         return $factory;
     }
@@ -141,6 +143,16 @@ class ApiFactory extends AbstractBusinessFactory
         return new PaymentCalculation(
             $this->builderFactory->createHead(),
             $this->builderFactory->createInstallmentCalculation()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\Ratepay\Business\Api\Model\Service\Profile
+     */
+    protected function profileRequest()
+    {
+        return new ProfileRequest(
+            $this->builderFactory->createHead()
         );
     }
 

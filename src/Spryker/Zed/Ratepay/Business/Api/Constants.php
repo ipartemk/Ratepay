@@ -12,6 +12,8 @@ class Constants
     /**
      * Request model types.
      */
+    const REQUEST_MODEL_PROFILE = 'PROFILE_REQUEST';
+
     const REQUEST_MODEL_PAYMENT_INIT = 'PAYMENT_INIT';
     const REQUEST_MODEL_PAYMENT_REQUEST = 'PAYMENT_REQUEST';
     const REQUEST_MODEL_PAYMENT_CONFIRM = 'PAYMENT_CONFIRM';
@@ -36,6 +38,7 @@ class Constants
         self::REQUEST_MODEL_DELIVER_CONFIRM => 404,
         self::REQUEST_MODEL_CONFIGURATION_REQUEST => 500,
         self::REQUEST_MODEL_CALCULATION_REQUEST => 502,
+        self::REQUEST_MODEL_PROFILE => 500,
     ];
 
 }

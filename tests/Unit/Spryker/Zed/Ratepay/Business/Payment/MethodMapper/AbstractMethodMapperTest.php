@@ -86,7 +86,7 @@ abstract class AbstractMethodMapperTest extends BasePaymentTest
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface
+     * @return \Spryker\Zed\Ratepay\Business\Request\Payment\Method\MethodInterface
      */
     abstract public function getPaymentMethod();
 

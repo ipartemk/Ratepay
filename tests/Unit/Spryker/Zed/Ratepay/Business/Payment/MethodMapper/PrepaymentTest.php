@@ -9,13 +9,13 @@ namespace Unit\Spryker\Zed\Ratepay\Business\Payment\MethodMapper;
 
 use Generated\Shared\Transfer\PaymentTransfer;
 use Generated\Shared\Transfer\RatepayPaymentPrepaymentTransfer;
-use Spryker\Zed\Ratepay\Business\Payment\Method\Prepayment;
+use Spryker\Zed\Ratepay\Business\Request\Payment\Method\Prepayment;
 
 class PrepaymentTest extends AbstractMethodMapperTest
 {
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface
+     * @return \Spryker\Zed\Ratepay\Business\Request\Payment\Method\MethodInterface
      */
     public function getPaymentMethod()
     {

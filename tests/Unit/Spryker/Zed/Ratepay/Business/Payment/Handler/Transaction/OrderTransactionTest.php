@@ -11,7 +11,7 @@ class OrderTransactionTest extends BaseTransactionTest
 
     public function testConfirmPayment()
     {
-        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\ConfirmPaymentTransaction');
+        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Request\Payment\Handler\Transaction\ConfirmPaymentTransaction');
         $transactionHandler->registerMethodMapper($this->mockMethodInvoice());
 
         $responseTransfer = $transactionHandler->request($this->mockOrderTransfer());
@@ -26,7 +26,7 @@ class OrderTransactionTest extends BaseTransactionTest
 
     public function testCancelPayment()
     {
-        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\CancelPaymentTransaction');
+        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Request\Payment\Handler\Transaction\CancelPaymentTransaction');
         $transactionHandler->registerMethodMapper($this->mockMethodInvoice());
 
         $responseTransfer = $transactionHandler->request($this->mockOrderTransfer());
@@ -41,7 +41,7 @@ class OrderTransactionTest extends BaseTransactionTest
 
     public function testDeliveryConfirmation()
     {
-        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\ConfirmDeliveryTransaction');
+        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Request\Payment\Handler\Transaction\ConfirmDeliveryTransaction');
         $transactionHandler->registerMethodMapper($this->mockMethodInvoice());
 
         $responseTransfer = $transactionHandler->request($this->mockOrderTransfer());
@@ -56,7 +56,7 @@ class OrderTransactionTest extends BaseTransactionTest
 
     public function testRefundPayment()
     {
-        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\RefundPaymentTransaction');
+        $transactionHandler = $this->getTransactionHandlerObject('\Spryker\Zed\Ratepay\Business\Request\Payment\Handler\Transaction\RefundPaymentTransaction');
         $transactionHandler->registerMethodMapper($this->mockMethodInvoice());
 
         $responseTransfer = $transactionHandler->request($this->mockOrderTransfer());

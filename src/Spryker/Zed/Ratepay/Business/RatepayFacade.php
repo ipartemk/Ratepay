@@ -310,8 +310,10 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
      */
     public function requestProfile()
     {
-        //todo: implement.
-        return null;
+        return $this
+            ->getFactory()
+            ->createRequestProfileTransactionHandler()
+            ->request();
     }
 
 }

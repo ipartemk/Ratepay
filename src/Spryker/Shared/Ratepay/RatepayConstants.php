@@ -40,6 +40,11 @@ interface RatepayConstants
     const METHOD_INSTALLMENT = 'INSTALLMENT';
 
     /**
+     * Service method
+     */
+    const METHOD_SERVICE = 'SERVICE';
+
+    /**
      * Installment debit pay type.
      */
     const DEBIT_PAY_TYPE_DIRECT_DEBIT = 'DIRECT-DEBIT';

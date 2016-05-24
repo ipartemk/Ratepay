@@ -35,6 +35,17 @@ class MapperFactory extends AbstractBusinessFactory
     }
 
     /**
+     * @return \Spryker\Zed\Ratepay\Business\Api\Mapper\QuoteHeadMapper
+     */
+    public function getHeadMapper()
+    {
+        return new HeadMapper(
+            $this->getConfig(),
+            $this->requestTransfer
+        );
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Spryker\Shared\Transfer\TransferInterface $paymentData
      *

@@ -170,6 +170,9 @@
 
     <transfer name="RatepayProfileResponse">
         <property name="baseResponse" type="RatepayResponse"/>
+
+        <property name="masterData" type="array"/>
+        <property name="installmentConfigurationResult" type="array"/>
     </transfer>
 
     <transfer name="Payment">

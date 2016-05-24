@@ -67,6 +67,21 @@ class ConverterFactory
     }
 
     /**
+     * @param \Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface $response
+     *
+     * @return \Spryker\Zed\Ratepay\Business\Api\Converter\ProfileResponseConverter
+     */
+    public function getProfileResponseConverter(
+        ResponseInterface $response
+    ) {
+        return new ProfileResponseConverter(
+            $response,
+            $this->createCurrencyManager(),
+            $this->getTransferObjectConverter($response)
+        );
+    }
+
+    /**
      * @return \Spryker\Shared\Library\Currency\CurrencyManager
      */
     protected function createCurrencyManager()

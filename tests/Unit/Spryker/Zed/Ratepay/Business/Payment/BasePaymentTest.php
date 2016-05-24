@@ -61,7 +61,7 @@ class BasePaymentTest extends Test
      * @param string $className
      * @param array $additionalMockMethods
      *
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\QuoteTransactionInterface|\Spryker\Zed\Ratepay\Business\Payment\Handler\Transaction\OrderTransactionInterface
+     * @return \Spryker\Zed\Ratepay\Business\Request\Payment\Handler\Transaction\QuoteTransactionInterface|\Spryker\Zed\Ratepay\Business\Request\Payment\Handler\Transaction\OrderTransactionInterface
      */
     protected function getTransactionHandlerObject($className, $additionalMockMethods = [])
     {
@@ -161,7 +161,7 @@ class BasePaymentTest extends Test
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Invoice
+     * @return \Spryker\Zed\Ratepay\Business\Request\Payment\Method\Invoice
      */
     protected function mockMethodInvoice()
     {
@@ -169,7 +169,7 @@ class BasePaymentTest extends Test
 
         $paymentTransfer = new RatepayPaymentInvoiceTransfer();
 
-        $invoiceMethod = $this->getMockBuilder('\Spryker\Zed\Ratepay\Business\Payment\Method\Invoice')
+        $invoiceMethod = $this->getMockBuilder('\Spryker\Zed\Ratepay\Business\Request\Payment\Method\Invoice')
             ->disableOriginalConstructor()
             ->getMock();
         $invoiceMethod->method('getMethodName')
@@ -193,7 +193,7 @@ class BasePaymentTest extends Test
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Installment
+     * @return \Spryker\Zed\Ratepay\Business\Request\Payment\Method\Installment
      */
     protected function mockMethodInstallmentConfiguration()
     {
@@ -203,7 +203,7 @@ class BasePaymentTest extends Test
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Installment
+     * @return \Spryker\Zed\Ratepay\Business\Request\Payment\Method\Installment
      */
     protected function mockMethodInstallmentCalculation()
     {
@@ -213,13 +213,13 @@ class BasePaymentTest extends Test
     }
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Method\Installment
+     * @return \Spryker\Zed\Ratepay\Business\Request\Payment\Method\Installment
      */
     protected function mockMethodInstallment($payment)
     {
         $paymentTransfer = new RatepayPaymentInvoiceTransfer();
 
-        $installmentMethod = $this->getMockBuilder('\Spryker\Zed\Ratepay\Business\Payment\Method\Installment')
+        $installmentMethod = $this->getMockBuilder('\Spryker\Zed\Ratepay\Business\Request\Payment\Method\Installment')
             ->disableOriginalConstructor()
             ->getMock();
         $installmentMethod->method('getMethodName')

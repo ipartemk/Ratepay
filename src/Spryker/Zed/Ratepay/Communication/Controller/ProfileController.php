@@ -21,8 +21,11 @@ class ProfileController extends AbstractController
      */
     public function indexAction()
     {
+        $profileResponse = $this->getFacade()->requestProfile();
+
         return $this->viewResponse([
-            'profile' => $this->getFacade()->requestProfile(),
+            'masterData' => $profileResponse->getMasterData(),
+            'installmentConfigurationResult' => $profileResponse->getInstallmentConfigurationResult(),
         ]);
     }
 

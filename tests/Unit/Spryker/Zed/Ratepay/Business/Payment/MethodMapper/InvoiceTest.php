@@ -9,13 +9,13 @@ namespace Unit\Spryker\Zed\Ratepay\Business\Payment\MethodMapper;
 
 use Generated\Shared\Transfer\PaymentTransfer;
 use Generated\Shared\Transfer\RatepayPaymentInvoiceTransfer;
-use Spryker\Zed\Ratepay\Business\Payment\Method\Invoice;
+use Spryker\Zed\Ratepay\Business\Request\Payment\Method\Invoice;
 
 class InvoiceTest extends AbstractMethodMapperTest
 {
 
     /**
-     * @return \Spryker\Zed\Ratepay\Business\Payment\Method\MethodInterface
+     * @return \Spryker\Zed\Ratepay\Business\Request\Payment\Method\MethodInterface
      */
     public function getPaymentMethod()
     {
