@@ -288,20 +288,6 @@ class RatepayFacade extends AbstractFacade implements RatepayFacadeInterface
 
     /**
      * Specification:
-     * - Retrieves list of available payment methods from Ratepay Gateway.
-     *
-     * @api
-     *
-     * @return \Generated\Shared\Transfer\RatepayPaymentListResponseTransfer
-     */
-    public function requestPaymentMethodList()
-    {
-        //todo: implement.
-        return null;
-    }
-
-    /**
-     * Specification:
      * - Retrieves profile data from Ratepay Gateway.
      *
      * @api

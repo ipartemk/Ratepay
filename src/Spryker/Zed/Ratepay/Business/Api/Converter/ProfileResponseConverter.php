@@ -8,11 +8,12 @@ namespace Spryker\Zed\Ratepay\Business\Api\Converter;
 
 use Generated\Shared\Transfer\RatepayProfileResponseTransfer;
 use Spryker\Shared\Library\Currency\CurrencyManager;
-use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
 use Spryker\Zed\Ratepay\Business\Api\Constants;
+use Spryker\Zed\Ratepay\Business\Api\Model\Response\ResponseInterface;
 
 class ProfileResponseConverter extends BaseConverter
 {
+
     /**
      * @var \Spryker\Zed\Ratepay\Business\Api\Converter\TransferObjectConverter
      */
